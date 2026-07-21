@@ -1,0 +1,57 @@
+.regBidderContainer{
+    min-width: 769px;
+
+    height: auto;
+}
+.regBidderContainer h3{
+  font-size: 20px;
+}
+.user{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.user div:first-child{
+    padding-bottom:16px ;
+}
+.userDetails{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color:#3A3930;
+}
+.userDetails img{
+    width: 52px;
+    height: 56px;
+    border-radius: 9999px;
+    object-fit: cover;
+    object-position: center;
+}
+.userDetails div{
+    color:#3A3930;
+    display: flex;
+    flex-direction: column;
+    gap:8px ;
+}
+.name{
+    color:#3A3930;
+    font-size: 18px;
+    font-weight: 600;
+}
+.futherDetails{
+    padding: 22px 113px 22px 63px;
+    border-top: 1px solid #D5D3BE;
+    border-bottom: 1px solid #D5D3BE;
+}
+.futherDetails ul{
+    display: flex;
+    flex-direction: column;
+    gap:10px ;
+}
+.futherDetails ul li{
+    list-style-type: none;
+}
+.noShow{
+  height: 0;
+  display: hidden;
+  overflow: hidden;
+}

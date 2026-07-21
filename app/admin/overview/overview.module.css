@@ -1,0 +1,36 @@
+.overviewContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.systemUpdates{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height:470px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    border: 1px solid #807D67 ;
+}
+.updateHeader{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    background: #F2F0DB;
+}
+.systemUpdates li{
+    list-style-type: none;
+    padding: 16px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.systemUpdates li p{
+    font-weight: 400;
+    font-size: 18px;
+}
+.graphType{
+    width: 173px;
+}

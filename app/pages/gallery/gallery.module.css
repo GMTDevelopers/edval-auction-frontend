@@ -1,0 +1,9 @@
+.galleryHeader{
+    width: 44.4%;
+    margin: auto auto;
+    height: 322px;
+/*     border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

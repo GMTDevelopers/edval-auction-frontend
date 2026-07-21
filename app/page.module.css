@@ -1,0 +1,151 @@
+.header{
+  width: 100%;
+/*   border: 1px solid red; */
+  margin-top: 92px;
+  height:auto;
+}
+.bannerTxt{
+  width: 44.44%;
+  text-align: center;
+  margin: auto auto;
+/*   border: 1px solid red; */
+}
+.bannerTxt h1{
+/*   border: 1px solid red; */
+  margin: auto auto;
+  font-size: 48px;
+  width: 80%;
+}
+.bannerTxt p{
+  margin: auto auto;
+  margin-top:16px ;
+  width: 66%;
+  color: var(--text-secondary);
+  font-size: 20px;
+  line-height: 32px;
+/*   border: 1px solid red; */
+}
+.bannerBtn{
+  margin: auto auto;
+  margin-top:48px ;
+  background: var(--foreground);
+  color: var(--background);
+}
+.header img{
+  position: relative;
+  top: -30;
+  width: 100%;
+  object-fit: cover;
+}
+
+/*Live Bidding*/
+.liveBidding{
+  background: #F2F0DB;
+  padding-top: 56px;
+  padding-bottom: 101px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sectionHeader{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Featured Artists */
+.featuredArtists{
+  height: 576px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/*About us*/
+.aboutUs{
+  display: flex;
+  height: auto;
+  justify-content: center;
+}
+.aboutContainer{
+  margin-top: 72px;
+  display: flex;
+  gap:44px;
+}
+.aboutContainer img{
+  width: 475px;
+  height:634px;
+}
+
+.aboutTxt{
+  display: flex;
+  flex-direction: column;
+  gap:56px;
+  align-self:last baseline;
+  height: fit-content;
+}
+.aboutTxtHeader h2{
+  margin-bottom: 24px;
+
+}
+.aboutTxt p{
+  color:var(--text-primary);
+  font-weight:500;
+  line-height:27px;
+  font-size: 16px;
+}
+.aboutcardPack{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:41px;
+}
+.aboutcard{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.aboutcard h3{
+  font-size:18px;
+}
+
+/* FAQ */
+.FAQ{
+  margin-top: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.faqContainer{
+  width: 50%;
+}
+.questionPacks{
+  display: flex;
+  flex-direction: column;
+  gap:45px;
+  height: auto;
+  margin-top: 56px;
+}
+.questionPack{
+  width: 100%;
+  border-bottom: 1px solid #e2e2e2;
+  padding-bottom: 20px;
+  height: fit-content;
+
+}
+.questionHeader{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.answer{
+  width: 80%;
+  line-height: 27px;
+}
+.answerNoShow{
+  height: 0;
+  display: hidden;
+  overflow: hidden;
+}
+

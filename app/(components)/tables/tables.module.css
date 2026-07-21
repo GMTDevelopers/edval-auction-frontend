@@ -1,0 +1,116 @@
+/* Hide/show based on screen size */
+.tableContainer {
+  display: block;
+  font-style: normal;
+  color: #636363;
+  font-weight: 500;
+}
+
+/* === Desktop Table (unchanged from before) === */
+.table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  table-layout: auto;
+  border: 1px solid var(--text-secondary);
+  overflow-x: scroll;
+    font-size: 18px; 
+
+}
+.table thead{ 
+  width: 100%;
+}
+.table th { 
+  padding: 16px 15px; 
+  text-align: left; 
+  font-size: 18px; 
+  font-weight: 600; 
+  background: #F2F0DB;
+  color:var(--text-secondary);
+  border-top: 1px solid var(--text-secondary);
+  border-bottom: 1px solid var(--text-secondary);
+}
+.table td { 
+   font-weight: 400; 
+  padding: 16px 15px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+}
+.tableDouble{
+  display: flex;
+  gap:12px ;
+
+}
+.tableDouble img{
+  width: 44px;
+  height: 49px;
+  object-fit: cover;
+}
+.roundedImg{
+  border-radius: 999px;
+}
+.tableDouble div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.tableDouble div p:first-child{
+  font-weight: 600;
+}
+.tableDouble div p:last-child{
+  font-weight: 400;
+}
+.table tr { 
+  border-top: 1px solid var(--text-secondary);
+  border-bottom: 1px solid var(--text-secondary);
+}
+.table tr:hover { 
+  background: #f1f5f9;
+}
+.dataRow{
+  position: relative;
+}
+
+/* Status & Amount (shared) */
+.status {
+  padding: 5.6px 12px;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+.pending    {color: #F0B502; }
+.upcoming   { color:#FB6900 ; }
+.completed  {color: #2ED074; }
+.fully_paid  {color: #2ED074; }
+.active  {color: #2ED074; }
+.amount { color: #636363; }
+.reshedule { color: #82027D; }
+.approved {color: #2ED074;}
+.cancelled { color: #dc2626; font-weight: 600; }
+.cancel { color: #dc2626; font-weight: 600; }
+.inactive { color: #dc2626; font-weight: 600; }
+.cancel:hover { background: #fef2f2; }
+
+@media (max-width: 1024px) {
+  .table th { 
+    padding: 16px 5px; 
+    font-weight: 600; 
+  }
+  .status {
+    font-size: 12px;
+  }
+  .table { 
+    font-size: 12px; 
+  }
+}
+@media (max-width: 768px) {
+  
+}
+
+@media (max-width: 640px) {
+  
+
+}
+@media (max-width: 580px) {
+
+}

@@ -1,0 +1,12 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    margin-top:85px;
+    margin-bottom: 100px;
+
+}
+.container h2{
+    margin-bottom: 40px;
+}

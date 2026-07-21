@@ -1,0 +1,93 @@
+.shippingContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    margin-top:85px;
+    margin-bottom: 100px;
+}
+.double{
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    height: fit-content;
+/*     border: 1px solid black; */
+    
+}
+.big, .small{
+/*     border: 1px solid black; */
+    height: fit-content;
+    width: 100%;
+/*     border: solid 1px green; */
+}
+.big{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+     width: 150%;
+    padding-left: 1.5%;
+}
+.part1{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.part1 h3{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+}
+.summaryPack{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.summaryPack h4{
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+.submit{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: var(--foreground);
+    color: var(--background);
+    height: 50px;
+}
+.smallPack{
+    padding: 24px 49px 57px 32px;
+    background: #F2F0DB;
+}
+.smallPack h5{
+   font-size: 20px;
+}
+.sideLots{
+    display: flex;
+
+    margin-top: 24px;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.insurancePack{
+  display: flex;
+  gap: 15px;
+}
+.insurancePack input{
+  display: flex;
+  width: 42px !important;
+  height: 22px;
+  font-size: 16px;
+  padding: 0px 0px;
+  background: transparent !important;
+  border: 1px solid var(--text-secondary);
+}
+.insuranceTxt{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+}
+.insuranceTxt p:first-child{
+    font-size: 18px;
+    color: var(--foreground);
+}

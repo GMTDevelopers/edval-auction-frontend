@@ -1,0 +1,12 @@
+.coloredContainer{
+    width: 772px;
+    background: #F2F0DB;
+    padding:40px 73px 40px 72px ;
+    margin: auto;
+}
+.section{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
+}

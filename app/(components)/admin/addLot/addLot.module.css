@@ -1,0 +1,11 @@
+.container{
+    min-width: 623px;
+    height: 900px;
+    padding: 48px 66px ;
+}
+.section{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 20px;
+}

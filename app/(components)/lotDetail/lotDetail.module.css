@@ -1,0 +1,119 @@
+.container{
+  display: flex;
+  padding: 12px 48px 36px 32px;
+  justify-content: center;
+  gap: 4%;
+  height: fit-content;
+}
+.galleryContainer{
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-self: center;
+}
+.mainImageContainer {
+    margin-bottom: 1.25rem;
+    width: 525px;
+  /*   width: 525px; */
+    height: 519px;
+    overflow: hidden;
+    
+}
+
+.mainImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mainImage:hover {
+  transform: scale(1.02);
+}
+
+/* Thumbnails */
+.thumbnailsContainer {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scrollbar-color: #ccc transparent;
+}
+
+.thumbnailsContainer::-webkit-scrollbar {
+  height: 6px;
+
+}
+
+.thumbnailsContainer::-webkit-scrollbar-thumb {
+/*   background-color: #ccc; */
+}
+
+.thumbnailWrapper {
+  flex-shrink: 0;
+  width: 113px;               /* Adjust thumbnail size */
+  height: 99px;
+  border: 3px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.thumbnailWrapper:hover {
+  transform: scale(1.05);
+}
+
+.thumbnailWrapper.active {
+  border-color: var(--text-secondary);
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detailsContainer{
+    width: 501px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+.artistPack p{
+    font-size: 18px;
+    margin-top:12px;
+    margin-bottom: 12px;
+}
+.artistPack p span{
+    font-weight: 600;
+    color: var(--foreground);
+}
+.otherDetailsPack{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.otherDetailsPack li{
+    list-style-type: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.otherDetailsPack li p:last-child{
+   font-weight: 700;
+   color: var(--foreground);
+}
+.price{
+  font-size: 32px !important;
+  color: var(--foreground);
+  font-weight: 700;
+
+}
+.addToCart{
+  background: var(--foreground);
+  color: var(--background);
+}

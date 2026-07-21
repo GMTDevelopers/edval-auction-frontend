@@ -1,0 +1,59 @@
+/*  Tabs */
+.container {
+  width: 623px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+  padding-top: 69px;
+}
+.container h2{
+  font-size: 32px;
+  margin-bottom: 40px;
+}
+
+.tabBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 0px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e2e2e2;
+  
+}
+.doubleTabBar{
+  justify-content: space-between;
+}
+.tab {
+  background: transparent;
+  color: var(--foreground);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.passVisible{
+  position: relative;
+}
+.visibility{
+  position: absolute;
+  width: fit-content;
+  right: 3%;
+  top: 25%;
+}
+
+.tab.active {
+  border-bottom: 1px solid var(--foreground);
+}
+.content{
+  width: 100%;
+}
+
+.Double{
+  display: flex;
+  justify-content: space-between;
+  gap: 5%;
+}

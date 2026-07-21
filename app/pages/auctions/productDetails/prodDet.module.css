@@ -1,0 +1,131 @@
+.auctionPack{
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+/*     justify-content: center; */
+    align-items: center;
+    margin-top: 85px;
+}
+.double{
+    display: flex;
+    justify-content: space-between;
+   /*  gap: 40px; */
+    height: 100%;
+    margin-bottom:120px ;
+}
+.big, .small{
+    height: max-content;
+/*     border: solid 1px green; */
+}
+.big{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 1.5%;
+}
+.big h2{
+    font-size: 24px;
+}
+/* .big p span{
+    font-weight: 700;
+    color: var(--foreground);
+} */
+.streamVideo{
+/*     width: 1053px; */
+    width: 100%;
+    height: 515px;
+}
+.timerPack{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    align-items: end;
+}
+.timer{
+    background: #F2F0DB;
+}
+.timerBtn{
+    background: var(--foreground);
+    color: var(--background);
+    height: 50px;
+}
+.small{
+    width: auto;
+    height: fit-content;
+  
+}
+.smallPack{
+    padding: 24px 49px 57px 32px;
+    background: #F2F0DB;
+}
+.sideLots{
+    display: flex;
+
+    margin-top: 24px;
+    flex-direction: column;
+    gap: 12px;
+}
+.placeBid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 0px;
+    margin: 24px 0px 32px 0px;
+}
+
+.placeBid button{
+    background: var(--foreground);
+    color: var(--background);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 32px;
+    letter-spacing: -1%;
+} 
+.statsPack{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.statsCard{
+    padding:16px 32px 16px 32px ;
+    height:407px ;
+}
+.statsCard li{
+    list-style-type: none;
+}
+.statsList{
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: scroll;
+    scrollbar-width: none !important;
+}
+.time{
+    color: #FB6900;
+}
+.winners{
+    min-height: 347px;
+    margin-top: 24px;
+    padding: 24px 49px 57px 32px;
+}
+
+.noWinner{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    padding: auto;
+    width: 424px;
+    margin: 45px auto 0px auto;
+    text-align: center;
+}
+.noWinnerHeading{
+    color: var(--foreground);
+    font-weight: 600;
+    font-size: 20px;
+}
+.noWinner p{
+    line-height: 24px;
+}

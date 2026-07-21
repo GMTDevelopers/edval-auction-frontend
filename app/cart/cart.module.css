@@ -1,0 +1,43 @@
+.cartBig{
+    padding: 40px 71px 40px 40px;
+    border: 1px solid #807D67;
+}
+.cartSmall{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 40px;
+    background: #F2F0DB;
+}
+.cartSmall h4{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.orderedItemSide{
+    display: flex;
+    flex-direction: column;
+    gap: 31px;
+    height:410px;
+    overflow-y: scroll;
+}
+.totalOrder{
+    border-top: 1px solid var(--text-secondary);
+    padding-top: 24px;
+}
+.totalOrder div:first-child{
+    align-items: center;
+}
+.totalOrder p{
+    color:var(--foreground);
+    font-weight: 700;
+}
+.totalPrice{
+    font-size: 24px;
+}
+.totalOrder div:last-child{
+    margin-top: 40px;
+    width: 100%;
+    align-items: center;
+    background: var(--foreground);
+    color: var(--background);
+}

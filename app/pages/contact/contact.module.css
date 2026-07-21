@@ -1,0 +1,25 @@
+.imgPack{
+    width:756px ;
+    height: 798px;
+    overflow: hidden;
+}
+.imgPack img{
+    width:100%;
+    height: 100%;
+    object-fit: cover;
+}
+.contactFlex{
+    display: flex;
+    gap: 16px;
+    margin: 17px 0px 17px 0px;
+}
+.small{
+    display: flex;
+    flex-direction: column;
+   justify-content: center;
+   align-self: last baseline;
+  
+}
+.form{
+    margin-top: 48px;
+}

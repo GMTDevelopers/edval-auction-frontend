@@ -1,0 +1,38 @@
+.searchContainer{
+    height: 40px;
+}
+.searchContainer h3{
+    white-space: nowrap;
+    font-size: 24px;
+    font-weight: 700;
+}
+.searchBar{
+    display: grid;
+    margin-top: 0;
+    height: 40px;
+    width: 70%;
+}
+.searchBar input{
+/*     padding:8px 16px ; */
+     height: 40px;
+    justify-self: right;
+}
+.searchBar button{
+/*     padding:8px 16px ; */
+     height: 40px;
+     margin-top: 0px;
+}
+.searchBar div{
+    white-space: nowrap;
+    margin-top: 0;
+    font-weight: 500;
+    align-items: center;
+    justify-content: right;
+    height: 40px;
+    gap: 10px;
+}
+.searchBar div select{
+    width: 50%;
+    height: 40px;
+    padding:4px 16px ; 
+}

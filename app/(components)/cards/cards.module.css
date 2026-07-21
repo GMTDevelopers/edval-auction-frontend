@@ -1,0 +1,87 @@
+.imgContainer{
+    background: #FDFDFD;
+    padding: 24px 24px 24px 24px;
+    position: relative;
+/*     display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+.imgContainer img{
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+    height:431px;
+}
+.galImg{
+    height: 343px !important;
+}
+.status{
+    position: absolute;
+    top: 8%;
+    left: 7%;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 6px 12px 6px 12px;
+    width: fit-content;
+}
+.live{
+    color: #FFFFFF;
+    background: #FB0000;
+    border: 1.5px solid #FDFDFD;
+}
+.upcoming{
+    color: var(--foreground);
+    background: var(--background);
+    border: 1.5px solid var(--text-secondary);
+}
+.cardTxt{
+    padding: 24px 20px 24px 20px; 
+}
+.GallerycardTxt{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.cardTxt h4{
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.cardTxt p{
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-top: 3px;
+}
+.cardTxtExhibition p{
+    margin-top: 12px;
+}
+.cardTxt p span{
+    color: var(--foreground);
+    font-weight: 700;
+}
+.cardTimmer{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 18px;
+    font-weight: 700;
+    height: 33px;
+    border-top: 1px solid var(--foreground) ;
+    margin-top: 16px;
+}
+.cardTimmer p{
+    color:var(--foreground);
+    font-weight: 700;
+}
+.timmerBtn{
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-weight: 600;
+}
+.cardPrice{
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: var(--foreground) !important;
+}

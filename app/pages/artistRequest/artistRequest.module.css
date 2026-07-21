@@ -1,0 +1,19 @@
+.artistFormContainer{
+    width: 70%;
+    background: "#F2F0DB";
+    margin: auto auto;
+    padding: 56px 80px 70px 80px;
+    background: #F2F0DB;
+}
+.section{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 40px;
+}
+/* .artistFormContainer button{
+    width: 100%;
+    background: var(--foreground);
+    color: var(--background);
+    justify-content: center;
+} */

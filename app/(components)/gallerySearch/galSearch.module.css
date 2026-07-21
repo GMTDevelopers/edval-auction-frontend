@@ -1,0 +1,33 @@
+.searchForm{
+    flex-direction: row;
+    justify-content: space-between;
+}
+.searchForm .selectWrapper{
+    width: 100%;
+    background: transparent !important;
+   
+}
+.selectWrapper :global(.select__control) {
+  background-color: transparent;
+  border:1px solid var(--foreground);
+  padding: 10px;
+  outline: none;
+  box-shadow: none;
+}
+.selectWrapper :global(.select__placeholder) {
+    color: var(--foreground);
+    font-weight: 500;
+    font-style: 16px;
+}
+.selectWrapper :global(.select__indicator-separator) {
+    background: var(--foreground);
+}
+.selectWrapper :global(.select__indicator) {
+    color: var(--foreground);
+}
+.selectWrapper :global(.select__menu) {
+  background-color:  #fdfdfd ;
+}
+.selectWrapper :global(.select__option--is-focused) {
+  background-color:var(--background);
+}
