@@ -5,9 +5,11 @@ import { useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import ButtonLoader from '../loader/buttonloader';
 import { useModal } from '../ModalProvider/ModalProvider';
+import { useRouter } from 'next/navigation';
 const Tab = () => {
-    const {login, signup, error, loading} = useAuth();
+    const {login, signup, error, loading, user} = useAuth();
     const { closeModal } = useModal();
+    const router = useRouter();
     const [activeTab, setActiveTab] = useState('signIn');
     const [isError, setIsError] = useState(null);
     const [isSuccess, setIsSuccess] = useState(null);
@@ -36,7 +38,10 @@ const Tab = () => {
         const result = await login(loginData);
         if (result.success) {
             setIsSuccess("Login successful!");
-           console.log('Login successful');
+           console.log('Login successful:', user);
+           if (user.role==='admin'){
+            router.push('/admin/overview');
+           }
            setTimeout(() => {
             closeModal();
            }, 1000);

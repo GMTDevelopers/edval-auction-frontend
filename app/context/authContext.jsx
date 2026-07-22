@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginUser, logoutUser, refreshUser, signupUser } from "../services/authServices";
+import { getUserData, loginUser, logoutUser, refreshUser, signupUser } from "../services/authServices";
 
 const AuthContext = createContext();
 
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         try {
             const response = await loginUser(credentials);
-            setUser(response.data.user);
+ /*            setUser(response.data.user); */
             setAccessToken(response.data.access_token);
             setRefreshToken(response.data.refresh_token);
             localStorage.setItem(
@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
                 response.data.refresh_token
             );
 
+            getUser();
             setIsAuthenticated(true);
 
             return {
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await signupUser(userData);
 
-            setUser(response.user);
+          /*   setUser(response.user); */
             setAccessToken(response.access_token);
             setRefreshToken(response.refresh_token);
             localStorage.setItem(
@@ -70,6 +71,7 @@ export const AuthProvider = ({ children }) => {
                 response.refresh_token
             );
 
+            getUser();
             setIsAuthenticated(true);
 
             return {
@@ -107,8 +109,9 @@ export const AuthProvider = ({ children }) => {
 
     // REFRESH FUNCTION
     const refresh = async () => {
+        const refresh = localStorage.getItem("refresh_token");
         try {
-            const response = await refreshUser(refreshToken);
+            const response = await refreshUser(refresh);
             setAccessToken(response.data.access_token);
             setRefreshToken(response.data.refresh_token);
             localStorage.setItem(
@@ -126,6 +129,25 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const getUser = async () => {
+        try {
+            const response = await getUserData();
+            setUser(response.data);
+            setIsAuthenticated(true);
+
+            return {
+                success: true,
+                data: response,
+            };
+        } catch (err) {
+            setError(err);
+            return {
+                success: false,
+                error: err.message,
+            };
+        }
+    }
+
     const initializeAuth = () => {
         const access = localStorage.getItem("access_token");
         const refresh = localStorage.getItem("refresh_token");
@@ -139,6 +161,8 @@ export const AuthProvider = ({ children }) => {
     };
     useEffect(() => {
         initializeAuth();
+        getUser();
+        console.log('User:', user);
     }, []);
 
     return (

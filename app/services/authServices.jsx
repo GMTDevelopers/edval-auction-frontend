@@ -65,13 +65,37 @@ export const logoutUser = async (refresh_token) => {
     return data;
 };
 
-export const refreshUser = async (refreshToken) => {
+export const getUserData = async () => {
+    const accessToken = localStorage.getItem("access_token");
+    const response = await fetch(`${BASE_URL}/users/me`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${accessToken}`,
+        },
+
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw {
+            status: response.status,
+            message: data.message || "failed to get user",
+        };
+    }
+
+    return data;
+};
+
+export const refreshUser = async (refresh_token) => {
+    
     const response = await fetch(`${BASE_URL}/auth/refresh`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ refreshToken }),
+        body: JSON.stringify({ refresh_token}),
     });
 
     const data = await response.json();
