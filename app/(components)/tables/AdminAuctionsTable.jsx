@@ -1,29 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import styles from './tables.module.css';
-const AuctionTable = () => {
+const AuctionTable = ({Data}) => {
     const router = useRouter()
-
-    const data = [
-        {
-            slug:"sisters-of-the-sound-art-auction-live",
-            auctionId:"E-2100",
-            auctionTitle:"Sisters of the Sound - Art Auction Live",
-            lots:12,
-            date:"12002300",
-            status:"live",
-            RegBidder:18
-        },
-        {
-            slug:"whispers-of-the-wild-art-auction-online",
-            auctionId:"E-2101",
-            auctionTitle:"Whispers of the Wild - Art Auction Online",
-            lots:6,
-            date:"12002300",
-            status:"upcoming",
-            RegBidder:48
-        }
-    ]
+    const data = Data.data || [];
     return ( 
         <div className={styles.tableContainer}>
             <table className={styles.table}>
@@ -38,15 +18,15 @@ const AuctionTable = () => {
                 </thead>
                 <tbody> 
                 {data.length !==0 && data.map((b) => (
-                    <tr onClick={() => router.push(b?.status === "live" ? `/admin/auctions/${b?.slug}` : `/admin/auctions/upcoming/${b?.slug}`)} className={styles.dataRow} key={b.auctionId} >
+                    <tr onClick={() => router.push(b?.status === "live" ? `/admin/auctions/${b?.slug}` : `/admin/auctions/upcoming/${b?.slug}`)} className={styles.dataRow} key={b.id} >
                         <td>
-                            <p>{b?.auctionTitle}</p>    
-                            <p>{b?.auctionId}</p>
+                            <p>{b?.name}</p>    
+                            <p>[auction_ID: {b?.id}]</p>
                             
                         </td>
-                        <td> {new Date(b?.date).toDateString() || "N/A"} </td>
-                        <td>{b?.lots}</td>
-                        <td>{b?.RegBidder}</td>
+                        <td> {new Date(b?.scheduled_at).toDateString() || "N/A"} </td>
+                        <td>{b?.lots_count}</td>
+                        <td>{b?.registered_bidders_count}</td>
                         <td> 
                             <span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
                             {b?.status}

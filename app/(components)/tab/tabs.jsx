@@ -39,7 +39,7 @@ const Tab = () => {
         if (result.success) {
             setIsSuccess("Login successful!");
            console.log('Login successful:', user);
-           if (user.role==='admin'){
+           if (user?.role==='admin'){
             router.push('/admin/overview');
            }
            setTimeout(() => {

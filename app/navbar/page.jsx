@@ -17,13 +17,11 @@ const Navbar = () => {
     const {isAuthenticated, user, accessToken, logout, refreshToken} = useAuth();
     const [isUser, setIsUser] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
-   /*  useEffect(() => {
-        if (isAuthenticated) {
-            setIsUser(user);
-        } else {
-            setIsUser(null);
-        }
-    }, [isAuthenticated]); */
+
+
+    useEffect(() => {
+        console.log(isAuthenticated, user);
+    }, []);
     return ( 
         <div className={styles.navbar}>
             <div className="container">
@@ -41,14 +39,14 @@ const Navbar = () => {
                     {!isAuthenticated && <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
                         My Account
                     </div>}
-                    {isAuthenticated &&  user.role==="client" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
+                    {isAuthenticated &&  user?.role==="client" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
                         <p className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
                         <div className={styles.navBtnLoggedIn}>
                             <img src="/images/contactUs.webp" alt="user" />
                             <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
                         </div>
                     </div>)}
-                    {isAuthenticated && user.role==="admin" && (
+                    {isAuthenticated && user?.role==="admin" && (
                         <div onClick={() => router.push('/admin/overview')} className={`btn ${styles.navBtn}`}>
                             Visit Admin Dashboard
                         </div>

@@ -134,16 +134,24 @@ export const AuthProvider = ({ children }) => {
             const response = await getUserData();
             setUser(response.data);
             setIsAuthenticated(true);
-
+            console.log("User data:", response.data);
             return {
                 success: true,
                 data: response,
             };
         } catch (err) {
             setError(err);
+            if (err.status === 401) {
+                const refreshed = await refresh();
+                if (refreshed) {
+                    console.log("Token refreshed successfully, retrying getUser...");
+                    return getUser();
+                }
+            }
             return {
                 success: false,
                 error: err.message,
+                status: err.status,
             };
         }
     }
@@ -162,7 +170,8 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         initializeAuth();
         getUser();
-        console.log('User:', user);
+        /* refresh(); */
+        
     }, []);
 
     return (
