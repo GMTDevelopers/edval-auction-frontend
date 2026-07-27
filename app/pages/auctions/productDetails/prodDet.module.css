@@ -88,7 +88,7 @@
 }
 .statsCard{
     padding:16px 32px 16px 32px ;
-    height:407px ;
+    min-height:407px ;
 }
 .statsCard li{
     list-style-type: none;

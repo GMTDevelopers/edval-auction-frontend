@@ -5,6 +5,7 @@ import Footer from "./footer/page";
 import { ModalProvider } from "./(components)/ModalProvider/ModalProvider";
 import { CartProvider } from "./context/cartContext";
 import { AuthProvider } from "./context/authContext";
+import { Toaster } from "sonner";
 
 const workSans = Work_Sans({
   variable: "--workSans",
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
             <CartProvider>
               <Navbar />
               {children}
+              <Toaster position="top-right" richColors closeButton expand={false} duration={3000} />
               <Footer />
             </CartProvider>
           </ModalProvider>

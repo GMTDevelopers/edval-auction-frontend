@@ -264,7 +264,7 @@ option{
   display: flex;
   justify-content: space-between;
   align-items: center;
- /*  gap: 9%; */
+  gap: 5%;
  /*  gap: 40px; */
   height: fit-content;
 /*     border: 1px solid black; */
@@ -280,7 +280,8 @@ option{
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: 150%;
+  width: 100%;
+/*   width: 150%; */
   padding-left: 1.5%;
 }
 

@@ -168,7 +168,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
     useEffect(() => {
-        initializeAuth();
+        /* initializeAuth(); */
         getUser();
         /* refresh(); */
         

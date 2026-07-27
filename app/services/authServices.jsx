@@ -76,14 +76,14 @@ export const getUserData = async () => {
 
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
         throw {
             status: response.status,
             message: data.message || "failed to get user",
         };
     }
+
+    const data = await response.json();
 
     return data;
 };

@@ -18,7 +18,7 @@ const AuctionTable = ({Data}) => {
                 </thead>
                 <tbody> 
                 {data.length !==0 && data.map((b) => (
-                    <tr onClick={() => router.push(b?.status === "live" ? `/admin/auctions/${b?.slug}` : `/admin/auctions/upcoming/${b?.slug}`)} className={styles.dataRow} key={b.id} >
+                    <tr onClick={() => router.push(b?.status === "live" ? `/admin/auctions/${b?.slug}?id=${b?.id}` : `/admin/auctions/upcoming/${b?.slug}?id=${b?.id}`)} className={styles.dataRow} key={b.id} >
                         <td>
                             <p>{b?.name}</p>    
                             <p>[auction_ID: {b?.id}]</p>

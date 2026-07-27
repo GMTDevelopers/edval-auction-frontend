@@ -4,6 +4,7 @@ import styles from './addLot.module.css';
 import Styles from '@/app/(components)/sideCard/page.module.css'
 import altStyles from '@/app/(components)/gallerySearch/galSearch.module.css'
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 
 const CreateLot = async (formData, id) => {
@@ -108,9 +109,14 @@ const AddNewLot = ({id}) => {
         e.preventDefault();
         const result = await CreateLot(lotData, id);
         if (result) {
+            toast.success("Auction Lot created successfully.");
             console.log('Lot created successfully:', result);
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
             /* openModal(<AddNewLot id={result.data?.id} />) */
         } else {
+            toast.error("Failed to create auction lot.");
             console.error('Failed to create lot do not proceed to create lot');
         }
     }
