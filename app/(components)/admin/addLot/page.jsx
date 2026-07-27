@@ -5,6 +5,7 @@ import Styles from '@/app/(components)/sideCard/page.module.css'
 import altStyles from '@/app/(components)/gallerySearch/galSearch.module.css'
 import { useState } from 'react';
 import { toast } from 'sonner';
+import ImageUploader from '../../imageUploader/ImageUploader';
 
 
 const CreateLot = async (formData, id) => {
@@ -89,10 +90,10 @@ const AddNewLot = ({id}) => {
         "exhibition_artwork_id": 0,
         "framed": true,
         "image_urls": [
-            "https://pixabay.com/images/download/davidvives90-cathedral-5590968_1920.jpg",
-            "https://pixabay.com/images/download/chiemseherin-cathedral-8318952_1920.jpg",
-            "https://cdn.pixabay.com/photo/2021/11/28/15/31/cathedral-6830531_1280.jpg",
-            "https://pixabay.com/images/download/satyress-church-5894267_1920.jpg"
+            "",
+            "",
+            "",
+            ""
         ],
         "length": "",
         "lot_number": "",
@@ -195,11 +196,22 @@ const AddNewLot = ({id}) => {
                         </option>                                                              
                     </select>
                     <input value={lotData.reserve_price} onChange={(e) => setLotData(prev => ({ ...prev, reserve_price: Number(e.target.value) }))} placeholder="Reserve Price" type="tel" name="reservePrice" required />
-                    <div>
-                        <div className="btn">Add image</div>
-                        <div className="btn">Add image</div>
-                        <div className="btn">Add image</div>
-                        <div className="btn">Add image</div>
+                    <div className="double">
+                        {[1,2,3,4].map(index => (
+                            <ImageUploader
+                                key={index}
+                                value={lotData.image_urls[index]}
+                                placeholder={`Add Image`}
+                                onUpload={(url) => {
+                                    const media = [...lotData.image_urls];
+                                    media[index] = url;
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        media
+                                    }));
+                                }}
+                            />
+                        ))}
                     </div>
                 </section>
                 <button className="btn submit">Add lot to auction event</button>

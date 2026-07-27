@@ -1,7 +1,10 @@
 .container{
     min-width: 623px;
-    height: 900px;
-    padding: 48px 66px ;
+    height: 90vh;
+    padding: 30px 66px ;
+    overflow-y: scroll;
+    scrollbar-width:thin;
+    scrollbar-color: var(--foreground) var(--background);
 }
 .section{
     display: flex;

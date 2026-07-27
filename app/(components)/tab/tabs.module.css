@@ -7,6 +7,9 @@
   align-items: center;
   padding-top: 48px;
   padding-top: 69px;
+  overflow-y: scroll;
+   scrollbar-width:thin;
+  scrollbar-color: var(--foreground) var(--background);
 }
 .container h2{
   font-size: 32px;

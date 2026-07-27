@@ -9,12 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "dropzone": "^6.0.0-beta.2",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.17.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-dropzone": "^19.1.1",
     "react-select": "^5.10.2",
     "recharts": "^3.9.2",
     "sonner": "^2.0.7"
