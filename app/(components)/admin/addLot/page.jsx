@@ -84,8 +84,8 @@ const AddNewLot = ({id}) => {
         "Religious & Spiritual",
     ];
     const [lotData, setLotData] = useState({
-        "artist_id": "",
-        "artwork_id": "",
+        "artist_id": 0,
+        "artwork_id": 0,
         "artwork_type": "",
         "category": "",
         "depth": "",
@@ -133,15 +133,35 @@ const AddNewLot = ({id}) => {
             </div>
             <form onSubmit={handleSubmit} action="">
                 <section className={styles.section}>
-                    <input value={lotData.title} onChange={(e) => setLotData(prev => ({ ...prev, title: e.target.value }))} placeholder="Name of lot" type="text" name="lotName" required />
-                    <input value={lotData.artist_id} onChange={(e) => setLotData(prev => ({ ...prev, artist_id: Number(e.target.value) }))} placeholder="Artist Id" type="text" name="artist" />
-                    <input value={lotData.artwork_id} onChange={(e) => setLotData(prev => ({ ...prev, artwork_id: Number(e.target.value) }))} placeholder="Artwork Id" type="text" name="artist" />
-                    <textarea value={lotData.description} onChange={(e) => setLotData(prev => ({ ...prev, description: e.target.value }))} name="artDesc" placeholder="Description" />
-                    <input value={lotData.starting_bid} onChange={(e) => setLotData(prev => ({ ...prev, starting_bid: Number(e.target.value) }))} placeholder="Starting bid" type="tel" name="startingBid" required />
-                    <input value={lotData.lot_number} onChange={(e) => setLotData(prev => ({ ...prev, lot_number: Number(e.target.value) }))} placeholder="Lot Number" type="text" name="lotNumber" required />
+                    <div>
+                        <label htmlFor="lotName">Name of lot</label>
+                        <input value={lotData.title} onChange={(e) => setLotData(prev => ({ ...prev, title: e.target.value }))} placeholder="" type="text" id="lotName" required />
+                    </div>
+                    <div>
+                        <label htmlFor="artistID">Artist Id (optional)</label>
+                        <input value={lotData.artist_id} onChange={(e) => setLotData(prev => ({ ...prev, artist_id: Number(e.target.value) }))} placeholder="" type="text" id="artistID" />
+                    </div>
+                    <div>
+                        <label htmlFor="artworkID">Artwork Id (optional)</label>
+                        <input value={lotData.artwork_id} onChange={(e) => setLotData(prev => ({ ...prev, artwork_id: Number(e.target.value) }))} placeholder="" type="text" id="artworkID" />
+                    </div>
+                    <div>
+                        <label htmlFor="artDesc">Artwork Description</label>
+                        <textarea value={lotData.description} onChange={(e) => setLotData(prev => ({ ...prev, description: e.target.value }))} id="artDesc" placeholder="" />
+                    </div>
+                    <div>
+                        <label htmlFor="startingBid">Starting bid</label>
+                        <input value={lotData.starting_bid} onChange={(e) => setLotData(prev => ({ ...prev, starting_bid: Number(e.target.value) }))} placeholder="" type="tel" id="startingBid" required />
+                    </div>
+                    <div>
+                        <label htmlFor="lotNumber">Lot Number</label>
+                        <input value={lotData.lot_number} onChange={(e) => setLotData(prev => ({ ...prev, lot_number: Number(e.target.value) }))} placeholder="" type="text" id="lotNumber" required />
+                    </div>
+                    
                     <div style={{marginTop:"0px"}} className="row2"> 
-                        <input value={lotData.year_created} onChange={(e) => setLotData(prev => ({ ...prev, year_created: Number(e.target.value) }))} placeholder="Year" type="tel" name="year" required />
-                        <select value={lotData.category} onChange={(e) => setLotData(prev => ({ ...prev, category: e.target.value }))} name="category">
+                     
+                        <input value={lotData.year_created} onChange={(e) => setLotData(prev => ({ ...prev, year_created: Number(e.target.value) }))} placeholder="Artwork Creation Year" type="tel" id="year" required />                     
+                        <select value={lotData.category} onChange={(e) => setLotData(prev => ({ ...prev, category: e.target.value }))} id="category">
                             <option value="" disabled>
                                 Select a category
                             </option>
@@ -150,7 +170,8 @@ const AddNewLot = ({id}) => {
                                 {category}
                                 </option>
                             ))}                                                             
-                        </select>                           
+                        </select>        
+                                             
                     </div>
                     <Select value={Theme.filter(option => lotData.themes.includes(option.value))} instanceId="lot-theme-select" isMulti placeholder="Theme" className={altStyles.selectWrapper} classNamePrefix="select" options={Theme}
                         onChange={(selectedOptions) =>
@@ -173,33 +194,52 @@ const AddNewLot = ({id}) => {
                         ))}                                                               
                     </select>
                     <div style={{marginTop:"0px"}} className="row3">
-                        <input value={lotData.length} onChange={(e) => setLotData(prev => ({ ...prev, length: Number(e.target.value) }))} placeholder="Length" type="tel" name="length" required />
-                        <input value={lotData.width} onChange={(e) => setLotData(prev => ({ ...prev, width: Number(e.target.value) }))} placeholder="Width" type="tel" name="width" required />
-                        <input value={lotData.depth} onChange={(e) => setLotData(prev => ({ ...prev, depth: Number(e.target.value) }))} placeholder="Depth" type="tel" name="depth" required />
+                        <div>
+                            <label htmlFor="length">Length(cm)</label>
+                            <input value={lotData.length} onChange={(e) => setLotData(prev => ({ ...prev, length: Number(e.target.value) }))} placeholder="" type="tel" id="length" required />
+                        </div>
+                        <div>
+                            <label htmlFor="width">Width(cm)</label>
+                            <input value={lotData.width} onChange={(e) => setLotData(prev => ({ ...prev, width: Number(e.target.value) }))} placeholder="" type="tel" id="width" required />
+                        </div>
+                        <div>
+                            <label htmlFor="depth">Depth(cm)</label>
+                            <input value={lotData.depth} onChange={(e) => setLotData(prev => ({ ...prev, depth: Number(e.target.value) }))} placeholder="" type="tel" id="depth" required />
+                        </div>
                     </div>
-                    <select value={lotData.framed} onChange={(e) => setLotData(prev => ({ ...prev, framed: e.target.value === "true" }))} name="frame">
-                        <option value="" disabled>
-                            Frame?
-                        </option>                 
-                        <option value="true">
-                            True
-                        </option>                                
-                        <option value="false">
-                            False
-                        </option>                                                              
-                    </select>
-                    <select value={lotData.proof_of_authenticity} onChange={(e) => setLotData(prev => ({ ...prev, proof_of_authenticity: e.target.value === "true" }))} name="proofOfAuth">
-                        <option value="" disabled>
-                            Proof of authenticity?
-                        </option>                 
-                        <option value="true">
-                            True
-                        </option>                                
-                        <option value="false">
-                            False
-                        </option>                                                              
-                    </select>
-                    <input value={lotData.reserve_price} onChange={(e) => setLotData(prev => ({ ...prev, reserve_price: Number(e.target.value) }))} placeholder="Reserve Price" type="tel" name="reservePrice" required />
+                    <div>
+                        <label htmlFor="frame">Is The Artwork Framed?</label>                    
+                        <select value={lotData.framed} onChange={(e) => setLotData(prev => ({ ...prev, framed: e.target.value === "true" }))} id="frame">
+                            <option value="" disabled>
+                                Frame?
+                            </option>                 
+                            <option value="true">
+                                True
+                            </option>                                
+                            <option value="false">
+                                False
+                            </option>                                                              
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="proofOfAuth">Proof of authenticity?</label>                    
+                        <select value={lotData.proof_of_authenticity} onChange={(e) => setLotData(prev => ({ ...prev, proof_of_authenticity: e.target.value === "true" }))} id="proofOfAuth">
+                            <option value="" disabled>
+                                Proof of authenticity?
+                            </option>                 
+                            <option value="true">
+                                True
+                            </option>                                
+                            <option value="false">
+                                False
+                            </option>                                                              
+                        </select>
+                    </div>
+                   <div>
+                        <label htmlFor="reservePrice">Artwork Reserve Price</label>
+                        <input value={lotData.reserve_price} onChange={(e) => setLotData(prev => ({ ...prev, reserve_price: Number(e.target.value) }))} placeholder="" type="tel" id="reservePrice" required />
+                    </div>
+                    
                     <div className="double">
                         {[1,2,3,4].map(index => (
                             <ImageUploader

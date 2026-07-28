@@ -1,10 +1,13 @@
 .container{
     min-width: 623px;
     height: 90vh;
-    padding: 30px 66px ;
+    padding: 30px 30px ;
     overflow-y: scroll;
     scrollbar-width:thin;
     scrollbar-color: var(--foreground) var(--background);
+}
+.container form{
+    width: 623px;
 }
 .section{
     display: flex;
