@@ -3,7 +3,7 @@ import { useModal } from '../ModalProvider/ModalProvider';
 import styles from './page.module.css';
 const AdminLotSide = ({name, artist, year, bid, status, img}) => {
     const { openModal } = useModal();
-    console.log("lot img,", img);
+  /*   console.log("lot img,", img); */
     return ( 
         <div className={styles.sideCardCont}>
             <div className={styles.left}>

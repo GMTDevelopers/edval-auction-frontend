@@ -30,7 +30,8 @@ const ImageUploader = ({
     const uploadFile = async (file) => {
         const token = localStorage.getItem("access_token");
         const formData = new FormData();
-        formData.append("files", file);
+        formData.append("file", file);
+        /* formData.append("file", file); */
         try {
             setUploading(true);
             const res = await fetch(`${BASE_URL}/storage/upload`, {
@@ -41,14 +42,17 @@ const ImageUploader = ({
                 body: formData,
             });
             const data = await res.json();
+            console.log("uploader res", data)
             if (!res.ok) {
                 throw new Error(data?.message || "Upload failed");
             }
             toast.success("Image uploaded");
-            return data.data[0].url;
+            return data?.data?.url;
+            /* return data.data.url; */
 
         } catch (err) {
             toast.error(err.message);
+            console.log("uploader res", err)
             return null;
         } finally {
             setUploading(false);
@@ -57,8 +61,9 @@ const ImageUploader = ({
 
     const onDrop = useCallback(async (acceptedFiles) => {
         const file = acceptedFiles[0];
+        console.log('file log:', file)
         if (!file) return;
-        setPreview(URL.createObjectURL(file));
+        setPreview(URL?.createObjectURL(file));
         const url = await uploadFile(file);
         if (!url) return;
         onUpload(url);

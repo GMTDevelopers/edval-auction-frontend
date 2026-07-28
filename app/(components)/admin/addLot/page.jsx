@@ -6,11 +6,13 @@ import altStyles from '@/app/(components)/gallerySearch/galSearch.module.css'
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ImageUploader from '../../imageUploader/ImageUploader';
+import { useModal } from '../../ModalProvider/ModalProvider';
 
 
 const CreateLot = async (formData, id) => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const accessToken = localStorage.getItem("access_token");
+     
     try {
         const response = await fetch(`${BASE_URL}/admin/auctions/${id}/lots`, { 
         method: "POST",
@@ -36,6 +38,7 @@ const CreateLot = async (formData, id) => {
 };
 
 const AddNewLot = ({id}) => {
+    const { closeModal } = useModal();
     const Theme = [
         { value: 'Nature', label: 'Nature' },
         { value: 'Portraiture', label: 'Portraiture' },
@@ -113,6 +116,7 @@ const AddNewLot = ({id}) => {
             toast.success("Auction Lot created successfully.");
             console.log('Lot created successfully:', result);
             setTimeout(() => {
+                closeModal()
                 window.location.reload();
             }, 3000);
             /* openModal(<AddNewLot id={result.data?.id} />) */
@@ -205,9 +209,9 @@ const AddNewLot = ({id}) => {
                                 onUpload={(url) => {
                                     const media = [...lotData.image_urls];
                                     media[index] = url;
-                                    setFormData(prev => ({
+                                    setLotData(prev => ({
                                         ...prev,
-                                        media
+                                        image_urls: media
                                     }));
                                 }}
                             />

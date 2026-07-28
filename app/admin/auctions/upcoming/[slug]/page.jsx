@@ -147,7 +147,7 @@ const ProdDetPage = () => {
             </div>
             
             <br /><br />
-            <div className={`container double`}>
+            <div style={{alignItems:"normal"}} className={`container double`}>
                 <div className={styles.big}>
                     <iframe className={styles.streamVideo} src="https://www.youtube.com/embed/G4yQtdtkO80?si=D6t7epPXS9-bXVnm" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
                     {/* <img  src="/images/auction/live.webp" alt="live" /> */}
@@ -271,7 +271,7 @@ const ProdDetPage = () => {
                 </div>
                 <div className={styles.small}>
                     <div className={styles.smallPack}>
-                        <h3>Available Lots (3)</h3>
+                        <h3>Available Lots ({auctionLotData?.length})</h3>
                         <div className={styles.sideLots}>
                             {
                                 auctionLotData?.map((lot)=>(

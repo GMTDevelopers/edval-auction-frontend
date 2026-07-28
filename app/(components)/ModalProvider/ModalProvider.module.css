@@ -61,7 +61,7 @@
 
 .content {
   padding: 2.5rem 2.5rem 2rem;
-  overflow-y: scroll;
+/*   overflow-y: scroll; */
   scrollbar-width:thin;
   scrollbar-color: var(--foreground) var(--background);
 }
