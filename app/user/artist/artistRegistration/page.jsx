@@ -90,21 +90,7 @@ const ArtistRegistration  = () => {
                 router.push('/user/artist/myArtworks');
                 window.location.reload();
             }, 5000);
-        } 
-        /* if (!result) {
-           
-            console.error('Failed to create artist user.');
-            setTimeout(() => {
-                closeModal()
-                window.location.reload();
-            }, 3000); 
-            
-        }
-        if(result){
-            toast.success("Artist created successfully.");
-            console.log('Artist created successfully:', result);
-        }  */
-        
+        }         
     }
     return ( 
         <div>
