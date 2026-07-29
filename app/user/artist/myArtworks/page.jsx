@@ -4,16 +4,18 @@ import styles from './myArtworks.module.css';
 import ArtistArtworksTable from '@/app/(components)/tables/artistArtworksTable';
 import StatsCard from '@/app/(components)/statsCard/page';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/context/authContext';
 
 const MyArtworks = () => {
+   const {user} = useAuth(); 
     const router = useRouter()
     return ( 
         <div className={styles.container}>
             <div className="container">
                 <div className="row3">
-                    <StatsCard title="Total Artworks" data="14" icon={Palette} />
-                    <StatsCard title="Pending Approval" data="3" icon={Loader} />
-                    <StatsCard title="Total Sales" data="147,234" icon={Banknote} />
+                    <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
+                    <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
+                    <StatsCard title="Total Sales" data={user?.stats?.total_sales} icon={Banknote} />
                 </div>
                 
                 <div className={`double ${styles.pack}`}>

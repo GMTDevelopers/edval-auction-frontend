@@ -1,0 +1,17 @@
+[
+    { "value": "Nature", "label": "Nature" },
+    { "value": "Portraiture", "label": "Portraiture" },
+    { "value": "Abstract", "label": "Abstract" },
+    { "value": "Spirituality", "label": "Spirituality" },
+    { "value": "Culture & Heritage", "label": "Culture & Heritage" },
+    { "value": "Identity", "label": "Identity" },
+    { "value": "Family & Relationships", "label": "Family & Relationships" },
+    { "value": "Love", "label": "Love" },
+    { "value": "History", "label": "History" },
+    { "value": "Social Commentary", "label": "Social Commentary" },
+    { "value": "Urban Life", "label": "Urban Life" },
+    { "value": "Fantasy & Mythology", "label": "Fantasy & Mythology" },
+    { "value": "Animals & Wildlife", "label": "Animals & Wildlife" },
+    { "value": "Politics & Power", "label": "Politics & Power" },
+    { "value": "Hope & Resilience", "label": "Hope & Resilience" }
+]

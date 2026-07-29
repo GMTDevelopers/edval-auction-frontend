@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
             <CartProvider>
               <Navbar />
               {children}
-              <Toaster position="top-right" richColors closeButton expand={false} duration={3000} />
+              <Toaster position="top-right" richColors closeButton expand={false} duration={5000} />
               <Footer />
             </CartProvider>
           </ModalProvider>

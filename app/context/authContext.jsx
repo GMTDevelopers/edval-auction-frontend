@@ -181,6 +181,7 @@ export const AuthProvider = ({ children }) => {
                 accessToken,
                 refreshToken,
                 isAuthenticated,
+                setIsAuthenticated,
                 loading,
                 error,
                 login,

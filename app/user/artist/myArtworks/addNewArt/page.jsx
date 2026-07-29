@@ -5,12 +5,13 @@ import styles from './add.module.css';
 import Select from 'react-select'
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Theme from '@/app/data/theme.json';
 const AddNewArt = () => {
     const data = {
         "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
         "img": "/images/auction/1.webp"
     }
-    const Theme = [
+/*     const Theme = [
         { value: 'Nature', label: 'Nature' },
         { value: 'Portraiture', label: 'Portraiture' },
         { value: 'Abstract', label: 'Abstract' },
@@ -26,7 +27,7 @@ const AddNewArt = () => {
         { value: 'Animals & Wildlife', label: 'Animals & Wildlife' },
         { value: 'Politics & Power', label: 'Politics & Power' },
         { value: 'Hope & Resilience', label: 'Hope & Resilience' },
-    ]
+    ] */
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(0);
 

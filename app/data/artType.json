@@ -1,0 +1,17 @@
+[
+  { "value": "Oil on Canvas", "label": "Oil on Canvas" },
+  { "value": "Acrylic on Canvas", "label": "Acrylic on Canvas" },
+  { "value": "Watercolor", "label": "Watercolor" },
+  { "value": "Mixed Media", "label": "Mixed Media" },
+  { "value": "Charcoal", "label": "Charcoal" },
+  { "value": "Pencil Drawing", "label": "Pencil Drawing" },
+  { "value": "Pastel", "label": "Pastel" },
+  { "value": "Ink", "label": "Ink" },
+  { "value": "Digital Art", "label": "Digital Art" },
+  { "value": "Photography", "label": "Photography" },
+  { "value": "Sculpture", "label": "Sculpture" },
+  { "value": "Wood Carving", "label": "Wood Carving" },
+  { "value": "Bronze Sculpture", "label": "Bronze Sculpture" },
+  { "value": "Ceramics", "label": "Ceramics" },
+  { "value": "Printmaking", "label": "Printmaking" }
+]

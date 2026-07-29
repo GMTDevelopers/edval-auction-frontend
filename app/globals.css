@@ -132,6 +132,15 @@ input::placeholder, textarea::placeholder, select::placeholder{
   align-items: center;
   display: flex;
 }
+.passVisible{
+  position: relative;
+}
+.visibility{
+  position: absolute;
+  width: fit-content;
+  right: 3%;
+  top: 25%;
+}
 select{
   font-weight: 500;
   font-size: 16px;

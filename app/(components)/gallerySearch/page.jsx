@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import styles from './galSearch.module.css';
 import Select from 'react-select'
-const artType = [
+import artType from "@/app/data/artType.json";
+import Theme from "@/app/data/theme.json";
+/* const artType = [
   { value: 'Oil on Canvas', label: 'Oil on Canvas' },
   { value: 'Acrylic on Canvas', label: 'Acrylic on Canvas' },
   { value: 'Watercolor', label: 'Watercolor' },
@@ -35,7 +37,7 @@ const Theme = [
   { value: 'Animals & Wildlife', label: 'Animals & Wildlife' },
   { value: 'Politics & Power', label: 'Politics & Power' },
   { value: 'Hope & Resilience', label: 'Hope & Resilience' },
-]
+] */
 const GalSearch = ({ onSubmit }) => {
     const [searchData, setSearchData] = useState({
         themes: [],
