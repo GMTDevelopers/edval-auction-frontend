@@ -1,0 +1,17 @@
+[
+  { "value": "Realism", "label": "Realism" },
+  { "value": "Impressionism", "label": "Impressionism" },
+  { "value": "Expressionism", "label": "Expressionism" },
+  { "value": "Cubism", "label": "Cubism" },
+  { "value": "Surrealism", "label": "Surrealism" },
+  { "value": "Abstract Expressionism", "label": "Abstract Expressionism" },
+  { "value": "Pop Art", "label": "Pop Art" },
+  { "value": "Minimalism", "label": "Minimalism" },
+  { "value": "Contemporary", "label": "Contemporary" },
+  { "value": "Street Art", "label": "Street Art" },
+  { "value": "Graffiti", "label": "Graffiti" },
+  { "value": "Photorealism", "label": "Photorealism" },
+  { "value": "Folk Art", "label": "Folk Art" },
+  { "value": "Traditional African", "label": "Traditional African" },
+  { "value": "African Contemporary", "label": "African Contemporary" }
+]

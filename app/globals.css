@@ -335,6 +335,9 @@ option{
 
 /* multiple gallery images  */
 .galleryContainer{
+  width: fit-content;
+ /*  width: 100%; */
+/*   width: 525px; */
   height: auto;
   display: flex;
   flex-direction: column;
@@ -343,8 +346,9 @@ option{
 }
 .mainImageContainer {
     margin-bottom: 1.25rem;
+  /*   width: fit-content; */
+  /*   width: 100%; */
     width: 525px;
-  /*   width: 525px; */
     height: 519px;
     overflow: hidden;
     

@@ -66,7 +66,6 @@ const availableLot = [
 
 const ProdDetPage = () => {
     const { openModal } = useModal();
-    const [isLogin, setIsLogin] = useState(false)
     const [isWinner, setIsWinner] = useState(true)
     const router = useRouter();
     return ( 

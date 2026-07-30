@@ -4,6 +4,7 @@ import styles from './artistReg.module.css';
 import { toast } from 'sonner';
 import countries from '@/app/data/countries.json'
 import artType from "@/app/data/artType.json";
+import artStyle from '@/app/data/artStyle.json'
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/app/context/authContext';
 import { useRouter } from 'next/navigation';
@@ -140,7 +141,7 @@ const ArtistRegistration  = () => {
                             <div className='double'>
                                 <select value={formData.artistic_style} onChange={(e)=>setformData(prev=>({...prev, artistic_style:e.target.value}))} name="artisticStyle">
                                     <option value='Artistic style' >Artistic style</option>                 
-                                    {(artType).map((type, index) => (
+                                    {(artStyle).map((type, index) => (
                                         <option key={index} value={type.value}>
                                             {type.label}
                                         </option>

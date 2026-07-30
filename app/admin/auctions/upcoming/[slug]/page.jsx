@@ -12,64 +12,9 @@ import { refreshUser } from '@/app/services/authServices';
 import AddNewLot from '@/app/(components)/admin/addLot/page';
 import AdminWinner from '@/app/(components)/sideCard/adminWinner';
 
-const availableLot = [
-    {
-      "id":1,
-      "name":"Black or Beauty?",
-      "artist":"Sharon Bailey",
-      "startingBid":"400",
-      "year": 2022,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
-      "img": "/images/auction/3.webp"
-    },
-    {
-      "id":2,
-      "name":"Dancing in the Wind",
-      "artist":"GMTarts Studio",
-      "startingBid":"300",
-      "year": 2025,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
-      "img": "/images/auction/1.webp"
-    },
-    {
-      "id":3,
-      "name":"Calm, Open, Free",
-      "artist":"GMT campaign",
-      "startingBid":"400",
-      "year": 2026,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
-      "img": "/images/auction/2.webp"
-    }
-  ]
-
 const ProdDetPage = () => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const { openModal } = useModal();
-    const [isLogin, setIsLogin] = useState(false)
     const [auctionData, setAuctionData] = useState(null);
     const [auctionLotData, setAuctionLotData] = useState(null);
     const [error, setError] = useState(null);

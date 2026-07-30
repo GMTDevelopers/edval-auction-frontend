@@ -159,7 +159,6 @@ const AddNewLot = ({id}) => {
                     </div>
                     
                     <div style={{marginTop:"0px"}} className="row2"> 
-                     
                         <input value={lotData.year_created} onChange={(e) => setLotData(prev => ({ ...prev, year_created: Number(e.target.value) }))} placeholder="Artwork Creation Year" type="tel" id="year" required />                     
                         <select value={lotData.category} onChange={(e) => setLotData(prev => ({ ...prev, category: e.target.value }))} id="category">
                             <option value="" disabled>

@@ -1,0 +1,14 @@
+[
+  { "value": "Portrait", "label": "Portrait" },
+  { "value": "Landscape", "label": "Landscape" },
+  { "value": "Still Life", "label": "Still Life" },
+  { "value": "Wildlife", "label": "Wildlife" },
+  { "value": "Cityscape", "label": "Cityscape" },
+  { "value": "Seascape", "label": "Seascape" },
+  { "value": "Religious & Spiritual", "label": "Religious & Spiritual" },
+  { "value": "Abstract", "label": "Abstract" },
+  { "value": "Figurative", "label": "Figurative" },
+  { "value": "Botanical", "label": "Botanical" },
+  { "value": "Architectural", "label": "Architectural" },
+  { "value": "Historical", "label": "Historical" }
+]
