@@ -8,7 +8,7 @@ import styles from './ImageUploader.module.css';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ImageUploader = ({
-    value = "",
+    value = null,
     onUpload,
     accept = {
         'image/jpeg': ['.jpg', '.jpeg'],

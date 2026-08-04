@@ -221,7 +221,7 @@ const ProdDetPage = () => {
                             {
                                 auctionLotData?.map((lot)=>(
                                     <div key={lot.id}>    
-                                        <AdminLotSide name={lot.artwork.title} img={lot?.artwork?.images[2]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
+                                        <AdminLotSide name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
                                     </div>
                                 ))
                             }

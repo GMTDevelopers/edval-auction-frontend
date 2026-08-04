@@ -5,6 +5,7 @@ import styles from './add.module.css';
 import Select from 'react-select'
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import Theme from '@/app/data/theme.json';
 import artType from '@/app/data/artType.json';
 import category from '@/app/data/category.json';
@@ -108,9 +109,9 @@ const AddNewArt = () => {
                 <form onSubmit={handleSubmit}>
                     <div className={` double`}>
                         <div /* style={{width:"fit-content"}} */ className={`small`}>
-                            <div className="galleryContainer">
+                            <div className={`galleryContainer ${styles.galleryContainer}`}>
                                 {/* Main Large Image */}
-                                <div >
+                                <div className={styles.bigImageContainer}>
                                     <ImageUploader
                                         className="mainImageContainer"
                                         value={formData.image_urls[0]}
@@ -128,7 +129,7 @@ const AddNewArt = () => {
                                 </div>
 
                                 {/* Thumbnails */}
-                                <div className="thumbnailsContainer">
+                                <div className={`thumbnailsContainer ${styles.thumbnailsContainer}`}>
                                     {[1,2,3,4].map(index => (
                                         <ImageUploader
                                             key={index}

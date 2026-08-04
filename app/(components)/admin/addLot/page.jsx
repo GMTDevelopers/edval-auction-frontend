@@ -93,10 +93,10 @@ const AddNewLot = ({id}) => {
         "exhibition_artwork_id": 0,
         "framed": true,
         "image_urls": [
-            "",
-            "",
-            "",
-            ""
+            null,
+            null,
+            null,
+            null
         ],
         "length": "",
         "lot_number": "",

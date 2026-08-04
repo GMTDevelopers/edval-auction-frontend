@@ -69,3 +69,14 @@
     display: none;
     height: 0px;
 }
+
+@media (max-width: 1400px) {
+    .navLinks{
+        width: 58%;    
+    }
+}
+@media (max-width: 992px) {
+    .navLinks{
+        width: 58%;    
+    } 
+}

@@ -2,9 +2,6 @@
     background: #FDFDFD;
     padding: 24px 24px 24px 24px;
     position: relative;
-/*     display: flex;
-    justify-content: center;
-    align-items: center; */
 }
 .imgContainer img{
     width: 100%;
@@ -84,4 +81,63 @@
     font-size: 20px !important;
     font-weight: 700 !important;
     color: var(--foreground) !important;
+}
+
+@media (max-width: 1200px) {
+    .imgContainer{
+        padding: 14px 14px 14px 14px;
+    }
+    .imgContainer img, .galImg{
+        object-position: center;
+        height:331px !important;
+    }
+    .status{
+        left: 10%;
+        font-size: 12px;
+    }
+    .cardTimmer{
+        padding-top: 12px;
+         height: auto;
+    }
+}
+@media (max-width: 992px) {
+   
+
+    .cardTxt{
+        padding: 14px 10px 14px 10px; 
+        
+    }
+    .cardTimmer{
+        font-size: 16px;
+       
+        align-items: center;
+    }
+    .cardTimmer p{
+        color:var(--foreground);
+        font-weight: 700;
+        flex-wrap: wrap;
+    }
+    .status{
+        left: 10%;
+        font-size: 12px;
+    }
+    .cardTxt h4{
+        font-size: 18px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines you want */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+@media (max-width: 768px) {
+    .imgContainer img, .galImg{
+        height:281px !important;
+    }
+    .cardTimmer{
+        font-size: 15px;
+    }
+    .cardTxt h4{
+        font-size: 17px;
+    }
 }

@@ -5,10 +5,10 @@ import ArtistArtworksTable from '@/app/(components)/tables/artistArtworksTable';
 import StatsCard from '@/app/(components)/statsCard/page';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/authContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const GetArtworks = async (id) => {
+/* const GetArtistStats = async (id) => {
     try {
         const response = await fetch(`${BASE_URL}/artworks?artist_id=${id}`, { 
         method: "GET",
@@ -35,14 +35,49 @@ const GetArtworks = async (id) => {
             err,
         };
     }
+}; */
+
+const GetArtworks = async () => {
+    const accessToken = localStorage.getItem("access_token");
+    try {
+        const response = await fetch(`${BASE_URL}/artworks?limit=100&offset=0`, { 
+        method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Bearer ${accessToken}`,
+            },
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw( 
+                response.status,
+                data.error|| "failed to get Artworks"
+            )
+        }
+        console.log(data)
+        return {
+            success:true,
+            data: data
+        };
+    } catch (err) {
+        console.log(err)
+        return {
+            success: false,
+            err,
+        };
+    }
 };
 const MyArtworks = () => {
    const {user} = useAuth(); 
     const router = useRouter()
+    const [artworks, setArtworks] = useState([]);
     useEffect(() => {
         const trying = async () => {
-            const result = await GetArtworks(user?.id)
-            console.log(result)
+  /*           const result = await GetArtistStats(user?.id) */
+            const artworks = await GetArtworks()
+            setArtworks(artworks.data || [])
+      /*       console.log('stats',result) */
+            console.log('artworks',artworks)
         }
         trying()
     }, [user]);
@@ -56,10 +91,10 @@ const MyArtworks = () => {
                 </div>
                 
                 <div className={`double ${styles.pack}`}>
-                    <h2>My Artworks (5)</h2>
+                    <h2>My Artworks ({artworks?.data?.length || 0})</h2>
                     <div onClick={()=>router.push('/user/artist/myArtworks/addNewArt')} className={`btn ${styles.btn}`}><Plus /> Add new artwork</div>
                 </div>
-                <ArtistArtworksTable />
+                {artworks?.data?.length > 0 && <ArtistArtworksTable data={artworks.data} />}
             </div>
         </div>
     );
