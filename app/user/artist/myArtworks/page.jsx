@@ -37,10 +37,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     }
 }; */
 
-const GetArtworks = async () => {
+const GetArtworks = async (id) => {
     const accessToken = localStorage.getItem("access_token");
     try {
-        const response = await fetch(`${BASE_URL}/artworks?limit=100&offset=0`, { 
+        const response = await fetch(`${BASE_URL}/artworks?artist_id=${id}&limit=100&offset=0`, { 
         method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -73,11 +73,15 @@ const MyArtworks = () => {
     const [artworks, setArtworks] = useState([]);
     useEffect(() => {
         const trying = async () => {
-  /*           const result = await GetArtistStats(user?.id) */
-            const artworks = await GetArtworks()
-            setArtworks(artworks.data || [])
-      /*       console.log('stats',result) */
-            console.log('artworks',artworks)
+            console.log('user',user)
+            if (user){
+                const artworks = await GetArtworks(user?.id)
+                setArtworks(artworks.data || [])
+                console.log('artworks',artworks)
+            }
+            
+      
+            
         }
         trying()
     }, [user]);

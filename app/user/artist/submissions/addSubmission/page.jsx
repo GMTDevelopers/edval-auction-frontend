@@ -5,28 +5,15 @@ import styles from '../../myArtworks/addNewArt/add.module.css';
 import Select from 'react-select'
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import Theme from '@/app/data/theme.json';
+import artType from '@/app/data/artType.json';
+import category from '@/app/data/category.json';
 const AddSubmissions = () => {
     const data = {
         "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
         "img": "/images/auction/1.webp"
     }
-    const Theme = [
-        { value: 'Nature', label: 'Nature' },
-        { value: 'Portraiture', label: 'Portraiture' },
-        { value: 'Abstract', label: 'Abstract' },
-        { value: 'Spirituality', label: 'Spirituality' },
-        { value: 'Culture & Heritage', label: 'Culture & Heritage' },
-        { value: 'Identity', label: 'Identity' },
-        { value: 'Family & Relationships', label: 'Family & Relationships' },
-        { value: 'Love', label: 'Love' },
-        { value: 'History', label: 'History' },
-        { value: 'Social Commentary', label: 'Social Commentary' },
-        { value: 'Urban Life', label: 'Urban Life' },
-        { value: 'Fantasy & Mythology', label: 'Fantasy & Mythology' },
-        { value: 'Animals & Wildlife', label: 'Animals & Wildlife' },
-        { value: 'Politics & Power', label: 'Politics & Power' },
-        { value: 'Hope & Resilience', label: 'Hope & Resilience' },
-    ]
     const router = useRouter();
     const [currentIndex, setCurrentIndex] = useState(0);
 

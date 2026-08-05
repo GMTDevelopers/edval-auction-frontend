@@ -25,3 +25,7 @@
     height: 100px;
         overflow: hidden;
 }
+.editContainer{
+    height: 85vh;
+    overflow-y: scroll;
+}

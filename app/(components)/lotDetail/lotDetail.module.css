@@ -14,7 +14,7 @@
 }
 .mainImageContainer {
     margin-bottom: 1.25rem;
-    width: 525px;
+    width: 100%;
   /*   width: 525px; */
     height: 519px;
     overflow: hidden;
@@ -117,4 +117,26 @@
 .addToCart{
   background: var(--foreground);
   color: var(--background);
+}
+
+
+@media (max-width: 992px) {
+  .container{
+/*     display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 12px 48px 36px 32px;
+    gap: 4%;
+    height: 85vh;
+    overflow-x: scroll;
+  }
+  .galleryContainer{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction:column;
+    gap: 14px;
+    align-self: center;
+  }
 }

@@ -1,9 +1,14 @@
 'use client';
 import {useState } from 'react';
 import styles from './lotDetail.module.css';
+import { toast } from 'sonner';
+import EditArtwork from '@/app/(components)/ArtistEdit/artworkEdit';
+import { useModal } from '../ModalProvider/ModalProvider';
 
 const ArtistLotDetails = ({lot}) => {
-
+      const { openModal } = useModal();
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+    const accessToken = localStorage.getItem("access_token");
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleThumbnailClick = (index) => {
@@ -11,6 +16,36 @@ const ArtistLotDetails = ({lot}) => {
     };
    
     console.log("lot", lot);
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/artworks/${lot.id}`, { 
+            method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error("Failed to delete artwork.");
+                console.error('Failed to delete artwork');
+            }
+            if (response.ok) {
+                toast.success("Artwork deleted successfully.");
+                console.log('Artwork deleted successfully:', response);
+                setTimeout(() => {
+                    closeModal()
+                    /* window.location.reload(); */
+                }, 3000);
+            }
+            
+            return data;
+        } catch (err) {
+            console.error('Error creating auction:', err);
+            return false;
+        }
+    }
+
     if (!lot?.images?.length) {
         return <p>No images provided.</p>;
     }
@@ -20,14 +55,14 @@ const ArtistLotDetails = ({lot}) => {
             <div className={styles.galleryContainer}>
                 {/* Main Large Image */}
                 <div className={styles.mainImageContainer}>
-                    <img src={lot.images[currentIndex].url} alt={`Gallery image ${currentIndex + 1}`} className={styles.mainImage} />
+                    <img src={lot.images[currentIndex].url || null} alt={`Gallery image ${currentIndex + 1}`} className={styles.mainImage} />
                 </div>
 
                 {/* Thumbnails */}
                 <div className={styles.thumbnailsContainer}>
                     {lot.images.map((image, index) => (
                         <div key={index} className={`${styles.thumbnailWrapper} ${index === currentIndex ? styles.active : '' }`} onClick={() => handleThumbnailClick(index)} >
-                            <img src={image.url} alt={`Thumbnail ${index + 1}`} className={styles.thumbnail} />
+                            <img src={image.url || null} alt={`Thumbnail ${index + 1}`} className={styles.thumbnail} />
                         </div>
                     ))}
                 </div>
@@ -62,7 +97,7 @@ const ArtistLotDetails = ({lot}) => {
                     </li>
                     <li>
                         <p>Size</p>
-                        <p>{lot?.length} x {lot?.width} x {lot?.depth}  (L x W x D in inches)</p>
+                        <p>{lot?.length} x {lot?.width} x {lot?.depth}  (L x W x D cm)</p>
                     </li>
                     <li>
                         <p>Frame</p>
@@ -78,9 +113,9 @@ const ArtistLotDetails = ({lot}) => {
                     <p>{lot.reason}</p>
                     </div>}
                 <div className="double">
-                    <p>Edit listing</p>
-                    {lot.status==="active"||"approved" && <p>Mark inactive</p>}
-                    <p style={{color:"#FB0000"}}>Delete listing</p>
+                    <p onClick={() => openModal(<EditArtwork lot={lot} />)} style={{cursor: "pointer"}}>Edit listing</p>
+                    {lot.status==="active"||"approved" && <p style={{cursor: "pointer"}}>Mark inactive</p>}
+                    <p style={{color:"#FB0000", cursor: "pointer"}} onClick={handleDelete}>Delete listing</p>
                 </div>
             </div>
             

@@ -50,7 +50,7 @@ const AddNewArt = () => {
     const router = useRouter();
 
     const [formData, setformData] = useState({
-        artist_id: 33,
+        artist_id: user?.id || 0,
         artwork_type: "",
         category: "",
         depth: '',
@@ -84,7 +84,7 @@ const AddNewArt = () => {
             ...formData,
             medium: formData.artwork_type, // Copies the value over instantly
             dimensions: cleanDimensions,
-            request_type: "New Art Work"
+            request_type: "gallery"
         };
 
         const result = await AddArtwork(payload);

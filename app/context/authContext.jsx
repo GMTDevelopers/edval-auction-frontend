@@ -166,11 +166,12 @@ export const AuthProvider = ({ children }) => {
             setRefreshToken(refresh);
             setIsAuthenticated(true);
         }
+
     };
     useEffect(() => {
-        /* initializeAuth(); */
+    /*     initializeAuth(); */
         getUser();
-        /* refresh(); */
+     /*    refresh(); */
         
     }, []);
 
