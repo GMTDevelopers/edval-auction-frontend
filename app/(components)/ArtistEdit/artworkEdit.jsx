@@ -108,7 +108,7 @@ const EditArtwork = ({lot}) => {
                     <div className="big">
                         <div>   
                             <label htmlFor="title">Artwork Title</label>  
-                            <input value={formData.title} onChange={(e)=>setformData(prev=>({...prev, title: e.target.value}))} placeholder="Artwork name" type="text" name="artworkName" id="" />
+                            <input value={formData?.title} onChange={(e)=>setformData(prev=>({...prev, title: e.target.value}))} placeholder="Artwork name" type="text" name="artworkName" id="" />
                         </div>
                         <div className='double'>
                             <div>
