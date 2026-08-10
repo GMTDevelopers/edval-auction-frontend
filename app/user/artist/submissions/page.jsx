@@ -9,10 +9,11 @@ import { useAuth } from '@/app/context/authContext';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
+
 const GetSubmissions = async (id) => {
     const accessToken = localStorage.getItem("access_token");
     try {
-        const response = await fetch(`${BASE_URL}/artworks?artist_id=${id}&request_type=auction,exhibition&limit=100&offset=0`, { 
+        const response = await fetch(`${BASE_URL}/artworks?artist_id=${id}&limit=100&offset=0&request_type=exhibition,auction`, { 
         method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -40,37 +41,37 @@ const GetSubmissions = async (id) => {
     }
 };
 
+
 const MySubmissions = () => {
     const {user} = useAuth(); 
     const router = useRouter()
-    const [submissions, setSubmissions] = useState([]);
-
+    const [sub, setSub] = useState([]);
     useEffect(() => {
-        const trying = async () => {
+        const submissions = async () => {
             console.log('user',user)
             if (user){
-                const submissions = await GetSubmissions(user?.id)
-                setSubmissions(submissions.data || [])
-                console.log('submissions',submissions)
+                const artworks = await GetSubmissions(user?.id)
+                setSub(artworks.data || [])
+                console.log('submissions',artworks)
             }
         }
-        trying()
+        submissions()
     }, [user]);
 
     return ( 
         <div className={styles.container}>
             <div className="container">
                 <div className="row3">
-                    <StatsCard title="Total Artworks" data="14" icon={Palette} />
-                    <StatsCard title="Pending Approval" data="3" icon={Loader} />
-                    <StatsCard title="Total Sales" data="147,234" icon={Banknote} />
+                    <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
+                    <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
+                    <StatsCard title="Total Sales" data={user?.stats?.total_sales} icon={Banknote} />
                 </div>
                 
                 <div className={`double ${styles.pack}`}>
                     <h2>Submissions</h2>
                     <div onClick={()=>router.push('/user/artist/submissions/addSubmission')} className={`btn ${styles.btn}`}><Plus /> Submit new request</div>
                 </div>
-                <ArtistCommissionsTable />
+                <ArtistCommissionsTable sub={sub} />
             </div>
         </div>
     );

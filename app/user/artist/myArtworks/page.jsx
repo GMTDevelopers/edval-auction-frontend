@@ -8,35 +8,6 @@ import { useAuth } from '@/app/context/authContext';
 import { useEffect, useState } from 'react';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-/* const GetArtistStats = async (id) => {
-    try {
-        const response = await fetch(`${BASE_URL}/artworks?artist_id=${id}`, { 
-        method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        const data = await response.json();
-        if (!response.ok) {
-            throw( 
-                response.status,
-                data.error|| "failed to get Artwork"
-            )
-        }
-        console.log(data)
-        return {
-            success:true,
-            data: data
-        };
-    } catch (err) {
-        console.log(err)
-        return {
-            success: false,
-            err,
-        };
-    }
-}; */
-
 const GetArtworks = async (id) => {
     const accessToken = localStorage.getItem("access_token");
     try {
@@ -78,10 +49,7 @@ const MyArtworks = () => {
                 const artworks = await GetArtworks(user?.id)
                 setArtworks(artworks.data || [])
                 console.log('artworks',artworks)
-            }
-            
-      
-            
+            }           
         }
         trying()
     }, [user]);

@@ -6,6 +6,7 @@
   height: fit-content;
 }
 .galleryContainer{
+  width: 40vw;
   height: auto;
   display: flex;
   flex-direction: column;

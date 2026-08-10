@@ -77,6 +77,9 @@ export const getUserData = async () => {
     });
 
     if (!response.ok) {
+        if (response.status === 401) {
+            refreshUser(localStorage.getItem("refresh_token"));
+        }
         throw {
             status: response.status,
             message: data.message || "failed to get user",
@@ -105,6 +108,11 @@ export const refreshUser = async (refresh_token) => {
             status: response.status,
             message: data.message || "Refresh failed",
         };
+    }
+    if (response.ok) {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+        window.location.reload();
     }
 
     return data;

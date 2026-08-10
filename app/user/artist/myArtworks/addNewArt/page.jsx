@@ -91,8 +91,8 @@ const AddNewArt = () => {
         console.log('handle submit result', result)
         if(!result.success){
             console.log(result)
-            /* toast.error(result.err.message);
-            if(result.err.details){
+            toast.error(result.err.message);
+           /*  if(result.err.details){
                 result.err.details?.password && toast.error(result.err.details?.password);
                 result.err.details?.studio_name && toast.error(result.err.details?.studio_name);
             } */

@@ -80,7 +80,6 @@ const EditArtwork = ({lot}) => {
             ...formData,
             medium: formData.artwork_type, // Copies the value over instantly
             dimensions: cleanDimensions,
-            request_type: "New Art Work"
         };
 
         const result = await EditArtworkFunction(payload, lot.id);
@@ -94,8 +93,8 @@ const EditArtwork = ({lot}) => {
             } */
         }
         if(result.success){
-            toast.success("Artwork created successfully.");
-            console.log('Artwork created successfully:', result);
+            toast.success("Artwork edited successfully.");
+            console.log('Artwork edited successfully:', result);
             setTimeout(() => {
                 window.location.reload();
             }, 3000);

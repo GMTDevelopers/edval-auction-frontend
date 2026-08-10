@@ -6,7 +6,7 @@ import EditArtwork from '@/app/(components)/ArtistEdit/artworkEdit';
 import { useModal } from '../ModalProvider/ModalProvider';
 
 const ArtistLotDetails = ({lot}) => {
-      const { openModal } = useModal();
+      const { openModal, closeModal } = useModal();
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const accessToken = localStorage.getItem("access_token");
     const [currentIndex, setCurrentIndex] = useState(0);
