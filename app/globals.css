@@ -366,12 +366,19 @@ option{
 }
 
 /* Thumbnails */
-.thumbnailsContainer {
+/* .thumbnailsContainer {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   scrollbar-width: none;
   scrollbar-color: #ccc transparent;
+} */
+.thumbnailsContainer{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  height: 100px;
+  overflow: hidden;
 }
 
 .thumbnailsContainer::-webkit-scrollbar {

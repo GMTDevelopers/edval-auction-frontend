@@ -78,16 +78,16 @@
   font-size: 16px;
   text-transform: capitalize;
 }
-.pending    {color: #F0B502; }
-.upcoming   { color:#FB6900 ; }
-.completed  {color: #2ED074; }
-.fully_paid  {color: #2ED074; }
-.active  {color: #2ED074; }
-.amount { color: #636363; }
-.reshedule { color: #82027D; }
-.approved {color: #2ED074;}
+.pending, .submitted    {color: #F0B502;  font-weight: 600; }
+.upcoming, .under_review  { color:#FB6900 ; font-weight: 600;}
+.completed {color: #2ED074; font-weight: 600; }
+.fully_paid  {color: #2ED074; font-weight: 600;}
+.active  {color: #2ED074; font-weight: 600;}
+.amount, .sold, .listed { color: #636363; font-weight: 600;}
+.reshedule { color: #82027D; font-weight: 600; }
+.approved {color: #2ED074; font-weight: 600;}
 .cancelled { color: #dc2626; font-weight: 600; }
-.cancel { color: #dc2626; font-weight: 600; }
+.cancel, .rejected { color: #dc2626; font-weight: 600; }
 .inactive { color: #dc2626; font-weight: 600; }
 .cancel:hover { background: #fef2f2; }
 

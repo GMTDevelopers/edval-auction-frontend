@@ -1,3 +1,6 @@
+import { useModal } from "../(components)/ModalProvider/ModalProvider";
+import Tab from "../(components)/tab/tabs";
+    
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const loginUser = async (credentials) => {
@@ -76,23 +79,22 @@ export const getUserData = async () => {
 
     });
 
+    const data = await response.json();
+    
     if (!response.ok) {
-        if (response.status === 401) {
+        /* if (response.status === 401) {
             refreshUser(localStorage.getItem("refresh_token"));
-        }
+        } */
         throw {
             status: response.status,
             message: data.message || "failed to get user",
         };
     }
 
-    const data = await response.json();
-
     return data;
 };
 
 export const refreshUser = async (refresh_token) => {
-    
     const response = await fetch(`${BASE_URL}/auth/refresh`, {
         method: "POST",
         headers: {
@@ -109,11 +111,11 @@ export const refreshUser = async (refresh_token) => {
             message: data.message || "Refresh failed",
         };
     }
-    if (response.ok) {
+/*     if (response.ok) {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
         window.location.reload();
     }
-
+ */
     return data;
 };

@@ -34,10 +34,10 @@ const ArtistCommissionsTable = ({ sub }) => {
                         </td>
                         <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
                         <td>{b?.request_type || "N/A"}</td>
-                        <td>{b?.approval || "N/A"}</td>
+                        <td>{b?.status}</td>
                         <td> 
                             <span style={{textTransform:"capitalize"}} className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
-                            {b?.status}
+                            {b?.display_status || "N/A"}
                             </span>
                         </td>
 

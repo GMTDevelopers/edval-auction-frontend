@@ -7,7 +7,7 @@
     font-size: 24px;
     margin-bottom: 36px;
 }
-.galleryContainer{
+/* .galleryContainer{
     width: 100%;
 }
 .bigImageContainer{
@@ -24,7 +24,7 @@
     grid-template-columns: repeat(4, 1fr);
     height: 100px;
         overflow: hidden;
-}
+} */
 .editContainer{
     height: 85vh;
     overflow-y: scroll;

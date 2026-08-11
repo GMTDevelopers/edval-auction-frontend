@@ -92,14 +92,11 @@ const AddNewArt = () => {
         if(!result.success){
             console.log(result)
             toast.error(result.err.message);
-           /*  if(result.err.details){
-                result.err.details?.password && toast.error(result.err.details?.password);
-                result.err.details?.studio_name && toast.error(result.err.details?.studio_name);
-            } */
         }
         if(result.success){
             toast.success("Artwork created successfully.");
             console.log('Artwork created successfully:', result);
+            router.back()
         }  
     };
     return ( 
@@ -109,11 +106,10 @@ const AddNewArt = () => {
                 <form onSubmit={handleSubmit}>
                     <div className={` double`}>
                         <div /* style={{width:"fit-content"}} */ className={`small`}>
-                            <div className={`galleryContainer ${styles.galleryContainer}`}>
+                            <div className={`galleryContainer`}>
                                 {/* Main Large Image */}
-                                <div className={styles.bigImageContainer}>
+                                <div className="mainImageContainer">
                                     <ImageUploader
-                                        className="mainImageContainer"
                                         value={formData.image_urls[0]}
                                         placeholder={`Add Image`}
                                         onUpload={(url) => {
@@ -125,11 +121,10 @@ const AddNewArt = () => {
                                             }));
                                         }}
                                     />
-                                    {/* <img src={data.images[currentIndex]} alt={`Gallery image ${currentIndex + 1}`} className="mainImage" /> */}
                                 </div>
 
                                 {/* Thumbnails */}
-                                <div className={`thumbnailsContainer ${styles.thumbnailsContainer}`}>
+                                <div className={`thumbnailsContainer`}>
                                     {[1,2,3,4].map(index => (
                                         <ImageUploader
                                             key={index}
@@ -150,7 +145,6 @@ const AddNewArt = () => {
 
                         </div>
                         <div className="big">
-                        
                             <input value={formData.title} onChange={(e)=>setformData(prev=>({...prev, title: e.target.value}))} placeholder="Artwork name" type="text" name="artworkName" id="" />
                             <div className='double'>
                                 <select value={formData.category} onChange={(e)=>setformData(prev=>({...prev, category:e.target.value}))} name="category">

@@ -108,23 +108,41 @@ export const AuthProvider = ({ children }) => {
     };
 
     // REFRESH FUNCTION
-    const refresh = async () => {
-        const refresh = localStorage.getItem("refresh_token");
+   const refresh = async () => {
+        const refreshToken = localStorage.getItem("refresh_token");
+
         try {
-            const response = await refreshUser(refresh);
+            if (!refreshToken) {
+                throw {
+                    status: 401,
+                    message: "No refresh token",
+                };
+            }
+
+            const response = await refreshUser(refreshToken);
+
             setAccessToken(response.data.access_token);
             setRefreshToken(response.data.refresh_token);
+
             localStorage.setItem(
                 "access_token",
                 response.data.access_token
             );
+
             localStorage.setItem(
                 "refresh_token",
                 response.data.refresh_token
             );
+
             return true;
+
         } catch (err) {
-            logout();
+            console.error("Refresh failed:", err);
+
+            await logout();
+
+            window.alert('logIn again')
+
             return false;
         }
     };
@@ -132,46 +150,57 @@ export const AuthProvider = ({ children }) => {
     const getUser = async () => {
         try {
             const response = await getUserData();
+
             setUser(response.data);
             setIsAuthenticated(true);
+
             console.log("User data:", response.data);
+
             return {
                 success: true,
                 data: response,
             };
+
         } catch (err) {
+
             setError(err);
+
             if (err.status === 401) {
                 const refreshed = await refresh();
+
                 if (refreshed) {
-                    console.log("Token refreshed successfully, retrying getUser...");
+                    console.log(
+                        "Token refreshed successfully, retrying getUser..."
+                    );
+
                     return getUser();
                 }
             }
+
             return {
                 success: false,
                 error: err.message,
                 status: err.status,
             };
         }
-    }
+    };
 
-    const initializeAuth = () => {
+    const initializeAuth = async () => {
         const access = localStorage.getItem("access_token");
-        const refresh = localStorage.getItem("refresh_token");
-        if (access) {
-            setAccessToken(access);
-        }
-        if (refresh) {
-            setRefreshToken(refresh);
-            setIsAuthenticated(true);
+        const refreshToken = localStorage.getItem("refresh_token");
+
+        if (!access || !refreshToken) {
+            setIsAuthenticated(false);
+            return;
         }
 
+        setAccessToken(access);
+        setRefreshToken(refreshToken);
+
+        await getUser();
     };
     useEffect(() => {
-    /*     initializeAuth(); */
-        getUser();
-     /*    refresh(); */
+        initializeAuth();
         
     }, []);
 

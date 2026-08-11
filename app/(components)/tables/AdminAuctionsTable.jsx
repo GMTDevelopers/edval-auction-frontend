@@ -21,7 +21,7 @@ const AuctionTable = ({Data}) => {
                     <tr onClick={() => router.push(b?.status === "live" ? `/admin/auctions/${b?.slug}?id=${b?.id}` : `/admin/auctions/upcoming/${b?.slug}?id=${b?.id}`)} className={styles.dataRow} key={b.id} >
                         <td>
                             <p>{b?.name}</p>    
-                            <p>[auction_ID: {b?.id}]</p>
+                            <p>[{b?.code}]</p>
                             
                         </td>
                         <td> {new Date(b?.scheduled_at).toDateString() || "N/A"} </td>

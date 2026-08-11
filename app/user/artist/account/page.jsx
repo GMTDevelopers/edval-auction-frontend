@@ -8,6 +8,7 @@ import { useAuth } from '@/app/context/authContext';
 import { toast } from 'sonner';
 import Select from 'react-select';
 import ArtStyle from '@/app/data/artStyle.json';
+import ImageUploader from '@/app/(components)/imageUploader/ImageUploader';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const EditProfileFunction = async (formData) => {
@@ -28,6 +29,37 @@ const EditProfileFunction = async (formData) => {
                 data.error|| "Edit user function failed"
             )
         }
+        return {
+            success:true,
+            data: data
+        };
+    } catch (err) {
+        console.log(err)
+        return {
+            success: false,
+            err,
+        };
+    }
+};
+
+const GetArtistProfile = async (id) => {
+    const accessToken = localStorage.getItem("access_token");
+    try {
+        const response = await fetch(`${BASE_URL}/artists/${id}`, { 
+        method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Bearer ${accessToken}`,
+            },
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw( 
+                response.status,
+                data.error|| "failed to get Artist Profile"
+            )
+        }
+        console.log(data)
         return {
             success:true,
             data: data
@@ -65,9 +97,10 @@ const Account =  () => {
         years_of_experience:  0
     });
   
-    useEffect(() => {
+    useEffect( () => {
         if (!user) return;
-
+        const artistProfile = GetArtistProfile(user?.id);
+        console.log('artistProfile', artistProfile);
         setformData({
             account_number: user?.artist_profile?.account_number || "",
             address: user?.artist_profile?.address || "",
@@ -118,7 +151,19 @@ const Account =  () => {
                 <div style={{ alignItems:"start" }} className={`container double`}>
                     <div className="small">
                         <div className={Styles.imgPack}>
-                            <img src="/images/comission/comission.webp" alt="comission" />
+                            <ImageUploader
+                                className="mainImageContainer"
+                                value={formData.profile_image_url || "/images/comission/comission.webp" }
+                                placeholder={`Add Image`}
+                                onUpload={(url) => {
+                                    const media = formData.profile_image_url;
+                                    setformData(prev => ({
+                                        ...prev,
+                                        profile_image_url: media
+                                    }));
+                                }}
+                            />
+                            {/* <img src="/images/comission/comission.webp" alt="comission" /> */}
                         </div>
                         <button type='submit' className='submit btn'>Upload Profile Photo</button>
                     </div>
