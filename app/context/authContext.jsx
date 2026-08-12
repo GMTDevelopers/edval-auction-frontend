@@ -172,7 +172,7 @@ export const AuthProvider = ({ children }) => {
                     console.log(
                         "Token refreshed successfully, retrying getUser..."
                     );
-
+                    window.location.reload()
                     return getUser();
                 }
             }

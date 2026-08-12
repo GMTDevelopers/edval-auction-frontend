@@ -1,8 +1,7 @@
 'use client';
-import { useRouter } from 'next/navigation';
+
 import styles from './tables.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
-import ArtistLotDetails from '../lotDetail/artistArtworkDetails';
 import AdminArtistLotDetails from '../lotDetail/adminArtworkDetails';
 const AdminArtworkTable = ({data}) => {
     const { openModal } = useModal();

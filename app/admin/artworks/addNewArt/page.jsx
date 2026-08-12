@@ -16,7 +16,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const AddArtwork = async (formData) => {
     const accessToken = localStorage.getItem("access_token");
     try {
-        const response = await fetch(`${BASE_URL}/artworks`, { 
+        const response = await fetch(`${BASE_URL}/admin/artworks`, { 
         method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const AddNewArt = () => {
     const router = useRouter();
 
     const [formData, setformData] = useState({
-        artist_id: user?.id || 0,
+        artist_id: '',
         artwork_type: "",
         category: "",
         depth: '',
@@ -81,6 +81,7 @@ const AddNewArt = () => {
         .join('x');
         const payload = {
             ...formData,
+            artist_id: formData.artist_id || 0,
             medium: formData.artwork_type, // Copies the value over instantly
             dimensions: cleanDimensions,
             request_type: "gallery"
@@ -143,6 +144,7 @@ const AddNewArt = () => {
                             </div>
                         </div>
                         <div className="big">
+                            <input value={formData.artist_id} onChange={(e)=>setformData(prev=>({...prev, artist_id: e.target.value}))} placeholder="Artwork ID(optional)" type="text" name="artist_id" id="" />
                             <input value={formData.title} onChange={(e)=>setformData(prev=>({...prev, title: e.target.value}))} placeholder="Artwork name" type="text" name="artworkName" id="" />
                             <div className='double'>
                                 <select value={formData.category} onChange={(e)=>setformData(prev=>({...prev, category:e.target.value}))} name="category">

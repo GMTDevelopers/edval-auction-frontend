@@ -22,7 +22,7 @@ const ArtistArtworksTable = ({data}) => {
                 <tbody> 
                 {data?.length !==0 && data.map((b, index) => (
                     <tr onClick={()=>openModal(<ArtistLotDetails lot={b}/>)} className={styles.dataRow} key={index} >
-                        <td>{b?.artist_id}, {b?.id}</td>
+                        <td>{b?.code}</td>
                         <td>
                             <div className={styles.tableDouble}>
                                 <img src={b?.images[0]?.url || null} alt="item" />

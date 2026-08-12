@@ -6,7 +6,7 @@ import EditArtwork from '@/app/(components)/ArtistEdit/artworkEdit';
 import { useModal } from '../ModalProvider/ModalProvider';
 
 const ArtistLotDetails = ({lot}) => {
-      const { openModal, closeModal } = useModal();
+    const { openModal, closeModal } = useModal();
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const accessToken = localStorage.getItem("access_token");
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -60,7 +60,7 @@ const ArtistLotDetails = ({lot}) => {
 
                 {/* Thumbnails */}
                 <div className={styles.thumbnailsContainer}>
-                    {lot.images.map((image, index) => (
+                    {lot?.images?.map((image, index) => (
                         <div key={index} className={`${styles.thumbnailWrapper} ${index === currentIndex ? styles.active : '' }`} onClick={() => handleThumbnailClick(index)} >
                             <img src={image.url || null} alt={`Thumbnail ${index + 1}`} className={styles.thumbnail} />
                         </div>

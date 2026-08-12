@@ -1,79 +1,105 @@
 'use client';
-import {useState } from 'react';
-import styles from /* './lotDetail.module.css' */ '@/app/(components)/lotDetail/lotDetail.module.css';
+import styles from '@/app/(components)/lotDetail/lotDetail.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
-import RejectListing from '../admin/rejectArtwork/page';
+import { toast } from 'sonner';
 
 const AdminArtistDetails = ({data}) => {
     const { openModal } = useModal();
-    const [approved, setIsapproved] = useState(false);
+    console.log('artist details',data);
+    const accessToken = localStorage.getItem("access_token");
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/admin/users/${data?.id}`, { 
+            method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const rejctData = await response.json();
+            if (!response.ok) {
+                toast.error("Failed to delete artist.");
+                console.error('Failed to delete artist');
+            }
+            if (response.ok) {
+                toast.success("Artist deleted successfully.");
+                console.log('Artist deleted successfully:', response);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            }
+            
+            return rejctData;
+        } catch (err) {
+            console.error('Error creating auction:', err);
+            return false;
+        }
+    }
 
     return ( 
         <div className={`${styles.adminArtistDetailsContainer} ${styles.container}`}>
             <div className={styles.galleryContainer}>
                 <div className={styles.mainImageContainer}>
-                    <img src={data.img} alt='artist' className={styles.mainImage} />
+                    <img src={data?.profile_image_url || '/images/auction/3.webp'} alt='artist' className={styles.mainImage} />
                 </div>
             </div>
             <div style={{gap:"14px"}} className={styles.detailsContainer}>
                 <div className={styles.artistPack}>
-                    <h2>{data.name}</h2>
-                    <p>Date Joined:<span> Apr. 15, 2026 </span></p>
-                    <p>Earnings:<span> ${data.price} </span></p> 
+                    <h2>{data?.first_name} {data?.last_name}</h2>
+                    <p>Date Joined:<span> {new Date(data?.created_at).toDateString() || "N/A"}</span></p>
+                    <p>Earnings:<span> ${data?.stats?.total_sales} </span></p> 
                 </div>
                 <p style={{lineHeight:"24px"}}>
-                    {data.description}
+                    {data?.artist_profile.bio}
                 </p>
                 <div className={styles.otherDetailsPack}>
                     <li>
                         <p>Studio name</p>
-                        <p>Sammy Studios</p>
+                        <p>{data?.artist_profile.studio_name}</p>
                     </li>
                     <li>
                         <p>Email</p>
-                        <p>sammy.studios@example.com</p>
+                        <p>{data?.email}</p>
                     </li>
                     <li>
                         <p>Phone number</p>
-                        <p><span>+234 801 234 5678</span></p>
+                        <p><span>{data?.phone}</span></p>
                     </li>
                     <li>
-                        <p>Address</p>
-                        
-                        <p>123, myrtle lane, new town quarters</p>
+                        <p>Address</p>                        
+                        <p>{data?.artist_profile.address}</p>
                     </li>
                     <li>
                         <p>City, Country</p>
-                      {/*   <p>{data.theme.map(them=>(
-                            <span>{them}, </span>
-                        ))}</p> */}
-                        <p>Nairobi, Kenya</p>
+                        <p>{data?.artist_profile.state}, {data?.artist_profile.country}</p>
                     </li>
                     <li>
                         <p>Artistic style</p>
-                        <p>Human Oil Portraits</p>
+                        <p>{data?.artist_profile.artistic_style}</p>
                     </li>
                     <li>
                         <p>Years of experience</p>
-                        <p>5 years</p>
+                        <p>{data?.artist_profile.years_of_experience} years</p>
                     </li>
                     <li>
                         <p>Account number</p>
-                        <p>0123456789</p>
+                        <p>{data?.artist_profile.account_number}</p>
                     </li>
                     <li>
                         <p>Bank name</p>
-                        <p>Citi Bank PLC</p>
+                        <p>{data?.artist_profile.bank_name}</p>
                     </li>
                     <li>
                         <p>Artworks</p>
-                        <p>7</p>
+                        <p>{data?.stats.total_artworks}</p>
                     </li>
                 </div>
                 <br />
                 <div className="double">
-                    <p>Mark inactive</p>
-                    <p style={{color:"#FB0000"}}>Delete artist</p>
+                    {/* <p>Mark inactive</p> */}
+                    <p onClick={handleDelete} style={{color:"#FB0000", cursor:'pointer'}}>Delete artist</p>
                     
                 </div>
             </div>

@@ -1,54 +1,84 @@
 'use client';
-import styles from /* './lotDetail.module.css' */ '@/app/(components)/lotDetail/lotDetail.module.css';
+import styles from '@/app/(components)/lotDetail/lotDetail.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
-import RejectListing from './rejectArtwork/page';
+import { toast } from 'sonner';
 
 const AdminUserDetails = ({data}) => {
     const { openModal } = useModal();
+    const accessToken = localStorage.getItem("access_token");
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/admin/users/${data?.id}`, { 
+            method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const rejctData = await response.json();
+            if (!response.ok) {
+                toast.error("Failed to delete user.");
+                console.error('Failed to delete user');
+            }
+            if (response.ok) {
+                toast.success("User deleted successfully.");
+                console.log('user deleted successfully:', response);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            }
+            
+            return rejctData;
+        } catch (err) {
+            console.error('Error creating auction:', err);
+            return false;
+        }
+    }
 
     return ( 
         <div className={`${styles.adminArtistDetailsContainer} ${styles.container}`}>
             <div className={styles.galleryContainer}>
                 <div className={styles.mainImageContainer}>
-                    <img src={data.img} alt='artist' className={styles.mainImage} />
+                    <img src={data?.profile_image_url || '/images/auction/3.webp'} alt='artist' className={styles.mainImage} />
                 </div>
             </div>
             <div style={{gap:"14px"}} className={styles.detailsContainer}>
                 <div className={styles.artistPack}>
-                    <h2>{data.name}</h2>
+                    <h2>{data?.first_name} {data?.last_name}</h2>
                 </div>
                 <div className={styles.otherDetailsPack}>
                     <li>
                         <p>Email</p>
-                        <p>sammy.studios@example.com</p>
+                        <p>{data?.email}</p>
                     </li>
                     <li>
                         <p>Phone number</p>
-                        <p><span>+234 801 234 5678</span></p>
+                        <p><span>{data?.phone}</span></p>
                     </li>
                     <li>
                         <p>Date joined</p>
-                        <p>Apr. 15, 2026</p>
+                        <p>{new Date(data?.created_at).toDateString() || "N/A"}</p>
                     </li>
                     <li>
                         <p>Platform purchases</p>
-                        <p>$550.00</p>
+                        <p>${data?.metrics.platform_purchases_total}</p>
                     </li>
                     <li>
                         <p>Auctions registered</p>
-                        <p>5</p>
+                        <p>{data?.metrics.auctions_registered_count}</p>
                     </li>
                     <li>
                         <p>Exhibitions attended</p>
-                        <p>6</p>
+                        <p>{data?.metrics.exhibitions_attended_count}</p>
                     </li>
                 </div>
                 <br />
                 <div className="double">
-                    <p>Mark inactive</p>
+                    {/* <p>Mark inactive</p> */}
                     
-                    <p style={{color:"#FB0000"}}>Delete user</p>
+                    <p onClick={handleDelete} style={{color:"#FB0000", cursor:'pointer'}}>Delete user</p>
                 </div>
             </div>
             
