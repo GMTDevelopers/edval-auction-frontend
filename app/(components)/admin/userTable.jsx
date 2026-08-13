@@ -2,13 +2,16 @@
 import styles from '@/app/(components)/lotDetail/lotDetail.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
 import { toast } from 'sonner';
+import ButtonLoader from '../loader/buttonloader';
 
 const AdminUserDetails = ({data}) => {
     const { openModal } = useModal();
+    const [loading, setLoading] = useState(false);
     const accessToken = localStorage.getItem("access_token");
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
     const handleDelete = async () => {
+        setLoading(true);
         try {
             const response = await fetch(`${BASE_URL}/admin/users/${data?.id}`, { 
             method: "DELETE",
@@ -25,6 +28,7 @@ const AdminUserDetails = ({data}) => {
             if (response.ok) {
                 toast.success("User deleted successfully.");
                 console.log('user deleted successfully:', response);
+                setLoading(false);
                 setTimeout(() => {
                     window.location.reload();
                 }, 3000);
@@ -34,6 +38,8 @@ const AdminUserDetails = ({data}) => {
         } catch (err) {
             console.error('Error creating auction:', err);
             return false;
+        } finally{
+            setLoading(false);
         }
     }
 
@@ -78,7 +84,7 @@ const AdminUserDetails = ({data}) => {
                 <div className="double">
                     {/* <p>Mark inactive</p> */}
                     
-                    <p onClick={handleDelete} style={{color:"#FB0000", cursor:'pointer'}}>Delete user</p>
+                    <p onClick={handleDelete} style={{color:"#FB0000", cursor:'pointer'}}>{loading ? <ButtonLoader /> : "Delete user"}</p>
                 </div>
             </div>
             

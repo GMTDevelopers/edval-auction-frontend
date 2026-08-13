@@ -3,6 +3,7 @@ import AdminArtistTable from '@/app/(components)/tables/AdminArtsistTable';
 import styles from '../artworks/artworks.module.css';
 import AdminUserTable from '@/app/(components)/tables/AdminUserTable';
 import { useEffect, useState } from 'react';
+import Loader from '@/app/(components)/loader/loader';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const GetUsers = async (filter) => {
@@ -39,16 +40,19 @@ const GetUsers = async (filter) => {
 const Artists = () => {
     const [showing, setShowing] = useState('artist')
     const [userDetails, setUserDetails] = useState([]);
-    const [filter, setFilter] = useState('artist')
+    const [filter, setFilter] = useState('artist');
+    const [loading, setLoading] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFilter(e.target.value)
     }
     useEffect(() => {
-        console.log(filter)
+        setLoading(true);
         const trying = async () => {
+
             const users = await GetUsers(filter)
             setUserDetails(users?.data || [])
+            setLoading(false);
             console.log('users',users?.data)
         }
         trying()
@@ -61,7 +65,7 @@ const Artists = () => {
                 <form  className={`row2 ${styles.searchBar}`} action="">
                     <div className="double">
                         Now showing
-                        <select value={filter} onChange={handleSubmit} name="nowShowing"> 
+                        <select value={filter} style={{cursor:'pointer'}} onChange={handleSubmit} name="nowShowing"> 
                             <option value="artists">
                                 Artists
                             </option>              
@@ -71,12 +75,17 @@ const Artists = () => {
                                                                                         
                         </select>
                     </div>
-                    <input placeholder="Search here" type="text" name="search" />
+                    {/* <input placeholder="Search here" type="text" name="search" /> */}
                 </form>
             </div>
             <br /><br />
-            {filter==="artist" && <AdminArtistTable data={userDetails.data}/>}
-            {filter==="registered_user" && <AdminUserTable data={userDetails.data}/>}
+            {
+                loading ? <Loader /> :
+                <>
+                    {filter==="artist" && <AdminArtistTable data={userDetails.data}/>}
+                    {filter==="registered_user" && <AdminUserTable data={userDetails.data}/>}
+                </>
+            }
         </div>
     );
 }

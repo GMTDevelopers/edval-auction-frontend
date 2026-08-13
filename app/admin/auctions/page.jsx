@@ -1,4 +1,5 @@
 'use client';
+import Loader from '@/app/(components)/loader/loader';
 import styles from './auction.module.css';
 import AuctionTable from "@/app/(components)/tables/AdminAuctionsTable";
 import { Plus } from "lucide-react";
@@ -50,13 +51,12 @@ const Auction = () => {
     return ( 
         <div>
             <div style={{alignItems:"center"}} className={`double ${styles.double}`}>
-                <h3>Auctions</h3>
+                <h3>Auctions ({auctionData.data.length})</h3>
                 <div onClick={() => router.push('/admin/auctions/addNewAuction')} style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className="btn"> <Plus />  Add new auction event</div>
             </div>
-            {loading && <p>Loading...</p>}
             {error && <p style={{color:"red"}}>Error: {error}</p>}
             {auctionData.length === 0 && !loading && !error && <p>No auction data available.</p>}
-            <AuctionTable Data={auctionData} />
+            {loading ? <Loader /> : <AuctionTable Data={auctionData} />}
         </div>
     );
 }

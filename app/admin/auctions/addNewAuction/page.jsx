@@ -51,8 +51,8 @@ const NewAuction = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const localDateTime  = `${date}T${time}`;  // 1. Combine local date and time: "2026-05-16T10:00"
-        const dateObject = new Date(localDateTime);  // 2. Convert to Javascript Date Object (interprets as user's local timezone
-        const scheduledAt = dateObject.toISOString(); // 3. Format to ISO string for backend: "2026-05-16T10:00:00.000Z"
+        const scheduledAt = new Date(localDateTime);  // 2. Convert to Javascript Date Object (interprets as user's local timezone
+        /* const scheduledAt = dateObject.toISOString(); */ // 3. Format to ISO string for backend: "2026-05-16T10:00:00.000Z"
         const dataToSubmit = {
             ...formData,
             scheduled_at: scheduledAt

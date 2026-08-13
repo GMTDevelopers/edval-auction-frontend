@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import AdminArtworkTable from '@/app/(components)/tables/AdminArtworksTable';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import Loader from '@/app/(components)/loader/loader';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const GetArtworks = async (filter) => {
@@ -38,9 +39,10 @@ const GetArtworks = async (filter) => {
 };
 
 const Artworks = () => {
-    const router = useRouter()
+    const router = useRouter();
     const [artworks, setArtworks] = useState([]);
-    const [filter, setFilter] = useState({status:''})
+    const [filter, setFilter] = useState({status:''});
+    const [loading, setLoading] = useState(true);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFilter(prev=>({
@@ -50,9 +52,10 @@ const Artworks = () => {
     }
     useEffect(() => {
         const trying = async () => {           
-            const result = await GetArtworks(filter)
-            setArtworks(result.data || [])
-            console.log('artworks',result)     
+            const result = await GetArtworks(filter);
+            setArtworks(result.data || []);
+            setLoading(false);
+            console.log('artworks',result);
         }
         trying()
     }, [filter]);
@@ -63,7 +66,7 @@ const Artworks = () => {
                 <form className={`row3 ${styles.searchBar}`}>
                     <div className="double">
                         Now showing
-                        <select value={filter.status} onChange={handleSubmit} name="nowShowing">
+                        <select style={{cursor:'pointer'}} value={filter.status} onChange={handleSubmit} name="nowShowing">
                             <option value={''}>All items</option>                 
                             <option value="sold">
                                 Sold
@@ -76,12 +79,12 @@ const Artworks = () => {
                             </option>                                                              
                         </select>
                     </div>
-                    <input placeholder="Search here" type="text" name="search" />
+                    {/* <input placeholder="Search here" type="text" name="search" /> */}
                     <div style={{justifyContent:"center"}} className="btn submit" onClick={()=>router.push('/admin/artworks/addNewArt/')}> <Plus /> Add new artwork</div>
                 </form>
             </div>
             <br /><br /><br />
-            <AdminArtworkTable data={artworks.data}/>
+            {loading ? <Loader /> : <AdminArtworkTable data={artworks.data}/>}
         </div>
     );
 }

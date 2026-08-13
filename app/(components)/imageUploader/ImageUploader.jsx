@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'sonner';
 import styles from './ImageUploader.module.css';
+import Loader from '../loader/loader';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -93,9 +94,7 @@ const ImageUploader = ({
             {
                 uploading ?
                     (
-                        <div>
-                            Uploading...
-                        </div>
+                        <Loader />
                     )
                     :
                     preview ?

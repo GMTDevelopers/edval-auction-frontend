@@ -24,14 +24,14 @@ const AdminUserTable = ({data}) => {
                             <div className={styles.tableDouble}>
                                 <img className={styles.roundedImg} src={b?.profile_image_url||'/images/auction/3.webp'} alt="item" />
                                 <div>
-                                    <p>{b?.first_name} {b?.last_name}</p>
-                                    <p>{b?.id}</p>
+                                    <p>{b?.first_name || "-"} {b?.last_name || "-"}</p>
+                                    <p>{b?.id || "-"}</p>
                                 </div>
                             </div>
                         </td>
                         <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
-                        <td>{b?.email}</td>
-                        <td className={styles.amount}>{b?.phone}</td>
+                        <td>{b?.email || "-"}</td>
+                        <td className={styles.amount}>{b?.phone || "-"}</td>
                         <td> 
                             <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>
                             {b?.is_active ? 'Active' : 'Not active'}

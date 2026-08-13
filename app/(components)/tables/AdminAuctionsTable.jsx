@@ -20,17 +20,17 @@ const AuctionTable = ({Data}) => {
                 {data.length !==0 && data.map((b) => (
                     <tr onClick={() => router.push(b?.status === "live" ? `/admin/auctions/${b?.slug}?id=${b?.id}` : `/admin/auctions/upcoming/${b?.slug}?id=${b?.id}`)} className={styles.dataRow} key={b.id} >
                         <td>
-                            <p>{b?.name}</p>    
-                            <p>[{b?.code}]</p>
+                            <p>{b?.name || "-"}</p>    
+                            <p>[{b?.code || "-"}]</p>
                             
                         </td>
                         <td> {new Date(b?.scheduled_at).toDateString() || "N/A"} </td>
-                        <td>{b?.lots_count}</td>
-                        <td>{b?.registered_bidders_count}</td>
+                        <td>{b?.lots_count || "-"}</td>
+                        <td>{b?.registered_bidders_count || "-"}</td>
                         <td> 
-                            <span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
-                            {b?.status}
-                            </span>
+                            {<span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
+                            {b?.status || "-"}
+                            </span>}
                         </td>
 
                     </tr>
