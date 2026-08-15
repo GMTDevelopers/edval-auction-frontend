@@ -3,6 +3,7 @@ import styles from '@/app/(components)/lotDetail/lotDetail.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
 import { toast } from 'sonner';
 import ButtonLoader from '../loader/buttonloader';
+import { useState } from 'react';
 
 const AdminArtistDetails = ({data}) => {
     const { openModal } = useModal();
@@ -10,8 +11,10 @@ const AdminArtistDetails = ({data}) => {
     console.log('artist details',data);
     const accessToken = localStorage.getItem("access_token");
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+    const [isActive, setActive] = useState(data.is_active)
 
     const handleDelete = async () => {
+        
         setLoading(true);
         try {
             const response = await fetch(`${BASE_URL}/admin/users/${data?.id}`, { 
@@ -29,6 +32,42 @@ const AdminArtistDetails = ({data}) => {
             if (response.ok) {
                 toast.success("Artist deleted successfully.");
                 console.log('Artist deleted successfully:', response);
+                setLoading(false);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            }
+            
+            return rejctData;
+        } catch (err) {
+            setLoading(false)
+            console.error('Error creating auction:', err);
+            return false;
+        } finally{
+            setLoading(false)
+        }
+    }
+    const handleInactive = async () => {
+        console.log(data.id)
+        setLoading(true);
+        try {
+            const response = await fetch(`${BASE_URL}/admin/users/${data?.id}/status`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                   
+                },
+                body: JSON.stringify({is_active:!isActive}),
+            });
+            const rejctData = await response.json();
+            if (!response.ok) {
+                toast.error("Failed to change status.");
+                console.error('Failed to change status');
+            }
+            if (response.ok) {
+                toast.success("status change successfully.");
+                console.log('status change successfully:', response);
                 setLoading(false);
                 setTimeout(() => {
                     window.location.reload();
@@ -105,7 +144,7 @@ const AdminArtistDetails = ({data}) => {
                 </div>
                 <br />
                 <div className="double">
-                    {/* <p>Mark inactive</p> */}
+                    <p onClick={handleInactive} style={{cursor:'pointer'}}>{loading ? <ButtonLoader /> : isActive? 'Mark inactive' : 'Mark Active' }</p>
                     <p onClick={handleDelete} style={{color:"#FB0000", cursor:'pointer'}}>{loading ? <ButtonLoader /> : "Delete artist"}</p>
                     
                 </div>

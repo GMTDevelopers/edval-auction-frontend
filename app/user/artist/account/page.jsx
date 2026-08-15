@@ -163,7 +163,6 @@ const Account =  () => {
                                     }));
                                 }}
                             />
-                            {/* <img src="/images/comission/comission.webp" alt="comission" /> */}
                         </div>
                         <button type='submit' className='submit btn'>Upload Profile Photo</button>
                     </div>
