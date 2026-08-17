@@ -15,7 +15,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GetAdminUsers = async () => {
     const accessToken = localStorage.getItem("access_token");
     try {
-        const response = await fetch(`${BASE_URL}/admin/users?role='admin`, { 
+        const response = await fetch(`${BASE_URL}/admin/accounts`, { 
         method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -179,7 +179,7 @@ const Setting = () => {
 
                         </div>
 
-                        <AdminAccountTable />
+                        <AdminAccountTable data={adminAccts.data} />
                     </div>
                      
                 );

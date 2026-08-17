@@ -12,7 +12,7 @@
     align-items: center;
     margin-top: 15px;
 }
-.statPack p{
+.stat{
     font-size: 32px;
     font-weight: 600;
     color: var(--foreground);

@@ -3,56 +3,49 @@ import { useRouter } from 'next/navigation';
 import styles from './tables.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
 import { Pencil, Trash2 } from 'lucide-react';
-const AdminAccountTable = () => {
+import { toast } from 'sonner';
+import ButtonLoader from '@/app/(components)/loader/buttonloader';
+import { useState } from 'react';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const AdminAccountTable = (data) => {
+    const accessToken = localStorage.getItem("access_token");
     const { openModal } = useModal();
-    const Lot =
-        {
-        "id":1,
-        "name":"Black or Beauty?",
-        "price":"301.00",
-        "startingBid":"400",
-        "year": 2022,
-        "status":"rejected",
-        "reason":"Rejection Reason. Thank you for submitting your artwork for review. Unfortunately, we are unable to approve this listing at this time because the uploaded artwork image does not meet our platform's quality requirements. The image appears to be low resolution and lacks the clarity needed for collectors and visitors to properly view the details of the artwork. To resubmit, please upload a higher-quality image that: Is sharp and in focus your understanding and look forward to receiving an updated version of your artwork listing.",
-        "category": "Human Portrait",
-        "type": "Painting",
-        "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-        "size": "29.7 X 28 X 8",
-        "frame": "No frame",
-        "proofOfAuth": "yes",
-        "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-        "img": "/images/auction/3.webp"
-    }
-    const data = [
-        {
-            orderId:"E-2100",
-            item:{
-                img:"/images/auction/1.webp",
-                name:"Whispers of Dawn",
-                artist:"Aria Belrose"
-            },
-            category:"Painting",
-            date:"12002300",
-            status:"Inactive",
-            amount:"150.00",
-            experience:5,
-            quantity:7,
-        },
-        {
-            orderId:"E-2101",
-            item:{
-                img:"/images/auction/2.webp",
-                name:"Echoes of Time",
-                artist:"Liam Chen"
-            },
-            category:"Drawing",
-            date:"12002300",
-            status:"Active",
-            amount:"300.00",
-            experience:5,
-            quantity:7,
+    const [loading, setLoading] = useState(false)
+
+    const handleDelete = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(`${BASE_URL}/admin/users/${data?.id}`, { 
+            method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const rejctData = await response.json();
+            if (!response.ok) {
+                toast.error("Failed to delete user.");
+                console.error('Failed to delete user');
+            }
+            if (response.ok) {
+                toast.success("User deleted successfully.");
+                console.log('User deleted successfully:', response);
+                setTimeout(() => {
+                    /* closeModal() */
+                    window.location.reload();
+                }, 3000);
+            }
+            
+            return rejctData;
+        } catch (err) {
+            console.error('Error creating auction:', err);
+            return false;
+        } finally{
+            setLoading(false)
         }
-    ]
+    }
+
     return ( 
         <div className={styles.tableContainer}>
             <table className={styles.table}>
@@ -66,28 +59,28 @@ const AdminAccountTable = () => {
                     </tr>
                 </thead>
                 <tbody> 
-                {data.length !==0 && data.map((b) => (
-                    <tr className={styles.dataRow} key={b.orderId} >
+                {data.data?.length !==0 && data.data?.map((b,index) => (
+                    <tr className={styles.dataRow} key={index} >
                         <td>
                             <div className={styles.tableDouble}>
-                                <img className={styles.roundedImg} src={b?.item.img} alt="item" />
+                                <img className={styles.roundedImg} src={b?.profile_image_url || "/images/auction/2.webp"} alt="item" />
                                 <div>
-                                    <p>{b?.item.artist}</p>
-                                    <p>{b?.orderId}</p>
+                                    <p>{b?.first_name} {b?.last_name}</p>
+                                    <p>{b?.code}</p>
                                 </div>
                             </div>
                         </td>
-                        <td>+234 801 234 5678</td>
-                        <td>Admin</td>
+                        <td>{b?.phone}</td>
+                        <td>{b?.role}</td>
                         <td className={styles.amount}>2 hrs ago</td>
                         <td> 
                             <div style={{marginTop:0}} className="row2">
-                                <span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
-                                    {b?.status}
+                                <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>
+                                    {b?.is_active ? 'Active' : 'Inactive'}
                                 </span>
                                 <div className="double">
-                                    <Pencil size={28} />
-                                    <Trash2 size={28}  style={{color:"#FB0000"}} />
+                                   {/*  <Pencil size={28} style={{cursor:"pointer"}} /> */}
+                                    {loading ? <ButtonLoader /> :<Trash2 size={28} onClick={handleDelete} style={{color:"#FB0000", cursor:"pointer"}} />}
                                 </div>
                             </div>
                             
