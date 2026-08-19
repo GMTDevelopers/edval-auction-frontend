@@ -2,22 +2,11 @@
 import Link from 'next/link';
 import styles from './layout.module.css';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '../context/authContext';
-import { useEffect } from 'react';
 import { useModal } from '../(components)/ModalProvider/ModalProvider';
-import Tab from '../(components)/tab/tabs';
+
 const AdminLayout = ({children}) => {
     const pathname = usePathname();
     const { openModal } = useModal();
-    const {isAuthenticated, user, accessToken, logout, refreshToken} = useAuth();
-/*     useEffect(() => {
-        if (!user){
-            openModal(<Tab />)
-        }
-        if (isAuthenticated){
-            console.log("admin layout :", user)
-        }
-    }, []); */
 
     return ( 
         <div className={styles.layoutContainer}>

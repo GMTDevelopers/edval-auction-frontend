@@ -1,5 +1,6 @@
 'use client'
-import styles from '@/app/pages/auctions/productDetails/prodDet.module.css';
+import styles from '@/app/pages/auctions/[slug]/prodDet.module.css';
+/* import styles from '@/app/pages/auctions/productDetails/prodDet.module.css'; */
 import pageStyles from './page.module.css';
 import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
 import { useEffect, useState } from 'react';
@@ -11,16 +12,20 @@ import AdminLotSide from '@/app/(components)/sideCard/adminLot';
 import { refreshUser } from '@/app/services/authServices';
 import AddNewLot from '@/app/(components)/admin/addLot/page';
 import AdminWinner from '@/app/(components)/sideCard/adminWinner';
-
+import { toast } from 'sonner';
 const ProdDetPage = () => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const { openModal } = useModal();
     const [auctionData, setAuctionData] = useState(null);
     const [auctionLotData, setAuctionLotData] = useState(null);
+    const [activeLot, setActiveLot] = useState(null);
+    const [status, setStatus] = useState();
     const [error, setError] = useState(null);
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const router = useRouter();
+
+
     const getAuction = async () => {
         try {
             const accessToken = localStorage.getItem("access_token");
@@ -33,6 +38,7 @@ const ProdDetPage = () => {
             });
             const data = await response.json();
             setAuctionData(data?.data);
+            setStatus(data?.data?.status)
             console.log("auction data:", data);
         } catch (err) {
             setError(err);
@@ -50,6 +56,7 @@ const ProdDetPage = () => {
             };
         }
     }
+
     const getAuctionLots = async () => {
         try {
             const accessToken = localStorage.getItem("access_token");
@@ -79,10 +86,81 @@ const ProdDetPage = () => {
             };
         }
     }
+
+    const handleStartAuction = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/status`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify(startAuctionForm),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.error.message);
+                console.log(data)
+            }
+            if (response.ok) {
+                toast.success("Auction status changed successfully.");
+                console.log('Auction status changed successfully:', data);
+            }
+        } catch (err) {
+            console.log(err)
+            return {
+                success: false,
+                err,
+            };
+        }
+    }
+
+    const handleSetActiveLot = async (activeLotID) => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/active-lot`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({
+                    lot_id: Number(activeLotID),
+                }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.error.message);
+                console.log(data)
+            }
+            if (response.ok) {
+                toast.success("Active lot changed successfully.");
+                console.log('Active lot changed successfully:', data);
+            }
+        } catch (err) {
+            console.log(err)
+            return {
+                success: false,
+                err,
+            };
+        }
+    }
+
+    const [formData, setformData] = useState({
+        amount: 0,
+        channel: "platform",
+        placed_by_admin_id: 0,
+    });
+    const [startAuctionForm, setStartAuctionForm] = useState({
+        bidding_phone_number: "",
+        status: auctionData?.status
+    });
+
     useEffect(() => {
         getAuction();
         getAuctionLots();
-    }, []);
+    }, [status, activeLot]);
 
     return ( 
         <div className={styles.auctionPack}>
@@ -170,13 +248,36 @@ const ProdDetPage = () => {
                             (<form className={pageStyles.form} action="">
                                 <p> <span>ADMIN ACTIONS</span></p>
                                 <div className="rowMultiple">
+                                    <p>Auction status</p>
+                                    <select className={styles.graphType} value={startAuctionForm?.status} onChange={(e)=>{const newStatus = e.target.value; setStartAuctionForm(prev=>({...prev, status:newStatus})), handleStatusChange()}} name="auctionStatus" >          
+                                        <option value="draft">
+                                            Draft
+                                        </option>                                
+                                        <option value="upcoming">
+                                            Upcoming
+                                        </option>                                
+                                        <option value="live">
+                                            Live
+                                        </option>                                                                                                                          
+                                        <option value="completed">
+                                            Completed
+                                        </option>                                                                                                                          
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>                                                                                                                          
+                                    </select>
+                                </div>
+                                <div className="rowMultiple">
                                     <p>Bidding phone number</p>
                                     <input type='tel' name='bidPhone' placeholder='12345678910' />
                                 </div>
                                 <div className="rowMultiple">
                                     <p>Active lot</p>
-                                    <select className={styles.graphType} name="activeLot" id="">
-                                        <option value="Active lot">Active lot</option>
+                                    <select value={activeLot} className={styles.graphType} onChange={(e)=>{e.preventDefault(); const activeLot = e.target.value; setActiveLot(activeLot), handleSetActiveLot(activeLot)}} name="activeLot" id="">
+                                        <option value="Active lot">Select active lot</option>
+                                        {auctionLotData?.length && auctionLotData?.map((lot)=>(
+                                            <option value={lot.artwork.id}>{lot.artwork.title}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="rowMultiple">
@@ -187,7 +288,19 @@ const ProdDetPage = () => {
                                 </div>
                                 <div className="rowMultiple">
                                     <p>Amount bid</p>
-                                    <input type='tel' name='amount' placeholder='12345678910' />
+                                    <input type="text" inputMode="decimal" value={formData.reserve_price}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+
+                                            if (/^\d*(\.\d{0,2})?$/.test(value)) {
+                                                setformData(prev => ({
+                                                    ...prev,
+                                                    reserve_price: value
+                                                }));
+                                            }
+                                        }}
+                                        placeholder="0.00"
+                                    />
                                 </div>
                                 <div className="rowMultiple">
                                     <p>Current bid (User)</p>
@@ -197,16 +310,30 @@ const ProdDetPage = () => {
                                 </div>
                                 <button style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className='btn artFeatureBtn'> Save live update</button>
                             </form>):
-                            (<form className={pageStyles.form} action="">
+                            (<form className={pageStyles.form} onSubmit={(e)=>{e.preventDefault(); handleStartAuction()}}>
                                 <p> <span>ADMIN ACTIONS</span></p>
                                 <div className="rowMultiple">
                                     <p>Bidding phone number</p>
-                                    <input type='tel' name='bidPhone' placeholder='12345678910' />
+                                    <input value={startAuctionForm?.bidding_phone_number} onChange={(e)=>setStartAuctionForm(prev=>({...prev, bidding_phone_number:e.target.value}))} type='tel' name='bidPhone' placeholder='12345678910' />
                                 </div>
                                 <div className="rowMultiple">
                                     <p>Auction status</p>
-                                    <select className={styles.graphType} name="auctionStatus" id="">
-                                        <option value="Active lot">Upcoming</option>
+                                    <select className={styles.graphType} value={startAuctionForm?.status} onChange={(e)=>setStartAuctionForm(prev=>({...prev, status:e.target.value}))} name="auctionStatus" >          
+                                        <option value="draft">
+                                            Draft
+                                        </option>                                
+                                        <option value="upcoming">
+                                            Upcoming
+                                        </option>                                
+                                        <option value="live">
+                                            Live
+                                        </option>                                                                                                                          
+                                        <option value="completed">
+                                            Completed
+                                        </option>                                                                                                                          
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>                                                                                                                          
                                     </select>
                                 </div>
                                 <button style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className='btn artFeatureBtn'> Save update</button>
@@ -221,7 +348,7 @@ const ProdDetPage = () => {
                             {
                                 auctionLotData?.map((lot)=>(
                                     <div key={lot.id}>    
-                                        <AdminLotSide name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
+                                        <AdminLotSide id={lot.id} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
                                     </div>
                                 ))
                             }

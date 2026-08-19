@@ -72,7 +72,7 @@ const AdminAccountTable = (data) => {
                         </td>
                         <td>{b?.phone}</td>
                         <td>{b?.role}</td>
-                        <td className={styles.amount}>2 hrs ago</td>
+                        <td className={styles.amount}>{new Date(b?.last_active_at).toDateString()  || 'N/A' }</td>
                         <td> 
                             <div style={{marginTop:0}} className="row2">
                                 <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>

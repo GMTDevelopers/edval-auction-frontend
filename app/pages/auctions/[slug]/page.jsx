@@ -3,11 +3,16 @@ import LotSide from '@/app/(components)/sideCard/lot';
 import styles from './prodDet.module.css';
 import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
 import Tab from '@/app/(components)/tab/tabs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuctionRegistration from '@/app/(components)/auctionReg/page';
 import { Ban } from 'lucide-react';
 import LotDetails from '@/app/(components)/lotDetail/page';
 import Winner from '@/app/(components)/sideCard/winner';
+import { useParams, useSearchParams } from 'next/navigation';
+import Countdown from '@/app/(components)/counter/page';
+import { refreshUser } from '@/app/services/authServices';
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const availableLot = [
     {
       "id":1,
@@ -62,34 +67,109 @@ const availableLot = [
     }
   ]
 
-const ProdDetPage = () => {
+const ProdDetPage =  () => {
     const { openModal } = useModal();
-    const [isLogin, setIsLogin] = useState(false)
-    const [isWinner, setIsWinner] = useState(true)
+    const [isLogin, setIsLogin] = useState(false);
+    const [isWinner, setIsWinner] = useState(true);
+    const {slug} = useParams();
+    const searchParams = useSearchParams()
+    const auctId = searchParams.get('auctionID')
+    const [auctionData, setAuctionData] = useState(null);
+    const [auctionLotData, setAuctionLotData] = useState(null);
+    const [auctionLotDataPass, setAuctionLotDataPass] = useState(null);
+    const [status, setStatus] = useState();
+
+    const getAuction = async () => {
+        console.log('slug data', slug)
+        try {
+            const response = await fetch(`${BASE_URL}/auctions/${slug}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            setAuctionData(data?.data);
+            setStatus(data?.data?.status)
+            console.log("auction data:", data);
+        } catch (err) {
+        /*   setError(err); */
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
+
+    const getAuctionLots = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/auctions/${auctId}/lots`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            setAuctionLotData(data?.data);
+            setAuctionLotDataPass(data);
+            
+            console.log("auction lots data:", data.data);
+        } catch (err) {
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
+
+    useEffect(() => {
+        getAuction();
+        getAuctionLots();
+    }, []);
+
     return ( 
         <div className={styles.auctionPack}>
             <div className={`container ${styles.double}`}>
                 <div className={styles.big}>
                     <img className={styles.streamVideo} src="/images/auction/live.webp" alt="live" />
-                    <h2>Sisters of the Sound - Art Auction (LIVE)</h2>
-                    <p>Artworks: <span> Black or Beauty?, Dancing in the Wind, Calm & Open </span> </p>
-                    <div className={styles.endsIn}>
-                        <p>Auction ends in</p>
-                        <div className={styles.timerPack}>
-                            <div className={styles.timer}>
-                                <img src="/images/auction/timer.png" alt="timmer" />
+                    <h2>{auctionData?.name||"Sisters of the Sound - Art Auction (LIVE)"}</h2>
+                    <p>Artworks: 
+                        {auctionLotData?.map((lot,index)=>(  
+                            <span key={index}> {lot?.title}, </span> 
+                        ))}
+                    </p>
+                   { auctionData?.status==='live' ? 
+                        <div className={styles.endsIn}>
+                            <p>Auction ends in</p>
+                            <div className={styles.timerPack}>
+                                <div className={styles.timer}>
+                                    <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
+                                </div>
+                                {/*the button (components) needs to have conditional rendering */}
+                                <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration auctionId={auctionData.id} auctionLot={auctionLotData} />)}>Register to participate</div>
                             </div>
-                            {/*the button (components) needs to have conditional rendering */}
-                            <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration />)}>Register to participate</div>
+                        </div> : 
+                        <div className={styles.endsIn}>
+                            <p>Auction Starts in</p>
+                            <div className={styles.timerPack}>
+                                <div className={styles.timerPackUp}>
+                                    <p>{new Date(auctionData?.scheduled_at).toDateString()}</p>
+                                    <p>{new Date(auctionData?.scheduled_at).toLocaleTimeString()}</p>
+                                </div>
+                                
+                                {/*the button (components) needs to have conditional rendering */}
+                                <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration auctionId={auctionData.id} auctionLot={auctionLotData} />)}>Register to participate</div>
+                            </div>
                         </div>
-
-                    </div>
+                    }
                     {/* Conditionaly rendered */}
-                    <form className={styles.placeBid} action="">
+                    {auctionData?.status==='live'&&<form className={styles.placeBid} action="">
                         <input type="number" step={0.01} id='bid' name="bid" placeholder='Enter your bid here...' />
                         <button className=''> place bid</button>
-                    </form>
-                    <div className={styles.statsPack}>
+                    </form> }
+                    {auctionData?.status==='live'&&<div className={styles.statsPack}>
                         <div style={{backgroundColor:"#F2F0DB"}} className={styles.statsCard}>
                             <h3>Auction Overview</h3>
                             <div className={styles.statsList}>
@@ -140,7 +220,7 @@ const ProdDetPage = () => {
                                 
                             </div>
                         </div>
-                    </div>
+                    </div>}
                 </div>
                 <div className={styles.small}>
                     <div className={styles.smallPack}>
@@ -148,9 +228,9 @@ const ProdDetPage = () => {
                         <div className={styles.sideLots}>
                         
                             {
-                                availableLot.map((lot)=>(
+                                auctionLotData?.map((lot)=>(
                                     <div onClick={() => {openModal(<LotDetails data={lot}/>)} } key={lot.id}>    
-                                        <LotSide  name={lot.name} img={lot.img} artist={lot.artist} year={lot.year} bid={lot.startingBid} status={lot.status} />
+                                        <LotSide id={lot.id} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
                                     </div>
                                 ))
                             }

@@ -39,7 +39,18 @@
     display: flex;
     justify-content: space-between;
     margin-top: 12px;
+    align-items: center;
+}
+.timerPackUp{
+    display: flex;
+    width: 100%;
+    gap: 10px;
     align-items: end;
+}
+.timerPackUp p{
+    font-size: 24px;
+    font-weight: 700;
+    color:  #FB6900;
 }
 .timer{
     background: #F2F0DB;

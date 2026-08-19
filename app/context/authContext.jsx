@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserData, loginUser, logoutUser, refreshUser, signupUser } from "../services/authServices";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext();
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    const router = useRouter();
     // LOGIN FUNCTION
     const login = async (credentials) => {
         setLoading(true);
@@ -104,6 +105,7 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
             setIsAuthenticated(false);
             setLoading(false);
+            window.location.replace('/');
         }
     };
 

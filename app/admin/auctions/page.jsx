@@ -51,7 +51,7 @@ const Auction = () => {
     return ( 
         <div>
             <div style={{alignItems:"center"}} className={`double ${styles.double}`}>
-                <h3>Auctions ({auctionData.data.length})</h3>
+                <h3>Auctions ({auctionData?.data?.length})</h3>
                 <div onClick={() => router.push('/admin/auctions/addNewAuction')} style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className="btn"> <Plus />  Add new auction event</div>
             </div>
             {error && <p style={{color:"red"}}>Error: {error}</p>}

@@ -135,7 +135,7 @@ const Overview = () => {
                         <li className={styles.updateHeader}>
                             SYSTEM UPDATES
                         </li>
-                        {dashStats.system_updates.length > 0 ? dashStats.system_updates.map((updates, index)=> (
+                        {dashStats?.system_updates?.length > 0 ? dashStats.system_updates.map((updates, index)=> (
 
                             <li className="updateHeader" key={index}>
                                 <p><span>{updates?.actions}</span></p>

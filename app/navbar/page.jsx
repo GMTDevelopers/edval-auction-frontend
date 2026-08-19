@@ -39,23 +39,28 @@ const Navbar = () => {
                     {!isAuthenticated && <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
                         My Account
                     </div>}
-                    {isAuthenticated &&  user?.role==="client" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
+                    {isAuthenticated && user?.role==="registered_user" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
                         <p className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
                         <div className={styles.navBtnLoggedIn}>
                             <img src="/images/contactUs.webp" alt="user" />
                             <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
                         </div>
                     </div>)}
-                    {isAuthenticated &&  user?.role==="artist" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
+                    {isAuthenticated && user?.role==="artist" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
                         <p className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
                         <div className={styles.navBtnLoggedIn}>
                             <img src="/images/contactUs.webp" alt="user" />
                             <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
                         </div>
                     </div>)}
+                    {isAuthenticated && user?.role==="super_admin" && (
+                        <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
+                            <p>visit Admin Dashboard</p>
+                        </div>
+                    )}
                     {isAuthenticated && user?.role==="admin" && (
-                        <div onClick={() => router.push('/admin/overview')} className={`btn ${styles.navBtn}`}>
-                            Visit Admin Dashboard
+                        <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
+                            <p>visit Admin Dashboard</p>
                         </div>
                     )}
                 </div>
@@ -70,7 +75,11 @@ const Navbar = () => {
                     <li className='btn' onClick={()=> {setIsOpen(false)}}><Link href="/user/artist/account">My Profile</Link></li>
                     <li className='btn' onClick={() => {logout(); setIsOpen(false);}} style={{color:"#FB0000"}}>Sign out</li>
                 </div>
-                <div className={isOpen&&user?.role==="client"&&isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
+                <div className={isOpen&&user?.role==="super_admin"&&isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
+                    <li className='btn' onClick={()=> {setIsOpen(false); router.push('/admin/overview')}}><Link href="/admin/overview">Visit Admin Dashboard</Link></li>
+                    <li className='btn' onClick={() => {logout(); setIsOpen(false);}} style={{color:"#FB0000"}}>Sign out</li>
+                </div>
+                <div className={isOpen&&user?.role==="registered_user"&&isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
                     <li className='btn' onClick={()=> {setIsOpen(false)}}><Link href="/user/client">My Orders</Link></li>
                     <li className='btn' onClick={()=> {setIsOpen(false)}}>My Account</li>
                     <li className='btn' onClick={() => {logout(); setIsOpen(false);}} style={{color:"#FB0000"}}>Sign out</li>

@@ -3,7 +3,7 @@ const LotSide = ({name, artist, year, bid, status, img}) => {
     return ( 
         <div className={styles.sideCardCont}>
             <div className={styles.left}>
-                <img src={img} alt="" />
+                <img src={img || '/images/auction/1.webp'} alt="" />
             </div>
             <div className={styles.right}>
                 <h3>{name}</h3>
