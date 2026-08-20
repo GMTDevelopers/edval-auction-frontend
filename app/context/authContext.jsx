@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
         setError(null);
         try {
             const response = await loginUser(credentials);
- /*            setUser(response.data.user); */
             setAccessToken(response.data.access_token);
             setRefreshToken(response.data.refresh_token);
             localStorage.setItem(

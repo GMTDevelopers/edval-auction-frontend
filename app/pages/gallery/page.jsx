@@ -3,6 +3,9 @@ import GalleryCard from '@/app/(components)/cards/galleryCard';
 import styles from './gallery.module.css';
 import GalSearch from '@/app/(components)/gallerySearch/page';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Loader from '@/app/(components)/loader/loader';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const galleryData = [
     {
       "id":1,
@@ -145,42 +148,106 @@ const galleryData = [
     },
 ]
 
-const Gallery = () => {
-    const router = useRouter()
-    const handleSearchSubmit = (formData) => {
+const GetArtworks = async (filter) => {
+  try {
+    const params = new URLSearchParams({
+      limit: 10000,
+      offset: 0,
+      request_type: "gallery",
+    });
 
-        console.log(formData);
+    if (filter.search) params.append("search", filter.search);
+    if (filter.artist_name) params.append("artist_name", filter.artist_name);
+    if (filter.artwork_type) params.append("artwork_type", filter.artwork_type);
+    if (filter.theme) params.append("theme", filter.theme);
 
-        // API call here
-        // validation
-        // router.push()
+    const response = await fetch(`${BASE_URL}/artworks?${params.toString()}`, { 
+    method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw( 
+        response.status,
+        data.error|| "failed to get Artworks"
+      )
+    }
+    console.log(data)
+    return {
+      success:true,
+      data: data
     };
+  } catch (err) {
+    console.log(err)
+    return {
+      success: false,
+      err,
+    };
+  }
+};
+const Gallery = () => {
+  const router = useRouter();
+  const [artworks, setArtworks] = useState([]);
+  const [filter, setFilter] = useState({
+    artwork_type:'',
+    search:'',
+    artist_name:'',
+    theme:''
+  });
+  const [loading, setLoading] = useState(true);
+  const handleSubmit = (searchValues) => {
+    setFilter({
+      artwork_type: searchValues.artType.join(","),
+      search: searchValues.keywords,
+      artist_name: searchValues.artist,
+      theme: searchValues.themes.join(","),
+    });
+  };
+  useEffect(() => {
+    const trying = async () => {
+      setLoading(true);
 
+      const result = await GetArtworks(filter);
 
-    return ( 
-        <div>
-            <div className='headerCenter pageHeader'>
-                <h1>Explore Our Curated Collection</h1>
-                <p>
-                    Discover an exquisite selection of contemporary masterpieces, meticulously sourced from renowned global artists and emerging talents.
-                </p>
+      if (result.success) {
+        setArtworks(result.data);
+      }
+
+      setLoading(false);
+    };
+    trying()
+  }, [filter]);
+
+  return ( 
+    <div>
+      <div className='headerCenter pageHeader'>
+        <h1>Explore Our Curated Collection</h1>
+        <p>
+          Discover an exquisite selection of contemporary masterpieces, meticulously sourced from renowned global artists and emerging talents.
+        </p>
+      </div>
+      <div className="upcomingAuctions">
+        <div className="container">
+          <div>
+            <GalSearch onSubmit={handleSubmit}/>
+          </div>
+          {  loading? 
+            <div className="container">
+              <br/><br/><br/><br/>
+              <Loader />
+            </div>: 
+            <div className="row4">              
+              {artworks?.data?.map((data)=>(
+                <GalleryCard key={data.id} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artist={data.artist_details.first_name || data.artist_details.first_name}/>
+              )) }               
             </div>
-            <div className="upcomingAuctions">
-                <div className="container">
-                    <div>
-                        <GalSearch onSubmit={handleSearchSubmit}/>
-                    </div>
-                    <div className="row4">
-                        {
-                            galleryData.map((data)=>(
-                                <GalleryCard key={data.id} slug={data.slug} name={data.name} price={data.price} img={data.img} artist={data.artist}/>
-                            ))
-                        }
-                    </div>
-                </div>
-            </div>
+          } 
         </div>
-    );
+      </div>
+    </div>
+  );
 }
  
 export default Gallery;

@@ -1,6 +1,3 @@
-import { useModal } from "../(components)/ModalProvider/ModalProvider";
-import Tab from "../(components)/tab/tabs";
-    
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const loginUser = async (credentials) => {

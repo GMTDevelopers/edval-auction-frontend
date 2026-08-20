@@ -7,10 +7,11 @@ import GalleryCard from "./(components)/cards/galleryCard";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "./(components)/loader/loader";
+import { useAuth } from "./context/authContext";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const getAuctionData = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/auctions?status=draft&limit=3&offset=0`, {
+    const response = await fetch(`${BASE_URL}/auctions?status=upcoming&limit=3&offset=0`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,6 +29,7 @@ const getAuctionData = async () => {
 }
 
 export default function Home() {
+  const {user} = useAuth();
   const defaultAuctionData = [
     {
       "id":1,
@@ -134,7 +136,7 @@ export default function Home() {
       }
     }
     fetchAuctionData();
-  }, []);
+  }, [user]);
   return (
     <div>
       <header className={styles.header}>
@@ -159,12 +161,12 @@ export default function Home() {
           </div>
           <div className="row3">
             {
-              loading? <Loader /> : auctionData.length > 0 && auctionData?.map((data)=>(
+              loading? <Loader /> : auctionData?.length > 0 && auctionData?.map((data)=>(
                 <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.min_participation_amount} img={data.img || `/images/homepage/auction1.png`} duration={data.duration_minutes} time={data.scheduled_at} auctStatus={data.status} slug={data.slug}/>
               ))
             }
             {
-              loading? <Loader /> : auctionData.length===0 && defaultAuctionData.map((data)=>(
+              loading? <Loader /> : auctionData?.length===0 && defaultAuctionData?.map((data)=>(
                 <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.startingBid} img={data.img} time={data.time} status={data.status}/>
               ))
             }

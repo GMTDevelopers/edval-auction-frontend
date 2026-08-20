@@ -8,6 +8,7 @@ import { ChevronDown, ShoppingCart, User } from 'lucide-react';
 import Tab from '../(components)/tab/tabs';
 import { useModal } from '../(components)/ModalProvider/ModalProvider';
 import { useAuth } from '../context/authContext';
+import { useCart } from '../context/cartContext';
 
 
 const Navbar = () => {
@@ -15,12 +16,14 @@ const Navbar = () => {
     const router = useRouter();
     const { openModal, closeModal } = useModal();
     const {isAuthenticated, user, accessToken, logout, refreshToken} = useAuth();
+    const {cart} = useCart();
     const [isUser, setIsUser] = useState(null)
     const [isOpen, setIsOpen] = useState(false)
 
 
     useEffect(() => {
         console.log(isAuthenticated, user);
+        console.log('this is the cart:', cart)
     }, []);
     return ( 
         <div className={styles.navbar}>
