@@ -135,15 +135,7 @@ const Exhibition = () => {
                     }
                 </div>
             </section>
-            <section className="artFeature">
-                <div className="container">       
-                    <div className="artFeatureTxt">
-                        <h2>Do you want your artwork featured on Edval Art Auction?</h2>
-                        <p>We welcome submissions from emerging and established artists interested in exhibition opportunities, gallery representation, and auction consideration. Provide details about yourself and the artwork you would like reviewed. Our curatorial team will assess submissions and contact selected artists regarding next steps.</p>
-                        <div className="btn artFeatureBtn">Fill request form</div>
-                    </div>
-                </div>
-            </section>
+            
         </div>
     );
 }

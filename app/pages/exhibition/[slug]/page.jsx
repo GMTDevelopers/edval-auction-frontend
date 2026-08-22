@@ -4,6 +4,7 @@ import styles from './exhibition.module.css';
 import { useParams } from 'next/navigation';
 import Loader from '@/app/(components)/loader/loader';
 import { toast } from 'sonner';
+import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getExhibitionData = async (slug) => {
@@ -25,6 +26,7 @@ const getExhibitionData = async (slug) => {
     }
 }
 const ExhibitionDetails = () => {
+    const { openModal, closeModal } = useModal();
     const [auctionData, setAuctionData] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -117,6 +119,15 @@ const ExhibitionDetails = () => {
                 </div>
             
             }
+            <section className="artFeature">
+                <div className="container">       
+                    <div className="artFeatureTxt">
+                        <h2>Do you want your artwork featured on Edval Art Auction?</h2>
+                        <p>We welcome submissions from emerging and established artists interested in exhibition opportunities, gallery representation, and auction consideration. Provide details about yourself and the artwork you would like reviewed. Our curatorial team will assess submissions and contact selected artists regarding next steps.</p>
+                        <div onClick={()=> {openModal()}} className="btn artFeatureBtn">Fill request form</div>
+                    </div>
+                </div>
+            </section>
         </>
     );
 }

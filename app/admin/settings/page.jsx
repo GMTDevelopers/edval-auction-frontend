@@ -145,7 +145,7 @@ const Setting = () => {
                                                 value={activeAdmin?.profile_image_url || "/images/comission/comission.webp"}
                                                 placeholder={`Add Image`}
                                                 onUpload={(url) => {
-                                                    const media = activeAdmin.profile_image_url;
+                                                    const media = url;
                                                     setActiveAdmin(prev => ({
                                                         ...prev,
                                                         profile_image_url: media

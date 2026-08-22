@@ -1,5 +1,5 @@
 'use client'
-import { Banknote, Loader, Palette, Plus } from 'lucide-react';
+import { Banknote, CircleOff, Loader, Palette, Plus } from 'lucide-react';
 import styles from './myArtworks.module.css';
 import ArtistArtworksTable from '@/app/(components)/tables/artistArtworksTable';
 import StatsCard from '@/app/(components)/statsCard/page';
@@ -40,7 +40,8 @@ const GetArtworks = async (id) => {
 };
 const MyArtworks = () => {
    const {user} = useAuth(); 
-    const router = useRouter()
+    const router = useRouter();
+    const [loading, setLoading] = useState(true)
     const [artworks, setArtworks] = useState([]);
     useEffect(() => {
         const trying = async () => {
@@ -49,13 +50,14 @@ const MyArtworks = () => {
                 const artworks = await GetArtworks(user?.id)
                 setArtworks(artworks.data || [])
                 console.log('artworks',artworks)
+                setLoading(false)
             }           
         }
         trying()
     }, [user]);
     return ( 
         <div className={styles.container}>
-            <div className="container">
+            {loading? <div className='emptyCont'> <Loader /> </div>  : <div className="container">
                 <div className="row3">
                     <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
                     <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
@@ -66,8 +68,15 @@ const MyArtworks = () => {
                     <h2>My Artworks ({artworks?.data?.length || 0})</h2>
                     <div onClick={()=>router.push('/user/artist/myArtworks/addNewArt')} className={`btn ${styles.btn}`}><Plus /> Add new artwork</div>
                 </div>
-                {artworks?.data?.length > 0 && <ArtistArtworksTable data={artworks.data} />}
-            </div>
+                {artworks?.data?.length > 0 ? <ArtistArtworksTable data={artworks.data} /> 
+                : 
+                <div className='emptyCont'>
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
+                        <CircleOff />
+                        <p>Add an Artwork to see them here</p>
+                    </div>    
+                </div>}
+            </div>}
         </div>
     );
 }

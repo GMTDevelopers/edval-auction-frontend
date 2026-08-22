@@ -44,7 +44,8 @@ const GetSubmissions = async (id) => {
 
 const MySubmissions = () => {
     const {user} = useAuth(); 
-    const router = useRouter()
+    const router = useRouter();
+    const [loading, setLoading] = useState(true)
     const [sub, setSub] = useState([]);
     useEffect(() => {
         const submissions = async () => {
@@ -53,6 +54,7 @@ const MySubmissions = () => {
                 const artworks = await GetSubmissions(user?.id)
                 setSub(artworks.data || [])
                 console.log('submissions',artworks)
+                setLoading(false)
             }
         }
         submissions()
@@ -60,7 +62,7 @@ const MySubmissions = () => {
 
     return ( 
         <div className={styles.container}>
-            <div className="container">
+            {loading ? <div className='emptyCont'> <Loader /> </div> : <div className="container">
                 <div className="row3">
                     <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
                     <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
@@ -71,8 +73,16 @@ const MySubmissions = () => {
                     <h2>Submissions</h2>
                     <div onClick={()=>router.push('/user/artist/submissions/addSubmission')} className={`btn ${styles.btn}`}><Plus /> Submit new request</div>
                 </div>
-                <ArtistCommissionsTable sub={sub} />
-            </div>
+                
+                {sub?.data?.length > 0 ? <ArtistCommissionsTable sub={sub} />
+                : 
+                <div className='emptyCont'>
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
+                        <CircleOff />
+                        <p>Make a submission to see them here</p>
+                    </div>    
+                </div>}
+            </div>}
         </div>
     );
 }

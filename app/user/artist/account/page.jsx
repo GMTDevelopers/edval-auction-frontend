@@ -156,7 +156,7 @@ const Account =  () => {
                                 value={formData.profile_image_url || "/images/comission/comission.webp" }
                                 placeholder={`Add Image`}
                                 onUpload={(url) => {
-                                    const media = formData.profile_image_url;
+                                    const media = url;
                                     setformData(prev => ({
                                         ...prev,
                                         profile_image_url: media

@@ -50,7 +50,7 @@ const Navbar = () => {
                         </div>
                     </div>)}
                     {isAuthenticated && user?.role==="artist" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
-                        <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
+                        <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> {cart?.items?.length}</p> 
                         <div className={styles.navBtnLoggedIn}>
                             <img src="/images/contactUs.webp" alt="user" />
                             <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
@@ -84,7 +84,7 @@ const Navbar = () => {
                 </div>
                 <div className={isOpen&&user?.role==="registered_user"&&isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
                     <li className='btn' onClick={()=> {setIsOpen(false)}}><Link href="/user/client">My Orders</Link></li>
-                    <li className='btn' onClick={()=> {setIsOpen(false)}}>My Account</li>
+                    <li className='btn' onClick={()=> {setIsOpen(false); router.push('/user/client/account')}}>My Account</li>
                     <li className='btn' onClick={() => {logout(); setIsOpen(false);}} style={{color:"#FB0000"}}>Sign out</li>
                 </div>
                 
