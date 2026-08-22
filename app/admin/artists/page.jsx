@@ -80,7 +80,7 @@ const Artists = () => {
             </div>
             <br /><br />
             {
-                loading ? <Loader /> :
+                loading ? <div className='emptyCont'><Loader /></div>  :
                 <>
                     {filter==="artist" && <AdminArtistTable data={userDetails.data}/>}
                     {filter==="registered_user" && <AdminUserTable data={userDetails.data}/>}

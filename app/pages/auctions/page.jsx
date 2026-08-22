@@ -86,18 +86,18 @@ const AuctionPage = () => {
                         <p className="subHeading">LIVE BIDDING</p>
                         <h2>Upcoming Auctions</h2>
                     </div>
-                    <div className="row3">
-                        {
-                            loading? <Loader /> : auctionData?.length > 0 && auctionData?.map((data)=>(
-                                <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.min_participation_amount} img={data.img || `/images/homepage/auction1.png`} duration={data.duration_minutes} time={data.scheduled_at} auctStatus={data.status} slug={data.slug}/>
-                            ))
-                        }
-                        {
-                            loading? <Loader /> : auctionData?.length===0 && defaultAuctionData?.map((data)=>(
-                                <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.startingBid} img={data.img} time={data.time} status={data.status}/>
-                            ))
-                        }
-                    </div>
+                    {loading? 
+                      <div className="emptyCont">
+                        <Loader /> 
+                      </div>:
+                      <div className="row3">
+                        {auctionData?.length > 0 && auctionData?.map((data)=>(
+                          <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.min_participation_amount} img={data.img || `/images/homepage/auction1.png`} duration={data.duration_minutes} time={data.scheduled_at} auctStatus={data.status} slug={data.slug}/>
+                        ))}
+                        {auctionData?.length===0 && defaultAuctionData?.map((data)=>(
+                          <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.startingBid} img={data.img} time={data.time} status={data.status}/>
+                        ))}
+                    </div>}
                 </div>
             </div>
         </div>

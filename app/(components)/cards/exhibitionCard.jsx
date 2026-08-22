@@ -20,7 +20,7 @@ const ExhibitionCard = ({name,venue,img,slug,time,date,status,attending}) => {
                 <div className={styles.cardTimmer}>
                     <p>{attending} attending</p>
                     <div onClick={()=>router.push(`/pages/exhibition/${slug}`)} className={styles.timmerBtn}>
-                        <Link href="/pages/auctions/productDetails" >Details</Link>
+                        Details
                         
                         <ArrowRight />
                     </div>

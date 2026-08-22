@@ -84,7 +84,7 @@ const Artworks = () => {
                 </form>
             </div>
             <br /><br /><br />
-            {loading ? <Loader /> : <AdminArtworkTable data={artworks.data}/>}
+            {loading ? <div className='emptyCont'><Loader /></div>  : <AdminArtworkTable data={artworks.data}/>}
         </div>
     );
 }

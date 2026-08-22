@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import styles from '../shipping.module.css';
 import PaymentDue from '@/app/(components)/sideCard/paymentDue';
-import { Heading2 } from 'lucide-react';
+import countries from '@/app/data/countries.json'
+import { useCart } from '@/app/context/cartContext';
+import { toast } from 'sonner';
 
 
 //This is the shipping for the whole site
@@ -10,15 +12,41 @@ import { Heading2 } from 'lucide-react';
 const CartShippingDetails = () => {
     const [isAgreed, setIsAgreed] = useState(false);
     const [error, setError] = useState('');
-    const [isDelivery, setIsDevlivery] = useState(false)
-    const handleSubmit = (e) => {
+    const [isDelivery, setIsDevlivery] = useState(false);
+    const {cart, cartCheckoutFunction} = useCart();
+    const [date,setDate] = useState(new Date().toISOString().split('T')[0])
+    const [formData, setformData] = useState({
+        contact_person: "",
+        contact_phone: "",
+        delivery_method: "pickup",
+        insurance_selected: false,
+        pickup_date: date,
+        pickup_office: "",
+        postal_code: "",
+        shipping_address: "",
+        shipping_city: "",
+        shipping_country: "",
+        shipping_state: ""
+    })
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!isAgreed){
             setError('You must accept the terms to continue.');
             return;
         } 
-
+        const pickupDate = new Date(date);
+        const dataToSubmit = {
+            ...formData,
+            pickup_date: pickupDate
+        }
+        const result = await cartCheckoutFunction(dataToSubmit);
+        if (result.success) {
+            toast.success('checkout successful')
+        }
+        if(!result.success){
+            console.log('check out',result)
+            toast.error(result.error);
+        }
 
         setError('');
         console.log(error);
@@ -31,100 +59,80 @@ const CartShippingDetails = () => {
                 <div className={styles.big}>
                    {isDelivery && <h2>is delivery true</h2>}
                     <div className={styles.part2}>
-                        <form action="">
-                            <select onChange={()=>setIsDevlivery(!isDelivery)} defaultValue="Delivery Method" name="deliveryMethod">
-                                <option disabled>Delivery Method</option>                 
-                                <option value="Delivery">
-                                    Address delivery
-                                </option>                                
+                        <form onSubmit={handleSubmit}>
+                            <select value={formData.delivery_method} onChange={(e)=>{setIsDevlivery(!isDelivery); setformData(prev=>({...prev, delivery_method:e.target.value}))}}  name="deliveryMethod">                                   
                                 <option value="Pickup">
                                     Physical Pickup
-                                </option>                                                              
+                                </option>      
+                                  <option value="Shipping">
+                                    Address delivery
+                                </option>                                                         
                             </select>
                                            
-                            {isDelivery && <textarea placeholder='Delivery address' name="deliveryAddress" id=""></textarea>}
+                            {isDelivery && <textarea value={formData.shipping_address} onChange={(e)=>{setformData(prev=>({...prev, shipping_address:e.target.value}))}} placeholder='Delivery address' name="deliveryAddress" id=""></textarea>}
                             {isDelivery &&  <div className='double'>
-                                <select defaultValue="Country" name="country">
+                                <select value={formData.shipping_country} onChange={(e)=>{setformData(prev=>({...prev, shipping_country:e.target.value}))}} name="country">
                                     <option disabled>Country</option>                 
-                                    <option value="Delivery">
-                                    kongo
-                                    </option>                                
-                                    <option value="Pickup">
-                                        DRC
-                                    </option>                                                              
+                                    {(countries).map((country, index) => (
+                                        <option key={index} value={country.name}>
+                                            {country.name}
+                                        </option>
+                                    ))}                                                                
                                 </select>
-                                <select defaultValue="State" name="state">
-                                    <option disabled>State</option>                 
-                                    <option value="Delivery">
-                                        Address delivery
-                                    </option>                                
-                                    <option value="Pickup">
-                                        Physical Pickup
-                                    </option>                                                              
-                                </select>
+                                <input value={formData.shipping_state} onChange={(e)=>{setformData(prev=>({...prev, shipping_state:e.target.value}))}} name='state' type="text" placeholder='State' />
                             </div>}
                             {isDelivery &&  <div className='double'>
-                                <select defaultValue="City" name="city">
-                                    <option disabled>City</option>                 
-                                    <option value="Delivery">
-                                        City
-                                    </option>                                                                                  
-                                </select>
-                                <input name='zipCode' type="text" placeholder='ZIP Code' />
+                                <input name='city' value={formData.shipping_city} onChange={(e)=>{setformData(prev=>({...prev, shipping_city:e.target.value}))}} type="text" placeholder='City' />
+                                <input name='zipCode' value={formData.postal_code} onChange={(e)=>{setformData(prev=>({...prev, postal_code:e.target.value}))}} type="text" placeholder='ZIP Code' />
                             </div>}
-                            {!isDelivery &&  <select defaultValue="Select Pickup Office" name="pickupLocation">
-                                <option disabled>Select Pickup Office</option>                 
-                                <option value="Delivery">
-                                kongo
+                            {!isDelivery &&  <select value={formData.pickup_office} onChange={(e)=>{setformData(prev=>({...prev, pickup_office:e.target.value}))}} placeholder='Select Pickup Office' name="pickupLocation">
+                                <option>Select Pickup Office</option>                 
+                                <option value="HQ">
+                                Headquaters office Porthacurt
                                 </option>                                
-                                <option value="Pickup">
-                                    DRC
+                                <option value="Asaba branch Office">
+                                    Asaba branch Office
                                 </option>                                                              
                             </select>}
-                            {!isDelivery &&  <input type="date" name='pickupDate' />}
+                            {!isDelivery &&  <input value={date} onChange={(e)=>{setDate(e.target.value)}} type="date" name='pickupDate' />}
                                
-                           
-                            <input name='contactPerson' type="text" placeholder='Contact Person' />
-                            <input name='phoneNumber' type="tel" placeholder='Phone number' />
+                            <input value={formData.contact_person} onChange={(e)=>{setformData(prev=>({...prev, contact_person:e.target.value}))}} name='contactPerson' type="text" placeholder='Contact Person' />
+                            <input value={formData.contact_phone} onChange={(e)=>{setformData(prev=>({...prev, contact_phone:e.target.value}))}} name='phoneNumber' type="tel" placeholder='Phone number' />
                             
                             <div className="checkboxPack">
                                 <input 
                                     type="checkbox"
                                     name="agree"
                                     checked={isAgreed}
-                                    onChange={(e) => {setIsAgreed(e.target.checked); setError('')}}
+                                    onChange={(e) => {setIsAgreed(e.target.checked); setformData(prev=>({...prev, insurance_selected:e?.target?.checked})) ;setError('')}}
                                 />
                                 <div className="checkboxTxt">
                                     <p>Include insurance?</p>
                                     <p>Insurance attracts a standard charge to cover for the haulage of the products from our pickup office till it gets to you. any damage incurred in transit is fully covered and on us.</p>
-                                </div>
-                                
+                                </div>                                
                             </div>
 
-                            
                             <div className={styles.summaryPack}>
                                 <h4>Summary</h4>
                                 {!isDelivery &&  <p className="double">
                                     Pickup Address:
-                                    <span>123, Willouby Street, Central Area, New Park.</span>
+                                    <span>{formData.pickup_office}</span>
                                 </p>}
                                 {isDelivery &&  <p className="double">
                                     Delivery Address:
-                                    <span>123, Willouby Street, Central Area, New Park.</span>
+                                    <span>{formData.shipping_address}</span>
                                 </p>}
-
                                 {isDelivery &&  <p className="double">
                                     Contact Person:
-                                    <span>Nissi Olamade (+234 801 234 5678).</span>
+                                    <span>{formData.contact_person} ({formData.contact_phone}).</span>
                                 </p>}
                                 {!isDelivery &&  <p className="double">
                                     Pickup Date:
-                                    <span>June 17, 2026</span>
+                                    <span>{new Date(formData.pickup_date).toDateString()}</span>
                                 </p>}
-
                                 <p className="double">
                                     Item amount
-                                    <span>$15.00</span>
+                                    <span>${cart.subtotal}</span>
                                 </p>
                                 {isDelivery && <p className="double">
                                     Shipping fee
@@ -136,14 +144,14 @@ const CartShippingDetails = () => {
                                 </p>}
                                 <p className="double">
                                     VAT
-                                    <span>$7.50</span>
+                                    <span>$0.00</span>
                                 </p>
-                                <div className="double">
+                                {/* <div className="double">
                                     <p><span>ORDER TOTAL</span></p>
                                     <p><span>$770.00</span></p>
-                                </div>
+                                </div> */}
                             </div>
-                            <div className={`btn ${styles.submit}`}>Proceed to payment</div>
+                            <button type='submit' className={`btn ${styles.submit}`}>Proceed to payment</button>
                         </form>
                     </div>
                 </div>
@@ -151,7 +159,9 @@ const CartShippingDetails = () => {
                     <div className={styles.smallPack}>
                         <h5>Item amount</h5>
                         <div className={styles.sideLots}>                        
-                            <PaymentDue  name="Dancing in the Wind" img='/images/auction/3.webp' artist="Jane Fondant"  price="2150.00" />
+                            {
+                             cart && cart?.items?.map((item, index)=>( <PaymentDue key={index}  name={item.title} img={item.artwork.images[0].url} artist={item.artwork.artist_details.first_name} price={item.price} />))
+                            }
                         </div>
                     </div>
                 </div>

@@ -38,7 +38,7 @@ export const addItem = async (credentials) => {
     if (!response.ok) {
         throw {
             status: response.status,
-            message: data.message || "Add item failed",
+            message: data.error.message || "Add item failed",
         };
     }
 

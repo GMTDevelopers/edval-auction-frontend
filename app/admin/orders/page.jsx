@@ -79,8 +79,12 @@ const Order = () => {
                 </form>
             </div>
             <br /><br />
-            {showing==="orders"&&<AdminOrderTable /> }
-            {showing==="requests"&& <AdminRequestTable />}
+            {loading ? <div className='emptyCont'><Loader /></div>  : 
+                <>
+                    {showing==="orders"&&<AdminOrderTable />}
+                    {showing==="requests"&& <AdminRequestTable />}
+                </>
+            }
         </div>
     );
 }

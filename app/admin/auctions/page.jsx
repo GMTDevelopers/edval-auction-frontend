@@ -56,7 +56,7 @@ const Auction = () => {
             </div>
             {error && <p style={{color:"red"}}>Error: {error}</p>}
             {auctionData.length === 0 && !loading && !error && <p>No auction data available.</p>}
-            {loading ? <Loader /> : <AuctionTable Data={auctionData} />}
+            {loading ? <div className='emptyCont'> <Loader /> </div>  : <AuctionTable Data={auctionData} />}
         </div>
     );
 }

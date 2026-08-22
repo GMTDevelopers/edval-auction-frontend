@@ -1,55 +1,123 @@
 'use client';
+import { useEffect, useState } from 'react';
 import styles from './exhibition.module.css';
+import { useParams } from 'next/navigation';
+import Loader from '@/app/(components)/loader/loader';
+import { toast } from 'sonner';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+const getExhibitionData = async (slug) => {
+    try {
+        const response = await fetch(`${BASE_URL}/exhibitions/${slug}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error('Error fetching auction data:', err);
+        return {
+            success: false,
+            error: err.message,
+        };
+    }
+}
 const ExhibitionDetails = () => {
-   
-    const data = {
-        "id":1,
-        "name": "Lagos Art Exhibition - Summer 2026",
-        "slug":"lagos-art-exhibition",
-        "attending":112,
-        "time": " 10:00 AM",
-        "venue": "102, Allen Avenue, Bypass Junction, Ikeja, Lagos",
-        "date": "June 23, 2026",
-        "status":"Available",
-        "description":"The Lagos Art Expo serves as a living, breathing canvas that captures the tumultuous beauty and electric pulse of Africa's ultimate megacity. This premier exhibition dissolves the boundaries between ancestral heritage and raw modernism, gathering a fearless collective of visionary masters and radical emerging artists under one roof. It is a sensory manifestation of Lagos itself—a space where the air vibrates with ambition, history, and the relentless drive to create. Visitors are invited to step into an immersive world where the city’s complex identity is laid bare through a kaleidoscope of color, texture, and form. Every corner of the exhibition tells a story of survival, celebration, and reinvention. Powerful oil paintings capture the chaotic symphony of the streets, while towering mixed-media sculptures constructed from recycled materials reflect the city's innovative spirit. Avant-garde digital installations seamlessly blend traditional folklore with futuristic landscapes, offering a profound commentary on cultural evolution in a hyper-connected age. The expo is curated not merely to be viewed, but to be felt, guiding guests on a journey through the intimate alleyways of human emotion and the grand vistas of urban transformation.",
-        "img": "/images/exhibition/ex1.webp"
+    const [auctionData, setAuctionData] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const accessToken = localStorage.getItem("access_token");
+    const {slug} = useParams();
+
+    const handleAttendance = async () =>{
+        try {
+            const response = await fetch(`${BASE_URL}/exhibitions/${auctionData.id}/attend`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const rejctData = await response.json();
+            if (!response.ok) {
+                if(response.status===401){
+                    toast.error("Sign in to register for exhibition");
+                }else{
+                    toast.error("Failed to register.");
+                    console.error('Failed to register.');
+                }
+            }
+            if (response.ok) {
+                toast.success("Registered successfully.");
+                console.log('Registered successfully:', response);
+                setTimeout(() => {
+                    /* closeModal() */
+                    window.location.reload();
+                }, 3000);
+            }
+            
+            return rejctData;
+        } catch (err) {
+            console.error('Error creating auction:', err);
+            return false;
+        }
     }
 
-    
+    useEffect(() => {
+        const fetchAuctionData = async () => {
+            try {
+                setLoading(true);
+                const result = await getExhibitionData(slug);
+                setAuctionData(result.data);
+                setLoading(false);
+                console.log('exhibition data:', result.data);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        }
+        fetchAuctionData();
+    }, []);
     return ( 
-        <div className={styles.container}>
-            <div className={styles.galleryContainer}>
-                {/* Main Large Image */}
-                <img src={data.img} alt="exhibition" className={styles.mainImage} />
-            </div>
-            <div className={styles.detailsContainer}>
-                
-                <div className={styles.otherDetailsPack}>
-                    <li>
-                        <p>Venue</p>
-                        <p>{data.venue}</p>
-                    </li>
-                    <li>
-                        <p>Date</p>
-                        <p>{data.date}</p>
-                    </li>
-                    <li>
-                        <p>Time</p>
-                        <p>{data.time}</p>
-                    </li>
-                    <li>
-                        <p>Attendance</p>
-                        <p>{data.attending} Attendance</p>
-                    </li>
+        <>
+            {loading ? <div className='emptyCont'><Loader /></div> : 
+                <div className={styles.container}>
+                    <div className={styles.galleryContainer}>
+                        {/* Main Large Image */}
+                        <img src={auctionData.banner_url} alt="exhibition" className={styles.mainImage} />
+                    </div>
+                    <div className={styles.detailsContainer}>
+                        
+                        <div className={styles.otherDetailsPack}>
+                            <li>
+                                <p>Venue</p>
+                                <p>{auctionData.venue}</p>
+                            </li>
+                            <li>
+                                <p>Date</p>
+                                <p>{new Date(auctionData.start_date).toDateString()}</p>
+                            </li>
+                            <li>
+                                <p>Time</p>
+                                <p>{new Date(auctionData.start_date).toLocaleTimeString()}</p>
+                            </li>
+                            <li>
+                                <p>Attendance</p>
+                                <p>{auctionData.attendance_count} Attendance</p>
+                            </li>
+                        </div>
+                        <p style={{lineHeight:"24px"}}>
+                            {auctionData.description}
+                        </p>
+                        <div onClick={handleAttendance} className={`btn ${styles.addToCart}`}>I will be attending</div>
+                    </div>
+                    
                 </div>
-                <p style={{lineHeight:"24px"}}>
-                    {data.description}
-                </p>
-                <div className={`btn ${styles.addToCart}`}>I will be attending</div>
-            </div>
             
-        </div>
+            }
+        </>
     );
 }
  

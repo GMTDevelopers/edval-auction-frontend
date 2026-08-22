@@ -42,15 +42,15 @@ const Navbar = () => {
                     {!isAuthenticated && <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
                         My Account
                     </div>}
-                    {isAuthenticated && user?.role==="registered_user" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
-                        <p className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
+                    {isAuthenticated && user?.role==="registered_user" && (<div className={`btn ${styles.navBtnLoggedIn}`}>
+                        <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> {cart?.items?.length}</p> 
                         <div className={styles.navBtnLoggedIn}>
                             <img src="/images/contactUs.webp" alt="user" />
-                            <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
+                            <p  onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
                         </div>
                     </div>)}
                     {isAuthenticated && user?.role==="artist" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
-                        <p className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
+                        <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> 2</p> 
                         <div className={styles.navBtnLoggedIn}>
                             <img src="/images/contactUs.webp" alt="user" />
                             <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>

@@ -1,8 +1,12 @@
+'use client';
 import ExhibitionCard from '@/app/(components)/cards/exhibitionCard';
 import styles from './exhibition.module.css';
 import PastExhibitionCard from '@/app/(components)/cards/pastExhibition';
+import { useEffect, useState } from 'react';
+import Loader from '@/app/(components)/loader/loader';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const galleryData = [
+ const galleryData = [
     {
       "id":1,
       "name": "Lagos Art Exhibition - Summer 2026",
@@ -27,7 +31,66 @@ const galleryData = [
     },
 ]
 
+const getUpcomingExhibitionData = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/exhibitions?status=upcoming&limit=100&offset=0`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error('Error fetching auction data:', err);
+        return {
+            success: false,
+            error: err.message,
+        };
+    }
+}
+const getCompletedExhibitionData = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/exhibitions?status=ended&limit=100&offset=0`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error('Error fetching auction data:', err);
+        return {
+            success: false,
+            error: err.message,
+        };
+    }
+}
+
 const Exhibition = () => {
+    const [upcomingData, setUpcomingData] = useState([]);
+    const [endedData, setEndedData] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        const fetchAuctionData = async () => {
+            try {
+                setLoading(true);
+                const upData = await getUpcomingExhibitionData();
+                const endData = await getCompletedExhibitionData();
+                setUpcomingData(upData.data);
+                setEndedData(endData.data);
+                setLoading(false);
+                console.log('upcoming data:', upData);
+                console.log('ended data:', endData);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        }
+        fetchAuctionData();
+    }, []);
     return ( 
         <div>
             <div className='headerCenter pageHeader'>
@@ -45,12 +108,14 @@ const Exhibition = () => {
                         <p className="subHeading">EDVAL ART AUCTION</p>
                         <h2>Upcoming Exhibitions</h2>
                     </div>
-                    <div className="row2">
-                        {
-                            galleryData.map((data)=>(
-                                <ExhibitionCard key={data.id} slug={data.slug} name={data.name} venue={data.venue} img={data.img} time={data.time} date={data.date} status={data.status} attending={data.attending}/>))
-                        }
-                    </div>
+                    {loading ? <div className='emptyCont'> <Loader /> </div> :
+                        <div className="row2">
+                            {
+                                upcomingData?.map((data)=>(
+                                    <ExhibitionCard key={data.id} slug={data.slug} name={data.title} venue={data.venue} img={data.banner_url} time={new Date(data.time).toLocaleTimeString()} date={new Date(data.start_date).toDateString()} status={data.status} attending={data.attendance_count}/>))
+                            }
+                        </div>
+                    }
                 </div>
             </div>
             <section className={styles.pastExhibition}>
@@ -59,12 +124,15 @@ const Exhibition = () => {
                         <p className="subHeading">EDVAL ART AUCTION</p>
                         <h2>Past Exhibitions</h2>
                     </div>
-                    <div className="row3">
-                        {
-                            galleryData.map((data)=>(
-                                <PastExhibitionCard key={data.id} name={data.name} img={data.img} date={data.date} attending={data.attending}/>))
-                        }
-                    </div>
+                    {
+                        loading ? <div className='emptyCont'> <Loader /> </div> :
+                        <div className="row3">
+                            {
+                                endedData?.map((data)=>(
+                                    <PastExhibitionCard key={data.id} name={data.title} img={data.banner_url} date={new Date(data.start_date).toDateString()} attending={data.attendance_count}/>))
+                            }
+                        </div>
+                    }
                 </div>
             </section>
             <section className="artFeature">

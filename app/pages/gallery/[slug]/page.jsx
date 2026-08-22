@@ -1,87 +1,98 @@
-import LotDetails from "@/app/(components)/lotDetail/page";
-const galleryData = [
-    {
-      "id":1,
-      "slug": "modern-&-contemporary",
-      "name":"Modern & Contemporary",
-      "price":"400",
-      "artist":"Michael Scarlet",
-      "year": 2022,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/homepage/gallery1.webp', '/images/homepage/gallery3.webp', '/images/auction/2.webp'],
-      "img": "/images/homepage/gallery1.webp"
-    },
-    {
-      "id":2,
-      "slug": "modern-&-contemporary",
-      "name":"Modern & Contemporary",
-      "price":"400",
-      "artist":"Michael Scarlet",
-      "year": 2022,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/homepage/gallery1.webp', '/images/homepage/gallery3.webp', '/images/auction/2.webp'],
-      "img": "/images/homepage/gallery6.webp"
-    },
-    {
-      "id":3,
-      "slug": "modern-&-contemporary",
-      "name":"Modern & Contemporary",
-      "price":"400",
-      "artist":"Michael Scarlet",
-      "year": 2022,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/homepage/gallery1.webp', '/images/homepage/gallery3.webp', '/images/auction/2.webp'],
-      "img": "/images/homepage/gallery4.webp"
-    },
-    {
-      "id":4,
-      "slug": "modern-&-contemporary",
-      "name":"Modern & Contemporary",
-      "price":"400",
-      "artist":"Michael Scarlet",
-      "year": 2022,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/homepage/gallery1.webp', '/images/homepage/gallery3.webp', '/images/auction/2.webp'],
-      "img": "/images/homepage/gallery8.webp"
-    },
-]
+'use client';
+
 import styles from './galleryDet.module.css';
 import GalleryCard from "@/app/(components)/cards/galleryCard";
+import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import ArtworkDetail from "@/app/(components)/lotDetail/artworkDetail";
+import Loader from '@/app/(components)/loader/loader';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const GetArtwork = async (slug) => {
+  try {
+    const response = await fetch(`${BASE_URL}/artworks/${slug}`, { 
+    method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw( 
+        response.status,
+        data.error|| "failed to get Artworks"
+      )
+    }
+    console.log("artwork",data)
+    return {
+      success:true,
+      data: data
+    };
+  } catch (err) {
+    console.log(err)
+    return {
+      success: false,
+      err,
+    };
+  }
+};
+const GetRelatedArtwork = async (category) => {
+  try {
+    const response = await fetch(`${BASE_URL}/artworks?category=${category}&limit=4&offset=0`, { 
+    method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw( 
+        response.status,
+        data.error|| "failed to get Artworks"
+      )
+    }
+    console.log("artwork",data)
+    return {
+      success:true,
+      data: data
+    };
+  } catch (err) {
+    console.log(err)
+    return {
+      success: false,
+      err,
+    };
+  }
+};
 const GalleryDetailsPage = () => {
-
+    const [loading, setLoading] = useState(true);
+    const [artwork, setArtwork] = useState({});
+    const [relArtwork, setRelArtwork] = useState([]);
+    const {slug} = useParams()
+    const searchParams = useSearchParams();
+    const category = searchParams.get('category');
+    useEffect(() => {
+        console.log('searchParams', category.toString())
+        const trying = async () => {
+            setLoading(true);
+            const result = await GetArtwork(slug);
+            const relResult = await GetRelatedArtwork(category.toString())
+            if (result.success) {
+                setArtwork(result.data);
+            }
+            if (relResult.success) {
+                setRelArtwork(relResult.data.data);
+                console.log('relatied works', relResult.data.data )
+            }
+    
+          setLoading(false);
+        };
+        trying()
+    }, []);
     {/* if we get here by slug you need to filter by slog*/}
     return ( 
         <div>
-            <LotDetails className={`container ${styles.detailsContainer}`} data={galleryData[0]}/>
-            <div className="upcomingAuctions">
+            {loading? <Loader /> : <ArtworkDetail className={`container ${styles.detailsContainer}`} data={artwork.data}/>}
+            {!loading && <div className="upcomingAuctions">
                 <div className="container">
                     <div>
                         <p className="subHeading">GALLERY</p>
@@ -89,12 +100,13 @@ const GalleryDetailsPage = () => {
                     </div>
                     <div className="row4">
                         {
-                            galleryData.map((data)=>(
-                                <GalleryCard key={data.id} slug={data.slug} name={data.name} price={data.price} img={data.img} artist={data.artist}/>))
+                            relArtwork && relArtwork?.map((data)=>(
+                                <GalleryCard key={data.id} category={data.category} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artist={data.artist_details.first_name || data.artist_details.first_name}/>
+                            ))
                         }
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }

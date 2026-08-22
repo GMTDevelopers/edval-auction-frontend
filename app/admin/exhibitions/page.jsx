@@ -87,7 +87,7 @@ const Exhibitions = () => {
                 </form>
             </div>
             <br /><br />
-            {loading ? <Loader /> : <AdminExhibitionTable data={exDetails.data}/>}
+            {loading ? <div className='emptyCont'><Loader /></div>  : <AdminExhibitionTable data={exDetails.data}/>}
         </div>
     );
 }
