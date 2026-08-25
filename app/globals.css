@@ -43,12 +43,7 @@ p span{
   font-weight: 700;
   color: var(--foreground);
 }
-.emptyCont{
-  height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 /* Texts */
 h1,h2,h3,h4,h5,h6{
   font-family: var(--font-heading);
@@ -85,6 +80,12 @@ a{
   width: 100%;
   text-align: center;
   margin-bottom: 48px;
+}
+.emptyCont{
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .btn{
   display: inherit;

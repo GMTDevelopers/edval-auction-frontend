@@ -1,6 +1,50 @@
 import { Download } from 'lucide-react';
 import styles from './orderDet.module.css';
-const OrderDet = ({data}) => {
+import { initializePayment } from '@/app/services/payment';
+import { toast } from 'sonner';
+import { useState } from 'react';
+const OrderDet = ({data, status}) => {
+
+    const [loading, setLoading] = useState(false);
+    const [payinitData, setPayInitData] = useState({
+        callback_url: "",
+        item_id: 0,
+        item_type: ""
+    });
+    const handlePay = async () => {
+        try {
+            setLoading(true);
+
+            // Replace with your real success page
+
+            const callbackUrl = `${window.location.origin}/payment/callback`;
+
+            const initData = {
+                ...payinitData,
+                callback_url: callbackUrl,
+                item_id: data?.id,
+                item_type: "gallery_order"
+            }
+            const resData = await initializePayment(initData);
+
+            // Most backends (and Paystack) return an authorization_url
+            if (resData.data?.authorization_url) {
+                window.location.href = resData.data.authorization_url;
+            } else if (resData.authorization_url) {
+                window.location.href = resData.authorization_url;
+            } else {
+                console.log("Full response:", resData);
+                toast.error("Payment initialized but no redirect URL found");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message || "Payment failed");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     return ( 
         <div className={styles.OrderDet}>
             <div className="container">
@@ -42,7 +86,9 @@ const OrderDet = ({data}) => {
                         {/* <p>Email: kosiposo@mailinator.com</p> */}
                     </div>
                 </div>
-                <li style={{listStyleType:"none", gap:"8px !important"}}><Download size={15} /> Download invoice (.pdf)</li>
+                {
+                    status==='pending'? <div className='btn' onClick={handlePay}> Make Payment </div>:
+                    <li style={{listStyleType:"none", gap:"8px !important"}}><Download size={15} /> Download invoice (.pdf)</li>}
             </div>
 
         </div>

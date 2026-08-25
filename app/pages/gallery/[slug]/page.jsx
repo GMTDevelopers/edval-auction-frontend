@@ -90,24 +90,24 @@ const GalleryDetailsPage = () => {
     }, []);
     {/* if we get here by slug you need to filter by slog*/}
     return ( 
-        <div>
-            {loading? <Loader /> : <ArtworkDetail className={`container ${styles.detailsContainer}`} data={artwork.data}/>}
-            {!loading && <div className="upcomingAuctions">
-                <div className="container">
-                    <div>
-                        <p className="subHeading">GALLERY</p>
-                        <h2>Related Artworks</h2>
-                    </div>
-                    <div className="row4">
-                        {
-                            relArtwork && relArtwork?.map((data)=>(
-                                <GalleryCard key={data.id} category={data.category} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artist={data.artist_details.first_name || data.artist_details.first_name}/>
-                            ))
-                        }
-                    </div>
-                </div>
-            </div>}
-        </div>
+      <div>
+        {loading?<div className='emptyCont'> <Loader /> </div>: <ArtworkDetail className={`container ${styles.detailsContainer}`} data={artwork.data}/>}
+        {!loading && <div className="upcomingAuctions">
+          <div className="container">
+            <div>
+              <p className="subHeading">GALLERY</p>
+              <h2>Related Artworks</h2>
+            </div>
+            <div className="row4">
+              {
+                relArtwork && relArtwork?.map((data)=>(
+                  <GalleryCard key={data.id} category={data.category} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artist={data.artist_details.first_name || data.artist_details.first_name}/>
+                ))
+              }
+            </div>
+          </div>
+        </div>}
+      </div>
     );
 }
  

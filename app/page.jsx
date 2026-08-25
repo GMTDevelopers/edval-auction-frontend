@@ -11,7 +11,7 @@ import { useAuth } from "./context/authContext";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const getAuctionData = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/auctions?status=upcoming&limit=3&offset=0`, {
+    const response = await fetch(`${BASE_URL}/auctions?status=upcoming,live&limit=3&offset=0`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -2,6 +2,9 @@
     margin-top: 50px;
     gap: 0px;
 }
+.form div{
+    margin-top: 25px;
+}
 .form p:first-child{
     font-size: 20px;
     line-height: 28px;

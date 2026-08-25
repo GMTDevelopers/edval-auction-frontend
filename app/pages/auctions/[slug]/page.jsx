@@ -111,8 +111,8 @@ const ProdDetPage =  () => {
                 },
             });
             const data = await response.json();
-            setAuctionLotData(data?.data);
-            setAuctionLotDataPass(data);
+            setAuctionLotData(data?.data.lots);
+         /*    setAuctionLotDataPass(data); */
             
             console.log("auction lots data:", data.data);
         } catch (err) {
@@ -128,6 +128,17 @@ const ProdDetPage =  () => {
         getAuction();
         getAuctionLots();
     }, []);
+
+/*     useEffect(() => {
+        if (!auctionData || !auctionLotData) return;
+
+        const activeLot = auctionLotData.find(
+            lot => lot.lot_number === auctionData.active_lot_id
+        );
+
+        setAuctionLotDataPass(activeLot); // if you want to store it
+        console.log("Active lot:", activeLot);
+    }, [auctionData, auctionLotData]); */
 
     return ( 
         <div className={styles.auctionPack}>
@@ -174,7 +185,7 @@ const ProdDetPage =  () => {
                             <h3>Auction Overview</h3>
                             <div className={styles.statsList}>
                                 <li>
-                                    <p>Active Lot: <span> Dancing in the Wind </span></p>
+                                    <p>Active Lot: <span>{auctionLotDataPass?.title} </span></p>
                                 </li>
                                 <li>
                                     <p>Starting Bid: <span>$ 300.00</span></p>

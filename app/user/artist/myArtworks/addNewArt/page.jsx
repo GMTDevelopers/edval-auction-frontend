@@ -214,7 +214,14 @@ const AddNewArt = () => {
                                     </select>
                                 </div>
                             </div>
-                            <input value={formData.price} onChange={(e)=>setformData(prev=>({...prev, price:Number(e.target.value)}))}placeholder="Selling price" type="tel" name="sellPrice" />
+                            <input value={formData.price} inputMode="decimal" onChange={(e)=>{
+                                const value = e.target.value; 
+                                if (/^\d*(\.\d{0,2})?$/.test(value)) {
+                                    setformData(prev=>({...prev, 
+                                    price:Number(value)}))
+                                
+                                }
+                            }} placeholder="Selling price 0.00" type="tel" name="sellPrice" />
                             <button className="btn submit">Submit request</button>
                         </div>
                     </div>

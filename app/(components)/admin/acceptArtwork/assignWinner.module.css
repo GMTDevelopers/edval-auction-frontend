@@ -1,0 +1,17 @@
+.container{
+    width: 623px ;
+}
+.container div:first-child{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.container div:first-child p{
+    font-weight: 400;
+    line-height: 28px;
+}
+.form{
+    gap: 8px;
+    margin-top: 30px;
+}

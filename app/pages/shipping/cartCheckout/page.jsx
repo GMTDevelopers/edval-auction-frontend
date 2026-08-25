@@ -5,6 +5,8 @@ import PaymentDue from '@/app/(components)/sideCard/paymentDue';
 import countries from '@/app/data/countries.json'
 import { useCart } from '@/app/context/cartContext';
 import { toast } from 'sonner';
+import ButtonLoader from '@/app/(components)/loader/buttonloader';
+import { initializePayment } from '@/app/services/payment';
 
 
 //This is the shipping for the whole site
@@ -14,6 +16,7 @@ const CartShippingDetails = () => {
     const [error, setError] = useState('');
     const [isDelivery, setIsDevlivery] = useState(false);
     const {cart, cartCheckoutFunction} = useCart();
+    const [loading, setLoading] = useState(false)
     const [date,setDate] = useState(new Date().toISOString().split('T')[0])
     const [formData, setformData] = useState({
         contact_person: "",
@@ -28,27 +31,59 @@ const CartShippingDetails = () => {
         shipping_country: "",
         shipping_state: ""
     })
+    const [payinitData, setPayInitData] = useState({
+        callback_url: "",
+        item_id: 0,
+        item_type: ""
+    })
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isAgreed){
             setError('You must accept the terms to continue.');
             return;
         } 
+        setLoading(true);
         const pickupDate = new Date(date);
         const dataToSubmit = {
             ...formData,
             pickup_date: pickupDate
         }
         const result = await cartCheckoutFunction(dataToSubmit);
+        console.log('checkout result', result)
         if (result.success) {
-            toast.success('checkout successful')
+            try {
+                
+                const callbackUrl = `${window.location.origin}/cart/callback`;
+                const initData = {
+                    ...payinitData,
+                    callback_url: callbackUrl ,
+                    item_id: result?.data?.data.id,
+                    item_type: "gallery_order"
+                }
+                const data = await initializePayment(initData);
+
+                // Most backends (and Paystack) return an authorization_url
+                if (data.data?.authorization_url) {
+                    window.location.href = data.data.authorization_url;
+                } else if (data.authorization_url) {
+                    window.location.href = data.authorization_url;
+                } else {
+                    console.log("Full response:", data);
+                    toast.error("Payment initialized but no redirect URL found");
+                }
+            } catch (err) {
+                console.error(err);
+                toast.error(err.message || "Payment failed");
+            }           
+          /*   toast.success('checkout successful') */
         }
         if(!result.success){
+            setLoading(false);
             console.log('check out',result)
             toast.error(result.error);
         }
-
         setError('');
+        setLoading(false);
         console.log(error);
     };
 
@@ -151,7 +186,7 @@ const CartShippingDetails = () => {
                                     <p><span>$770.00</span></p>
                                 </div> */}
                             </div>
-                            <button type='submit' className={`btn ${styles.submit}`}>Proceed to payment</button>
+                            <button type='submit' className={`btn ${styles.submit}`}>{loading ? <ButtonLoader /> : "Proceed to payment"}</button>
                         </form>
                     </div>
                 </div>

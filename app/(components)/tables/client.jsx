@@ -1,35 +1,10 @@
 'use client';
+import { CircleOff } from 'lucide-react';
 import OrderDet from '../clientOrderDetail/page';
 import { useModal } from '../ModalProvider/ModalProvider';
 import styles from './tables.module.css';
 const Table = ({data}) => {
     const { openModal } = useModal();
-    /* const data = [
-        {
-            orderId:"E-2100",
-            item:{
-                img:"/images/auction/1.webp",
-                name:"Whispers of Dawn",
-                artist:"Aria Belrose"
-            },
-            avenue:"Direct Purchase",
-            date:"12002300",
-            status:"Processing",
-            amount:"150.00"
-        },
-        {
-            orderId:"E-2101",
-            item:{
-                img:"/images/auction/2.webp",
-                name:"Echoes of Time",
-                artist:"Liam Chen"
-            },
-            avenue:"Auction winning",
-            date:"12002300",
-            status:"Processing",
-            amount:"300.00"
-        }
-    ] */
     return ( 
         
             
@@ -51,8 +26,8 @@ const Table = ({data}) => {
                         </tr>
                     </thead>
                     <tbody> 
-                    {data.length !==0 && data.map((b) => (
-                        <tr onClick={()=>openModal(<OrderDet data={b}/>)} className={styles.dataRow} key={b.orderId} >
+                    {data.length !==0 && data.map((b, index) => (
+                        <tr key={index} onClick={()=>openModal(<OrderDet status={b?.status} data={b}/>)} className={styles.dataRow} >
                             <td>{b?.code}</td>
                             {/* <td>
                                 <div className={styles.tableDouble}>

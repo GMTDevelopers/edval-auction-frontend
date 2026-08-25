@@ -154,6 +154,7 @@ const GetArtworks = async (filter) => {
       limit: 10000,
       offset: 0,
       request_type: "gallery",
+      status:"approved"
     });
 
     if (filter.search) params.append("search", filter.search);

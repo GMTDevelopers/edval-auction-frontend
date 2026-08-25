@@ -10,22 +10,6 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
     const [cartError, setError] = useState(null);
-/*     useEffect(()=>{
-        const saved=localStorage.getItem("cart");
-        if(saved){
-
-            setCart(JSON.parse(saved));
-
-        }
-
-    },[]);
-    //Function for persistence
-    useEffect(()=>{
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
-        );
-    },[cart]); */
 
     const getCartFunction = async () => {
         try {
@@ -54,6 +38,8 @@ export const CartProvider = ({ children }) => {
         setError(null);
         try {
             const response = await addItem(credentials);
+            // Refresh cart after adding
+            await getCartFunction();
             return {
                 success: true,
                 data: response,
@@ -72,6 +58,8 @@ export const CartProvider = ({ children }) => {
         setError(null);
         try {
             const response = await cartCheckout(credentials);
+            // Refresh cart after adding
+            await getCartFunction();
             return {
                 success: true,
                 data: response,
@@ -90,6 +78,8 @@ export const CartProvider = ({ children }) => {
         setError(null);
         try {
             const response = await removeItem(credentials);
+            // Refresh cart after adding
+            await getCartFunction();
             return {
                 success: true,
                 data: response,

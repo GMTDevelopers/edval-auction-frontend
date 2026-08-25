@@ -12,7 +12,7 @@ const Cart = () => {
     console.log("cart:", cart)
     return ( 
         <>
-            { cart.subtotal===0 ? <div className='emptyCont'>
+            { cart?.length===0 || cart?.subtotal===0 ? <div className='emptyCont'>
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
                     <CircleOff />
                     <p>Cart is empty</p>
@@ -23,7 +23,7 @@ const Cart = () => {
                     <div className={`container double`}>
                         <div className={`big ${styles.cartBig}`}>
                             {
-                                cart?.items.map((item)=>(
+                                cart?.items?.map((item)=>(
 
                                     <CartCard key={item.id} id={item.id} name={item.title} img={item.artwork.images[0].url} artist={item.artwork.artist_details.first_name || item.artwork.artist_details.last_name} price={item.price} description={item.artwork.description} />
 

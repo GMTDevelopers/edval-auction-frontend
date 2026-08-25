@@ -19,8 +19,13 @@ const ArtworkDetail = ({data}) => {
             toast.success('item added to cart')
         }
         if(!result.success){
-            console.log('add to cart',result)
-            toast.error(result.error);
+            if(result.error==="invalid or expired token"){
+                toast.error("Login to add item to cart");
+            }else{
+                console.log('add to cart',result)
+                toast.error(result.error);
+            }
+            
         }
     }
 
@@ -90,7 +95,7 @@ const ArtworkDetail = ({data}) => {
                         <p>{data?.proof_of_authenticity.toString()}</p>
                     </li>
                 </div>
-                {data.listing_type==='gallery' || data.request_type==='gallery' && <div onClick={handleAddToCart} className={`btn ${styles.addToCart}`}>Add to cart</div>}
+                {data.request_type==='gallery' && <div onClick={handleAddToCart} className={`btn ${styles.addToCart}`}>Add to cart</div>}
             </div>
             
         </div>

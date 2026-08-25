@@ -5,6 +5,7 @@ import { useModal } from '../ModalProvider/ModalProvider';
 import { toast } from 'sonner';
 import RejectListing from '../admin/rejectArtwork/page';
 import EditArtwork from '../ArtistEdit/artworkEdit';
+import ApproveListing from '../admin/acceptArtwork/page';
 
 const AdminArtistLotDetails = ({data}) => {
     const { openModal } = useModal();
@@ -120,11 +121,11 @@ const AdminArtistLotDetails = ({data}) => {
                 </div>
                 <br />
                 <div className="double">
-                    {!approved && <p style={{color:"#419E5A"}}>Approve listing</p>}
+                    {!approved && <p style={{color:"#419E5A", cursor: "pointer"}} onClick={()=>openModal(<ApproveListing artworkID={data.id} thumb={data?.images[0].url} title={data.title} artist={data?.artist_details?.first_name} year={data.year_created} dateSubmitted={data.created_at.toLocaleString()} />)}>Approve listing</p>}
                     <p onClick={() => openModal(<EditArtwork lot={data} />)} style={{cursor: "pointer"}}>Edit listing</p>
-                    {approved && <p>Mark inactive</p>}
+                    {approved && <p style={{cursor: "pointer"}}>Mark inactive</p>}
                     {approved &&  <p style={{color:"#FB0000", cursor: "pointer"}} onClick={handleDelete}>Delete listing</p>}
-                    {!approved && <p onClick={()=>openModal(<RejectListing artworkID={data.id} thumb={data?.images[0].url} title={data.title} artist={data?.artist_details?.first_name} year={data.year_created} dateSubmitted={data.created_at.toLocaleString()} />)} style={{color:"#FB0000"}}>Reject listing</p>}
+                    {!approved && <p onClick={()=>openModal(<RejectListing artworkID={data.id} thumb={data?.images[0].url} title={data.title} artist={data?.artist_details?.first_name} year={data.year_created} dateSubmitted={data.created_at.toLocaleString()} />)} style={{color:"#FB0000", cursor: "pointer"}}>Reject listing</p>}
                 </div>
             </div>
             

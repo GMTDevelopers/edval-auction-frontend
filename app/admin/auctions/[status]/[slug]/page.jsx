@@ -13,18 +13,34 @@ import { refreshUser } from '@/app/services/authServices';
 import AddNewLot from '@/app/(components)/admin/addLot/page';
 import AdminWinner from '@/app/(components)/sideCard/adminWinner';
 import { toast } from 'sonner';
+import Countdown from '@/app/(components)/counter/page';
+import { useAuth } from '@/app/context/authContext';
 const ProdDetPage = () => {
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const { openModal } = useModal();
+    const { user } = useAuth();
     const [auctionData, setAuctionData] = useState(null);
     const [auctionLotData, setAuctionLotData] = useState(null);
+    const [regBidders, setRegBidders] = useState([]);
     const [activeLot, setActiveLot] = useState(null);
+    const [activeLotData, setActiveLotData] = useState([]);
+    const [liveBid, setLiveBid] = useState("");
     const [status, setStatus] = useState();
     const [error, setError] = useState(null);
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const router = useRouter();
 
+    const [formData, setformData] = useState({
+        amount: '',
+        channel: "",
+        placed_by_admin_id: user?.id,
+        user_id: 0,
+    });
+    const [startAuctionForm, setStartAuctionForm] = useState({
+        bidding_phone_number: "",
+        status: ""
+    });
 
     const getAuction = async () => {
         try {
@@ -56,6 +72,50 @@ const ProdDetPage = () => {
             };
         }
     }
+    const getActiveLot = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${id}/active-lot`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setActiveLotData(data?.data);
+            console.log("active lot data:", data);
+        } catch (err) {
+            setError(err);
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
+    const getBidStreams = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${id}/live`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setLiveBid(data);
+            console.log("bid streams data:", data);
+        } catch (err) {
+            setError(err);
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
 
     const getAuctionLots = async () => {
         try {
@@ -68,7 +128,7 @@ const ProdDetPage = () => {
                 },
             });
             const data = await response.json();
-            setAuctionLotData(data?.data);
+            setAuctionLotData(data?.data.lots);
             console.log("auction lots data:", data.data);
         } catch (err) {
             setError(err);
@@ -77,6 +137,35 @@ const ProdDetPage = () => {
                 if (refreshed) {
                     console.log("Token refreshed successfully, retrying getAuctionLots...");
                     return getAuctionLots();
+                }
+            }
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
+    const getRegBidders = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${id}/registrations?limit=20&offset=0`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setRegBidders(data?.data);
+            console.log("Registered bidders:", data);
+        } catch (err) {
+            setError(err);
+            if (err.status === 401) {
+                const refreshed = await refreshUser();
+                if (refreshed) {
+                    console.log("Token refreshed successfully, retrying getRegBidders...");
+                    return getRegBidders();
                 }
             }
             return {
@@ -115,7 +204,6 @@ const ProdDetPage = () => {
             };
         }
     }
-
     const handleSetActiveLot = async (activeLotID) => {
         const accessToken = localStorage.getItem("access_token");
         try {
@@ -126,7 +214,7 @@ const ProdDetPage = () => {
                     "authorization": `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({
-                    lot_id: Number(activeLotID),
+                    lot_number: Number(activeLotID),
                 }),
             });
             const data = await response.json();
@@ -135,6 +223,7 @@ const ProdDetPage = () => {
                 console.log(data)
             }
             if (response.ok) {
+                getActiveLot();
                 toast.success("Active lot changed successfully.");
                 console.log('Active lot changed successfully:', data);
             }
@@ -147,19 +236,45 @@ const ProdDetPage = () => {
         }
     }
 
-    const [formData, setformData] = useState({
-        amount: 0,
-        channel: "platform",
-        placed_by_admin_id: 0,
-    });
-    const [startAuctionForm, setStartAuctionForm] = useState({
-        bidding_phone_number: "",
-        status: auctionData?.status
-    });
+    const handlePlaceBid = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${BASE_URL}/lots/${activeLotData.id}/bids`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.error.message);
+                console.log(data)
+            }
+            if (response.ok) {
+                getActiveLot();
+                getBidStreams()
+                toast.success("Bid placed successfully.");
+                console.log('Bid placed successfully:', data);
+            }
+        } catch (err) {
+            console.log(err)
+            return {
+                success: false,
+                err,
+            };
+        }
+    }
+
+
 
     useEffect(() => {
         getAuction();
         getAuctionLots();
+        getRegBidders();
+        getActiveLot()
+        getBidStreams()
     }, [status, activeLot]);
 
     return ( 
@@ -172,41 +287,54 @@ const ProdDetPage = () => {
             <br /><br />
             <div style={{alignItems:"normal"}} className={`container double`}>
                 <div className={styles.big}>
-                    <iframe className={styles.streamVideo} src="https://www.youtube.com/embed/G4yQtdtkO80?si=D6t7epPXS9-bXVnm" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                    <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
                     {/* <img  src="/images/auction/live.webp" alt="live" /> */}
-                    <h2>Sisters of the Sound - Art Auction (LIVE)</h2>
-                    <p>Artworks: <span> Black or Beauty?, Dancing in the Wind, Calm & Open {auctionData?.name} </span> </p>
-                    <div className={styles.endsIn}>
-                        <p>Auction ends in</p>
-                        <div className={styles.timerPack}>
-                            <div className={styles.timer}>
-                                <img src="/images/auction/timer.png" alt="timmer" />
+                    <h2>{auctionData?.name}</h2>
+                    <p>Artworks: <span> Black or Beauty?, Dancing in the Wind, Calm & Open  </span> </p>
+                     { auctionData?.status==='live' ? 
+                        <div className={styles.endsIn}>
+                            <p>Auction ends in</p>
+                            <div className={styles.timerPack}>
+                                <div className={styles.timer}>
+                                    <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
+                                </div>
+                                {/*the button (components) needs to have conditional rendering */}
+                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders />)}>View registered bidders (77)</div>
                             </div>
-                            {/*the button (components) needs to have conditional rendering */}
-                            <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders />)}>View registered bidders (77)</div>
+                        </div> : 
+                        <div className={styles.endsIn}>
+                            <p>Auction Starts in</p>
+                            <div className={styles.timerPack}>
+                                <div className={styles.timerPackUp}>
+                                    <p>{new Date(auctionData?.scheduled_at).toDateString()}</p>
+                                    <p>{new Date(auctionData?.scheduled_at).toLocaleTimeString()}</p>
+                                </div>
+                                
+                                {/*the button (components) needs to have conditional rendering */}
+                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders />)}>View registered bidders (77)</div>
+                            </div>
                         </div>
-
-                    </div>
-                    {/* Conditionaly rendered */}
+                    }
+                    {/* AUCTION OVERVIEW */}
                     {auctionData?.status === "live" && (
                         <div className={styles.statsPack}>
                             <div style={{backgroundColor:"#F2F0DB"}} className={styles.statsCard}>
                                 <h3>Auction Overview</h3>
                                 <div className={styles.statsList}>
                                     <li>
-                                        <p>Active Lot: <span> Dancing in the Wind </span></p>
+                                        <p>Active Lot: <span> {activeLotData.title} </span></p>
                                     </li>
                                     <li>
-                                        <p>Starting Bid: <span>$ 300.00</span></p>
+                                        <p>Starting Bid: <span>$ {activeLotData.starting_bid}</span></p>
                                     </li>
                                     <li>
-                                        <p>Highest Bid: <span>  $1,850.00 </span></p>
+                                        <p>Current Bid: <span>  $ {activeLotData.current_bid} </span></p>
                                     </li>
                                     <li>
-                                        <p>Bidder: <span> Michael Johnson </span></p>
+                                        <p>Bidder: <span> {activeLotData.current_bidder_name} </span></p>
                                     </li>
                                     <li>
-                                        <p>Auction Status: <span> Open </span></p>
+                                        <p>Auction Status: <span> {auctionData.status} </span></p>
                                     </li>
                                 </div>
                             </div>
@@ -245,71 +373,84 @@ const ProdDetPage = () => {
                     <div>
                         {
                             auctionData?.status === "live" ? 
-                            (<form className={pageStyles.form} action="">
-                                <p> <span>ADMIN ACTIONS</span></p>
-                                <div className="rowMultiple">
-                                    <p>Auction status</p>
-                                    <select className={styles.graphType} value={startAuctionForm?.status} onChange={(e)=>{const newStatus = e.target.value; setStartAuctionForm(prev=>({...prev, status:newStatus})), handleStatusChange()}} name="auctionStatus" >          
-                                        <option value="draft">
-                                            Draft
-                                        </option>                                
-                                        <option value="upcoming">
-                                            Upcoming
-                                        </option>                                
-                                        <option value="live">
-                                            Live
-                                        </option>                                                                                                                          
-                                        <option value="completed">
-                                            Completed
-                                        </option>                                                                                                                          
-                                        <option value="cancelled">
-                                            Cancelled
-                                        </option>                                                                                                                          
-                                    </select>
-                                </div>
-                                <div className="rowMultiple">
-                                    <p>Bidding phone number</p>
-                                    <input type='tel' name='bidPhone' placeholder='12345678910' />
-                                </div>
-                                <div className="rowMultiple">
-                                    <p>Active lot</p>
-                                    <select value={activeLot} className={styles.graphType} onChange={(e)=>{e.preventDefault(); const activeLot = e.target.value; setActiveLot(activeLot), handleSetActiveLot(activeLot)}} name="activeLot" id="">
-                                        <option value="Active lot">Select active lot</option>
-                                        {auctionLotData?.length && auctionLotData?.map((lot)=>(
-                                            <option value={lot.artwork.id}>{lot.artwork.title}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="rowMultiple">
-                                    <p>Current bid (User)</p>
-                                    <select className={styles.graphType} name="activeLot" id="">
-                                        <option value="Active lot">Select user</option>
-                                    </select>
-                                </div>
-                                <div className="rowMultiple">
-                                    <p>Amount bid</p>
-                                    <input type="text" inputMode="decimal" value={formData.reserve_price}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-
-                                            if (/^\d*(\.\d{0,2})?$/.test(value)) {
-                                                setformData(prev => ({
-                                                    ...prev,
-                                                    reserve_price: value
-                                                }));
-                                            }
-                                        }}
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div className="rowMultiple">
-                                    <p>Current bid (User)</p>
-                                    <select className={styles.graphType} name="activeLot" id="">
-                                        <option value="Open">Open</option>
-                                    </select>
-                                </div>
-                                <button style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className='btn artFeatureBtn'> Save live update</button>
-                            </form>):
+                            (<div>
+                                <form className={pageStyles.form}>
+                                    <p> <span>CLOSE AUCTION</span></p>
+                                    <div className="rowMultiple">
+                                        <p>Auction status</p>
+                                        <select className={styles.graphType} value={startAuctionForm?.status || auctionData?.status} onChange={(e)=>{const newStatus = e.target.value; setStartAuctionForm(prev=>({...prev, status:newStatus})); handleStartAuction()}} name="auctionStatus" >          
+                                            <option value="draft">
+                                                Draft
+                                            </option>                                
+                                            <option value="upcoming">
+                                                Upcoming
+                                            </option>                                
+                                            <option value="live">
+                                                Live
+                                            </option>                                                                                                                          
+                                            <option value="completed">
+                                                Completed
+                                            </option>                                                                                                                          
+                                            <option value="cancelled">
+                                                Cancelled
+                                            </option>                                                                                                                          
+                                        </select>
+                                    </div>
+                                    <div className="rowMultiple">
+                                        <p>Bidding phone number</p>
+                                        <input type='tel' name='bidPhone' placeholder='12345678910' />
+                                    </div>
+                                   {/*  <button style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className='btn artFeatureBtn'> Save update</button> */}
+                                </form>
+                                <form className={pageStyles.form}>
+                                    <p> <span>CHANGE ACTIVE LOT</span></p>
+                                    <div className="rowMultiple">
+                                        <p>Active lot</p>
+                                        <select value={activeLot} className={styles.graphType} onChange={(e)=>{e.preventDefault(); const activeLot = e.target.value; setActiveLot(activeLot), handleSetActiveLot(activeLot)}} name="activeLot" id="">
+                                            <option value="Active lot">{activeLotData.title}</option>
+                                            {auctionLotData?.length && auctionLotData?.map((lot, index)=>(
+                                                <option key={index} value={lot.lot_number}>{lot.artwork.title}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </form>
+                                <form className={pageStyles.form} onSubmit={(e)=>{e.preventDefault(); handlePlaceBid()}}>
+                                    <p> <span>PLACE BID </span></p>
+                                    
+                                    <div className="rowMultiple">
+                                        <p>Bid Channel</p>
+                                        <select className={styles.graphType} value={formData.channel} onChange={(e)=>setformData(prev=>({...prev, channel:e.target.value}))} name="activeLot" id="">
+                                            <option value="Website Platform">Website Platform</option>
+                                            <option value="Phone Bidding">Phone Bidding</option>
+                                        </select>
+                                    </div>
+                                    <div className="rowMultiple">
+                                        <p>Current bid (User)</p>
+                                        <select className={styles.graphType} value={formData.user_id} onChange={(e)=>setformData(prev=>({...prev, user_id:Number(e.target.value)}))} name="activeLot" id="">
+                                            <option value="Active lot">Select user</option>
+                                            {regBidders?.length && regBidders?.map((user,index)=>(
+                                                <option key={index} value={user.id}>{user.first_name} {user.last_name }</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="rowMultiple">
+                                        <p>Amount bid</p>
+                                        <input type="text" inputMode="decimal" value={formData.amount}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                if (/^\d*(\.\d{0,2})?$/.test(value)) {
+                                                    setformData(prev => ({
+                                                        ...prev,
+                                                        amount: Number(value)
+                                                    }));
+                                                }
+                                            }}
+                                            placeholder="0.00"
+                                        />
+                                    </div>
+                                    <button style={{width:"fit-content", background:"#3A3930", color:"#FDFBEC"}} className='btn artFeatureBtn'> Place bid</button>
+                                </form>
+                            </div>):
                             (<form className={pageStyles.form} onSubmit={(e)=>{e.preventDefault(); handleStartAuction()}}>
                                 <p> <span>ADMIN ACTIONS</span></p>
                                 <div className="rowMultiple">
@@ -318,7 +459,7 @@ const ProdDetPage = () => {
                                 </div>
                                 <div className="rowMultiple">
                                     <p>Auction status</p>
-                                    <select className={styles.graphType} value={startAuctionForm?.status} onChange={(e)=>setStartAuctionForm(prev=>({...prev, status:e.target.value}))} name="auctionStatus" >          
+                                    <select className={styles.graphType} value={startAuctionForm?.status || auctionData?.status} onChange={(e)=>setStartAuctionForm(prev=>({...prev, status:e.target.value}))} name="auctionStatus" >          
                                         <option value="draft">
                                             Draft
                                         </option>                                
@@ -348,7 +489,7 @@ const ProdDetPage = () => {
                             {
                                 auctionLotData?.map((lot)=>(
                                     <div key={lot.id}>    
-                                        <AdminLotSide id={lot.id} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
+                                        <AdminLotSide id={lot.id} bidders={regBidders} activeLot={activeLotData} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
                                     </div>
                                 ))
                             }
