@@ -27,6 +27,34 @@ const getAuctionData = async () => {
     };
   }
 }
+const GetArtworks = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/artworks?limit=8&offset=0&status=approved&request_type=gallery`, { 
+    method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw( 
+        response.status,
+        data.error|| "failed to get Artworks"
+      )
+    }
+    console.log(data)
+    return {
+      success:true,
+      data: data
+    };
+  } catch (err) {
+    console.log(err)
+    return {
+      success: false,
+      err,
+    };
+  }
+};
 
 export default function Home() {
   const {user} = useAuth();
@@ -118,6 +146,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState("Q1");
   const router = useRouter()
   const [auctionData, setAuctionData] = useState([]);
+  const [artworks, setArtworks] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -125,9 +154,11 @@ export default function Home() {
       try {
         setLoading(true);
         const data = await getAuctionData();
+        const result = await GetArtworks();
         setAuctionData(data.data);
+        setArtworks(result.data || []);
+        console.log('artwork', result.data)
         setLoading(false);
-/*         console.log('Auction data fetched successfully:', data); */
       } catch (err) {
         setError(err.message);
         setLoading(false);
@@ -144,7 +175,7 @@ export default function Home() {
           <h1> Discover, Bid, & Collect Art from Around the World. </h1>
           <p>A curated destination for live art auctions, exhibitions, fine art sales, and artist discovery.</p>
         </div>
-        <div className={`btn ${styles.bannerBtn}`}> Explore our collection</div>
+        <div className={`btn ${styles.bannerBtn}`} onClick={()=>router.push('/pages/gallery')}> Explore our collection</div>
         <img src="/images/homepage/bannerImgCroped.webp" alt="banner" />
       </header>
       <section className={styles.liveBidding}>
@@ -199,13 +230,23 @@ export default function Home() {
               <ArrowRight />
             </div>
           </div>
-          <div className="row4">
-            {
-              galleryData.map((data)=>(
-                <GalleryCard key={data.id} name={data.name} price={data.price} img={data.img} artist={data.artist}/>
-              ))
-            }
-          </div>
+          { loading? 
+            <div className="emptyCont">
+              <Loader /> 
+            </div>:
+            <div className="row4">
+              {
+                artworks?.data?.length > 0 && artworks?.data?.map((data)=>(
+                  <GalleryCard key={data.id} category={data.category} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artistFirst={data.artist_details.first_name} artistLast={data.artist_details.last_name}/>
+                ))
+              }
+              {
+                artworks?.data?.length === 0 && galleryData.map((data)=>(
+                  <GalleryCard key={data.id} name={data.name} price={data.price} img={data.img} artist={data.artist}/>
+                ))
+              }
+            </div>
+          }
         </div>
       </section>
       <section id="aboutUs" className={styles.aboutUs}>

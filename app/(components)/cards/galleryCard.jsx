@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import styles from './cards.module.css'
-const GalleryCard = ({img,name,artist,price,slug,category}) => {
+const GalleryCard = ({img,name,artist,artistFirst,artistLast,price,slug,category}) => {
     
     const router =  useRouter()
     return ( 
@@ -11,8 +11,8 @@ const GalleryCard = ({img,name,artist,price,slug,category}) => {
             </div>
             <div className={`${styles.cardTxt} ${styles.GallerycardTxt}`}>
                 <h4>{name}</h4>
-                <p>Artist: <span>{artist}</span></p>
-                <p className={styles.cardPrice}>${price}</p>
+                <p>Artist: <span>{artistFirst} {artistLast}</span></p>
+                <p className={styles.cardPrice}>₦{price}</p>
             </div>
         </div>
     );

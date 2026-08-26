@@ -13,59 +13,6 @@ import Countdown from '@/app/(components)/counter/page';
 import { refreshUser } from '@/app/services/authServices';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const availableLot = [
-    {
-      "id":1,
-      "name":"Black or Beauty?",
-      "artist":"Sharon Bailey",
-      "startingBid":"400",
-      "year": 2022,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
-      "img": "/images/auction/3.webp"
-    },
-    {
-      "id":2,
-      "name":"Dancing in the Wind",
-      "artist":"GMTarts Studio",
-      "startingBid":"300",
-      "year": 2025,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
-      "img": "/images/auction/1.webp"
-    },
-    {
-      "id":3,
-      "name":"Calm, Open, Free",
-      "artist":"GMT campaign",
-      "startingBid":"400",
-      "year": 2026,
-      "status":"Available",
-      "category": "Human Portrait",
-      "type": "Painting",
-      "theme": ["calm", "paece", "joy", "freedom", "Alive"],
-      "size": "29.7 X 28 X 8",
-      "frame": "No frame",
-      "proofOfAuth": "yes",
-      "description": "This piece captures the raw energy of liberation and pure joy. Through thick, textured palette knife strokes, the vibrant colors of the sweeping skirt feel alive, mimicking the dynamic rhythm of dance and heritage. Outstretched arms and an upturned face reflect a moment of absolute freedom and spiritual release, beautifully contrasted by the simplicity of a white top and headwrap. The warm, golden background acts as an atmospheric aura, celebrating a soul completely immersed in praise and light.",
-      "images":['/images/auction/3.webp', '/images/auction/1.webp', '/images/auction/2.webp'],
-      "img": "/images/auction/2.webp"
-    }
-  ]
 
 const ProdDetPage =  () => {
     const { openModal } = useModal();
@@ -75,12 +22,12 @@ const ProdDetPage =  () => {
     const searchParams = useSearchParams()
     const auctId = searchParams.get('auctionID')
     const [auctionData, setAuctionData] = useState(null);
+    const [winningData, setWinningData] = useState([]);
     const [auctionLotData, setAuctionLotData] = useState(null);
-    const [auctionLotDataPass, setAuctionLotDataPass] = useState(null);
+    const [activeLotData, setActiveLotData] = useState([]);
     const [status, setStatus] = useState();
 
     const getAuction = async () => {
-        console.log('slug data', slug)
         try {
             const response = await fetch(`${BASE_URL}/auctions/${slug}`, {
                 method: "GET",
@@ -93,7 +40,6 @@ const ProdDetPage =  () => {
             setStatus(data?.data?.status)
             console.log("auction data:", data);
         } catch (err) {
-        /*   setError(err); */
             return {
                 success: false,
                 error: err.message,
@@ -101,7 +47,6 @@ const ProdDetPage =  () => {
             };
         }
     }
-
     const getAuctionLots = async () => {
         try {
             const response = await fetch(`${BASE_URL}/auctions/${auctId}/lots`, {
@@ -123,22 +68,71 @@ const ProdDetPage =  () => {
             };
         }
     }
+    const getActiveLot = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${auctId}/active-lot`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setActiveLotData(data?.data);
+            console.log("active lot data:", data);
+        } catch (err) {
+            setError(err);
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
+    const getMyWinnings = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${auctId}/my-winnings`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setWinningData(data?.data);
+
+            console.log("winning data:", data.data);
+        } catch (err) {
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
 
     useEffect(() => {
+        if (!slug || !auctId) return;
         getAuction();
         getAuctionLots();
-    }, []);
+    }, [slug, auctId]);
+    //get these data every 5 sec
+    useEffect(() => {
+        if (!auctId || status !== "live") return;
 
-/*     useEffect(() => {
-        if (!auctionData || !auctionLotData) return;
+        getActiveLot();
+        getMyWinnings();
 
-        const activeLot = auctionLotData.find(
-            lot => lot.lot_number === auctionData.active_lot_id
-        );
+        const interval = setInterval(() => {
+            getActiveLot();
+            getMyWinnings();
+        }, 60000);
 
-        setAuctionLotDataPass(activeLot); // if you want to store it
-        console.log("Active lot:", activeLot);
-    }, [auctionData, auctionLotData]); */
+        return () => clearInterval(interval);
+    }, [auctId, status]);
+
 
     return ( 
         <div className={styles.auctionPack}>
@@ -185,19 +179,19 @@ const ProdDetPage =  () => {
                             <h3>Auction Overview</h3>
                             <div className={styles.statsList}>
                                 <li>
-                                    <p>Active Lot: <span>{auctionLotDataPass?.title} </span></p>
+                                    <p>Active Lot: <span> {activeLotData?.title} </span></p>
                                 </li>
                                 <li>
-                                    <p>Starting Bid: <span>$ 300.00</span></p>
+                                    <p>Starting Bid: <span>₦ {activeLotData?.starting_bid}</span></p>
                                 </li>
                                 <li>
-                                    <p>Highest Bid: <span>  $1,850.00 </span></p>
+                                    <p>Current Bid: <span>  ₦ {activeLotData?.current_bid} </span></p>
                                 </li>
                                 <li>
-                                    <p>Bidder: <span> Michael Johnson </span></p>
+                                    <p>Bidder: <span> {activeLotData?.current_bidder_name} </span></p>
                                 </li>
                                 <li>
-                                    <p>Auction Status: <span> Open </span></p>
+                                    <p>Auction Status: <span> {auctionData?.status} </span></p>
                                 </li>
                             </div>
                         </div>
@@ -205,27 +199,27 @@ const ProdDetPage =  () => {
                             <h3>Current Bid</h3>
                             <div className={styles.statsList}>
                                 <li>
-                                    <p> <span> Maryam Rita </span> bidded <span> $1,900.00 </span></p>
+                                    <p> <span> Maryam Rita </span> bidded <span> ₦1,900.00 </span></p>
                                     <p className={styles.time}>Just now</p>
                                 </li>
                                 <li>
-                                    <p> <span> Mike Olumide  </span> bidded <span> $1,600.00 </span></p>
+                                    <p> <span> Mike Olumide  </span> bidded <span> ₦1,600.00 </span></p>
                                     <p className={styles.time}>Just now</p>
                                 </li>
                                 <li>
-                                    <p> <span> Eliab Banjo </span> bidded <span> $1,450.00 </span></p>
+                                    <p> <span> Eliab Banjo </span> bidded <span> ₦1,450.00 </span></p>
                                     <p className={styles.time}>1 mins ago</p>
                                 </li>
                                 <li>
-                                    <p> <span> Maryam Rita </span> bidded <span> $1,350.00 </span></p>
+                                    <p> <span> Maryam Rita </span> bidded <span> ₦1,350.00 </span></p>
                                     <p className={styles.time}>2 mins ago</p>
                                 </li>
                                 <li>
-                                    <p> <span> James Docka </span> bidded <span> $1,320.00 </span></p>
+                                    <p> <span> James Docka </span> bidded <span> ₦1,320.00 </span></p>
                                     <p className={styles.time}>5 mins ago</p>
                                 </li>
                                 <li>
-                                    <p> <span>Mike Olumide  </span> bidded <span> $1,900.00 </span></p>
+                                    <p> <span>Mike Olumide  </span> bidded <span> ₦1,900.00 </span></p>
                                     <p className={styles.time}>6 mins ago</p>
                                 </li>
                                 
@@ -252,14 +246,15 @@ const ProdDetPage =  () => {
                         <h3>Winnings</h3>
                         <br />
                         {
-                            isWinner ? 
-                     
-                            <Winner name={"Black or Beauty?"} img={"/images/auction/3.webp"} artist={"Sharon Bailey"} startBid={400} endBid={3000} time={"29:58"} />
+                            winningData?.length > 0 ? 
+                            winningData.map((win,index) => (
+                                <Winner key={index} name={win?.title} img={win?.artwork?.images[0].url} artistFirst={win?.artwork?.artist_details?.first_name} artistLast={win?.artwork?.artist_details?.last_name} startBid={win?.starting_bid} endBid={win?.winning_bid_amount} time={win?.payment_due_at} />
+                            ))                            
                             : <div className={styles.noWinner}>
-                                    <Ban color={"var(--text-primary)"} size={37}/>
-                                    <p className={styles.noWinnerHeading}>No Winnings Yet</p>
-                                    <p>The lots you win will appear here. Payment window for each winning lot is 30 minutes after which the lot will be re-awarded to another participant.</p>
-                                </div> 
+                                <Ban color={"var(--text-primary)"} size={37}/>
+                                <p className={styles.noWinnerHeading}>No Winnings Yet</p>
+                                <p>The lots you win will appear here. Payment window for each winning lot is 30 minutes after which the lot will be re-awarded to another participant.</p>
+                            </div> 
                                         
                         }
                     </div> 

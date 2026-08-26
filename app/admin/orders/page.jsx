@@ -38,7 +38,7 @@ const GetOrders = async (filter) => {
 };
 const Order = () => {
     const [showing, setShowing] = useState('orders')
-    const [oders, setOrder] = useState([]);
+    const [orders, setOrder] = useState([]);
         const [filter, setFilter] = useState('');
         const [loading, setLoading] = useState(false);
         const handleSubmit = async (e) => {
@@ -50,9 +50,9 @@ const Order = () => {
             const trying = async () => {
     
                 const orders = await GetOrders(filter)
-                setOrder(orders?.data || [])
+                setOrder(orders?.data.data || [])
                 setLoading(false);
-                console.log('get orders', orders?.data)
+                console.log('get orders', orders?.data.data)
             }
             trying()
             console.log(filter)
@@ -81,7 +81,7 @@ const Order = () => {
             <br /><br />
             {loading ? <div className='emptyCont'><Loader /></div>  : 
                 <>
-                    {showing==="orders"&&<AdminOrderTable />}
+                    {showing==="orders"&&<AdminOrderTable orderData={orders} />}
                     {showing==="requests"&& <AdminRequestTable />}
                 </>
             }

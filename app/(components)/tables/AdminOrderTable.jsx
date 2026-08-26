@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import styles from './tables.module.css';
 import { useModal } from '../ModalProvider/ModalProvider';
 import AdminOrderDetails from '../admin/orderTable';
-const AdminOrderTable = () => {
+const AdminOrderTable = ({orderData}) => {
     const { openModal } = useModal();
     const Lot =
         {
@@ -68,8 +68,8 @@ const AdminOrderTable = () => {
                     </tr>
                 </thead>
                 <tbody> 
-                {data.length !==0 && data.map((b) => (
-                    <tr onClick={()=>openModal(<AdminOrderDetails data={Lot}/>)} className={styles.dataRow} key={b.orderId} >
+                {orderData.length !==0 && orderData.map((order, index) => (
+                    <tr onClick={()=>openModal(<AdminOrderDetails data={order}/>)} className={styles.dataRow} key={index} >
                         <td>
                             <div className={styles.tableDouble}>
                                 <img src={b?.item.img} alt="item" />

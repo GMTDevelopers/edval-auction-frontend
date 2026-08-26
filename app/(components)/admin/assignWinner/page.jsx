@@ -38,8 +38,8 @@ const CloseLot = async (lotId) => {
 const assignWinners = async (lotId, formData) => {
     try {
         const accessToken = localStorage.getItem("access_token");
-        const response = await fetch(`${BASE_URL}/lots/${lotId}/winner`, {
-            method: "GET",
+        const response = await fetch(`${BASE_URL}/admin/lots/${lotId}/winner`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "authorization": `Bearer ${accessToken}`,
@@ -47,6 +47,7 @@ const assignWinners = async (lotId, formData) => {
             body: JSON.stringify(formData),
         });
         const data = await response.json();
+       
         if (!response.ok) {
             throw( 
                 response.status,
@@ -75,21 +76,21 @@ const AssignWinner = ({name, artist, year, id, regBidders, activeLotData, status
     const handleSubmit = (e) => {
         e.preventDefault()
         const winner = assignWinners(id, formData)
-        if (winner?.success){
-            const closeLot = CloseLot(id);
+        console.log('assign winners function', winner)
+        if (winner.success){
+/*             const closeLot = CloseLot(id);
             if(!closeLot?.success){
                 console.log(closeLot)
             }
             if(closeLot?.success){
                 console.log('Artwork created successfully:', closeLot);
                 router.back()
-            }
+            } */
             toast.success("Winner selected successfully");
-            console.log('Winner selected:', closeLot);
         }
         if(!winner.success){
             console.log(winner)
-            toast.error(winner?.err?.message);
+            toast.error(winner?.error);
         }
     }
 
@@ -111,7 +112,7 @@ const AssignWinner = ({name, artist, year, id, regBidders, activeLotData, status
                 </div>
             </div>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <select value={formData.winner_user_id} onChange={(e)=>setformData(prev=>({...prev, winner_user_id:e.target.value}))} className={styles.graphType} name="auctionStatus" id="">
+                <select value={formData.winner_user_id} onChange={(e)=>setformData(prev=>({...prev, winner_user_id:Number(e.target.value)}))} className={styles.graphType} name="auctionStatus" id="">
                     <option value="">Select winner</option>
                     {regBidders&&regBidders.map((user, index) => (
                         <option key={index} value={user.user_id}>

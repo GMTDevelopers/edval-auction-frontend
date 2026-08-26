@@ -24,6 +24,7 @@ const ProdDetPage = () => {
     const [regBidders, setRegBidders] = useState([]);
     const [activeLot, setActiveLot] = useState(null);
     const [activeLotData, setActiveLotData] = useState([]);
+    const [winners, setWinners] = useState([]);
     const [liveBid, setLiveBid] = useState("");
     const [status, setStatus] = useState();
     const [error, setError] = useState(null);
@@ -72,51 +73,6 @@ const ProdDetPage = () => {
             };
         }
     }
-    const getActiveLot = async () => {
-        try {
-            const accessToken = localStorage.getItem("access_token");
-            const response = await fetch(`${BASE_URL}/auctions/${id}/active-lot`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `Bearer ${accessToken}`,
-                },
-            });
-            const data = await response.json();
-            setActiveLotData(data?.data);
-            console.log("active lot data:", data);
-        } catch (err) {
-            setError(err);
-            return {
-                success: false,
-                error: err.message,
-                status: err.status,
-            };
-        }
-    }
-    const getBidStreams = async () => {
-        try {
-            const accessToken = localStorage.getItem("access_token");
-            const response = await fetch(`${BASE_URL}/auctions/${id}/live`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `Bearer ${accessToken}`,
-                },
-            });
-            const data = await response.json();
-            setLiveBid(data);
-            console.log("bid streams data:", data);
-        } catch (err) {
-            setError(err);
-            return {
-                success: false,
-                error: err.message,
-                status: err.status,
-            };
-        }
-    }
-
     const getAuctionLots = async () => {
         try {
             const accessToken = localStorage.getItem("access_token");
@@ -139,6 +95,131 @@ const ProdDetPage = () => {
                     return getAuctionLots();
                 }
             }
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    } 
+    const handleStartAuction = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/status`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify(startAuctionForm),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.error.message);
+                console.log(data)
+            }
+            if (response.ok) {
+                toast.success("Auction status changed successfully.");
+                console.log('Auction status changed successfully:', data);
+            }
+        } catch (err) {
+            console.log(err)
+            return {
+                success: false,
+                err,
+            };
+        }
+    }
+    const getAuctionWinners = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/winnings`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setWinners(data?.data);
+            console.log("auction winners:", data.data);
+        } catch (err) {
+            console.log('auction error', err)
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }      
+    const getActiveLot = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${id}/active-lot`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setActiveLotData(data?.data);
+            console.log("active lot data:", data);
+        } catch (err) {
+            setError(err);
+            return {
+                success: false,
+                error: err.message,
+                status: err.status,
+            };
+        }
+    }
+      const handleSetActiveLot = async (activeLotID) => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/active-lot`, { 
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({
+                    lot_number: Number(activeLotID),
+                }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                toast.error(data.error.message);
+                console.log(data)
+            }
+            if (response.ok) {
+                getActiveLot();
+                toast.success("Active lot changed successfully.");
+                console.log('Active lot changed successfully:', data);
+            }
+        } catch (err) {
+            console.log(err)
+            return {
+                success: false,
+                err,
+            };
+        }
+    }
+    const getBidStreams = async () => {
+        try {
+            const accessToken = localStorage.getItem("access_token");
+            const response = await fetch(`${BASE_URL}/auctions/${id}/live`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": `Bearer ${accessToken}`,
+                },
+            });
+            const data = await response.json();
+            setLiveBid(data);
+            console.log("bid streams data:", data);
+        } catch (err) {
+            setError(err);
             return {
                 success: false,
                 error: err.message,
@@ -175,67 +256,6 @@ const ProdDetPage = () => {
             };
         }
     }
-
-    const handleStartAuction = async () => {
-        const accessToken = localStorage.getItem("access_token");
-        try {
-            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/status`, { 
-            method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify(startAuctionForm),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                toast.error(data.error.message);
-                console.log(data)
-            }
-            if (response.ok) {
-                toast.success("Auction status changed successfully.");
-                console.log('Auction status changed successfully:', data);
-            }
-        } catch (err) {
-            console.log(err)
-            return {
-                success: false,
-                err,
-            };
-        }
-    }
-    const handleSetActiveLot = async (activeLotID) => {
-        const accessToken = localStorage.getItem("access_token");
-        try {
-            const response = await fetch(`${BASE_URL}/admin/auctions/${id}/active-lot`, { 
-            method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify({
-                    lot_number: Number(activeLotID),
-                }),
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                toast.error(data.error.message);
-                console.log(data)
-            }
-            if (response.ok) {
-                getActiveLot();
-                toast.success("Active lot changed successfully.");
-                console.log('Active lot changed successfully:', data);
-            }
-        } catch (err) {
-            console.log(err)
-            return {
-                success: false,
-                err,
-            };
-        }
-    }
-
     const handlePlaceBid = async () => {
         const accessToken = localStorage.getItem("access_token");
         try {
@@ -266,6 +286,10 @@ const ProdDetPage = () => {
             };
         }
     }
+  
+  
+
+
 
 
 
@@ -273,8 +297,9 @@ const ProdDetPage = () => {
         getAuction();
         getAuctionLots();
         getRegBidders();
-        getActiveLot()
-        getBidStreams()
+        getActiveLot();
+        getBidStreams();
+        getAuctionWinners();
     }, [status, activeLot]);
 
     return ( 
@@ -298,8 +323,8 @@ const ProdDetPage = () => {
                                 <div className={styles.timer}>
                                     <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
                                 </div>
-                                {/*the button (components) needs to have conditional rendering */}
-                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders />)}>View registered bidders (77)</div>
+                                {/*VIEW REGISTERED BIDDERS*/}
+                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders.length})</div>
                             </div>
                         </div> : 
                         <div className={styles.endsIn}>
@@ -322,19 +347,19 @@ const ProdDetPage = () => {
                                 <h3>Auction Overview</h3>
                                 <div className={styles.statsList}>
                                     <li>
-                                        <p>Active Lot: <span> {activeLotData.title} </span></p>
+                                        <p>Active Lot: <span> {activeLotData?.title} </span></p>
                                     </li>
                                     <li>
-                                        <p>Starting Bid: <span>$ {activeLotData.starting_bid}</span></p>
+                                        <p>Starting Bid: <span>$ {activeLotData?.starting_bid}</span></p>
                                     </li>
                                     <li>
-                                        <p>Current Bid: <span>  $ {activeLotData.current_bid} </span></p>
+                                        <p>Current Bid: <span>  $ {activeLotData?.current_bid} </span></p>
                                     </li>
                                     <li>
-                                        <p>Bidder: <span> {activeLotData.current_bidder_name} </span></p>
+                                        <p>Bidder: <span> {activeLotData?.current_bidder_name} </span></p>
                                     </li>
                                     <li>
-                                        <p>Auction Status: <span> {auctionData.status} </span></p>
+                                        <p>Auction Status: <span> {auctionData?.status} </span></p>
                                     </li>
                                 </div>
                             </div>
@@ -407,7 +432,7 @@ const ProdDetPage = () => {
                                     <div className="rowMultiple">
                                         <p>Active lot</p>
                                         <select value={activeLot} className={styles.graphType} onChange={(e)=>{e.preventDefault(); const activeLot = e.target.value; setActiveLot(activeLot), handleSetActiveLot(activeLot)}} name="activeLot" id="">
-                                            <option value="Active lot">{activeLotData.title}</option>
+                                            <option value="Active lot">{activeLotData?.title}</option>
                                             {auctionLotData?.length && auctionLotData?.map((lot, index)=>(
                                                 <option key={index} value={lot.lot_number}>{lot.artwork.title}</option>
                                             ))}
@@ -489,7 +514,7 @@ const ProdDetPage = () => {
                             {
                                 auctionLotData?.map((lot)=>(
                                     <div key={lot.id}>    
-                                        <AdminLotSide id={lot.id} bidders={regBidders} activeLot={activeLotData} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
+                                        <AdminLotSide lots={lot} id={lot.id} bidders={regBidders} activeLot={activeLotData} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
                                     </div>
                                 ))
                             }
@@ -498,11 +523,12 @@ const ProdDetPage = () => {
                     {/* Conditional Rendering */}
                     
                         <div style={{backgroundColor:"#F2F0DB"}} className={`${styles.winners}`}>
-                            {auctionData?.status === "live" ? (
+                            {winners?.length > 0 ? (
                                 <>
                                     <h3>Winnings</h3>
                                     <br />
-                                    <AdminWinner name={"Black or Beauty?"} img={"/images/auction/3.webp"} artist={"Sharon Bailey"} startBid={400} endBid={3000} time={"29:58"} />
+                                    {winners.map((win, index)=>(
+                                        <AdminWinner key={index} img={win?.winner?.profile_image_url} winner={win.winning_user_name} lotWon={win.title} payStatus={win.payment_status} /* img={win.artwork.images[0].url} */ endBid={win.winning_bid_amount} time={win.payment_due_at} />))}
                                 </>
                             ) : ( 
                                 <div className={styles.noWinner}>
