@@ -49,7 +49,7 @@ const RegisteredBidders = ({ auctionID, bidders }) => {
   return (
     <div className={`container ${styles.regBidderContainer}`}>
       <div className="double" style={{ alignItems: 'center' }}>
-        <h3>Registered Bidders ({bidders.length})</h3>
+        <h3>Registered Bidders ({bidders?.length})</h3>
         <div onClick={handleExport} className="btn" style={{ color: '#FB6900' }}>
           <Download /> Export records (.csv)
         </div>
