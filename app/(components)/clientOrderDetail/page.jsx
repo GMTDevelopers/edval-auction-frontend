@@ -56,12 +56,12 @@ const OrderDet = ({data, status}) => {
                         <p><span>Cost</span></p>
                     </li>
                     {data?.items?.map((b,index)=>(<li key={index}>
-                        <p>{b.title}</p>
-                        <p><span>₦{b.price}</span></p>
+                        <p>{b?.title}</p>
+                        <p><span>₦{b?.price}</span></p>
                     </li>))}
                     <li>
                         <p>Shipping Fee</p>
-                        <p><span>₦{data.shipping_fee}</span></p>
+                        <p><span>₦{data?.shipping_fee}</span></p>
                     </li>
                     {data?.insurance_selected && <li>
                         <p>Insurance</p>
