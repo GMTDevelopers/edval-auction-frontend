@@ -65,30 +65,30 @@ const RegisteredBidders = ({ auctionID, bidders }) => {
 
       <br />
 
-      {bidders.map((user) => (
-        <div className={styles.user} key={user.id}>
+      {bidders?.map((user) => (
+        <div className={styles.user} key={user?.id}>
           <div
             className="double"
             onClick={() =>
-              setIsOpen(isOpen === user.id ? null : user.id)
+              setIsOpen(isOpen === user?.id ? null : user?.id)
             }
           >
             <div className={styles.userDetails}>
               <img src={user?.user?.profile_image_url} alt="user" />
               <div>
                 <p className={styles.name}>
-                  {user.first_name} {user.last_name}
+                  {user?.first_name} {user?.last_name}
                 </p>
-                <p style={{ color: '#3A3930' }}>{user.email}</p>
+                <p style={{ color: '#3A3930' }}>{user?.email}</p>
               </div>
             </div>
 
             <div className="btn">
               <p style={{ color: '#3A3930', fontWeight: '700' }}>
-                {new Date(user.created_at).toDateString()}
+                {new Date(user?.created_at).toDateString()}
               </p>
 
-              {isOpen === user.id ? (
+              {isOpen === user?.id ? (
                 <ChevronUp size={20} />
               ) : (
                 <ChevronDown size={20} />
@@ -98,7 +98,7 @@ const RegisteredBidders = ({ auctionID, bidders }) => {
 
           <div
             className={
-              isOpen === user.id
+              isOpen === user?.id
                 ? styles.futherDetails
                 : styles.noShow
             }
@@ -107,21 +107,21 @@ const RegisteredBidders = ({ auctionID, bidders }) => {
               <li>
                 <p>
                   Employment status:
-                  <span>{user.employment_status}</span>
+                  <span>{user?.employment_status}</span>
                 </p>
               </li>
 
               <li>
                 <p>
                   Account number:
-                  <span>{user.refund_account_number}</span>
+                  <span>{user?.refund_account_number}</span>
                 </p>
               </li>
 
               <li>
                 <p>
                   Bank name:
-                  <span>{user.refund_bank_name}</span>
+                  <span>{user?.refund_bank_name}</span>
                 </p>
               </li>
             </ul>
