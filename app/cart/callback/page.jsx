@@ -9,8 +9,10 @@ export default function PaymentCallback() {
 /*   const searchParams = useSearchParams(); */
 
   const [message, setMessage] = useState("Checking payment...");
-    const accessToken = localStorage.getItem("access_token");
+    
   useEffect(() => {
+
+    const accessToken = localStorage.getItem("access_token");
     const searchString = window.location.search;
     const params = new URLSearchParams(searchString);
     setSearchParams(params);
