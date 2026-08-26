@@ -89,7 +89,7 @@ const EditNewExhibition = () => {
         title: '',
         venue: ''
     });
-    console.log('edit data:', initData.get('id'));
+    console.log('edit data:', initData);
 
     useEffect(() => {
         const trying = async () => {
