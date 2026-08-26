@@ -7,12 +7,16 @@ import Loader from "@/app/(components)/loader/loader";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function PaymentCallback() {
-  const searchParams = useSearchParams();
+/*   const searchParams = useSearchParams(); */
+  const [searchParams, setSearchParams] = useState(null)
   const [message, setMessage] = useState("Checking payment...");
   const router = useRouter()
   const [resData, setResData] = useState([]);
   const [loading, setLoading] = useState(true)
   useEffect(() => {
+    const searchString = window.location.search;
+    const params = new URLSearchParams(searchString);
+    setSearchParams(params);
     const reference = searchParams.get("reference") || searchParams.get("trxref");
   
     if (!reference) {
