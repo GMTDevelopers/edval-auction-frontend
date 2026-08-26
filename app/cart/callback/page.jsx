@@ -5,10 +5,15 @@ import { useSearchParams } from "next/navigation";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function PaymentCallback() {
-  const searchParams = useSearchParams();
+  const [searchParams, setSearchParams] = useState(null)
+/*   const searchParams = useSearchParams(); */
+
   const [message, setMessage] = useState("Checking payment...");
     const accessToken = localStorage.getItem("access_token");
   useEffect(() => {
+    const searchString = window.location.search;
+    const params = new URLSearchParams(searchString);
+    setSearchParams(params);
     const reference = searchParams.get("reference") || searchParams.get("trxref");
 
     if (!reference) {
