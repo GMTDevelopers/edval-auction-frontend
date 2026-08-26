@@ -72,8 +72,9 @@ const EditExhibitions = async (formData, id) => {
 
 
 const EditNewExhibition = () => {
-   const initData = useSearchParams();
-   const initID = initData.get('id')
+/*    const initData = useSearchParams();
+   const initID = initData.get('id') */
+    const [initData, setInitData] = useState(null);
     const router = useRouter();
     const [exDetails, setExDetails] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -92,6 +93,9 @@ const EditNewExhibition = () => {
 
     useEffect(() => {
         const trying = async () => {
+            const searchString = window.location.search;
+            const params = new URLSearchParams(searchString);
+            setInitData(params);
             setLoading(true);
 
             const exhibition = await GetExhibition(initID);
