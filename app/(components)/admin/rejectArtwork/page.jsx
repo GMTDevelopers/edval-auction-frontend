@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import LotSide from '../../sideCard/lot';
 import styles from './assignWinner.module.css';

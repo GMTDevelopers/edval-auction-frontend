@@ -1,3 +1,4 @@
+'use client';
 import { Download } from 'lucide-react';
 import styles from './orderDet.module.css';
 import { initializePayment } from '@/app/services/payment';

@@ -1,4 +1,5 @@
 /* import styles from '../tab/tabs.module.css';; */
+'use client'
 import { useRouter } from 'next/navigation';
 import styles from './auctionReg.module.css';
 import { useState } from 'react';
