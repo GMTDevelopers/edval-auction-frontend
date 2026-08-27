@@ -158,11 +158,11 @@ const AddSubmissions = () => {
         <div className={`container ${styles.overallContainer}`}>
             <div style={{display:"flex"}} onClick={() => router.back()} className={`btn ${styles.backBtn}`}><ChevronLeft /> <h4>Submit New Request</h4>  </div>
             <form onSubmit={handleSubmit}>
-                <div className={`double`}>
+                <div className={`double formDouble`}>
                     <div className={`small`}>
-                        <div className={`galleryContainer ${styles.galleryContainer}`}>
+                        <div className={`galleryContainer`}>
                             {/* Main Large Image */}
-                            <div className={styles.bigImageContainer}>
+                            <div className="mainImageContainer">
                                 <ImageUploader
                                     className="mainImageContainer"
                                     value={formData.image_urls[0]}

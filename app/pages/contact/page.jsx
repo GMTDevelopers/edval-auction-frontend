@@ -8,7 +8,7 @@ const Contact = () => {
                 <p>Connect with our team regarding artwork acquisitions, auction participation, exhibition, or personalized commission projects.                </p>
             </div>
             <div className="upcomingAuctions">
-                <div className={`container double`}>
+                <div className={`container formDouble double`}>
                     <div className={`small ${styles.small}`}>
                         <div className={styles.contactFlex}>
                             <Phone />

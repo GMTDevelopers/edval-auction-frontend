@@ -104,8 +104,8 @@ const AddNewArt = () => {
             <div className={`container ${styles.overallContainer}`}>
                 <div style={{display:"flex"}} onClick={() => router.back()} className={`btn ${styles.backBtn}`}><ChevronLeft /> <h4>Add New Artwork</h4> </div>
                 <form onSubmit={handleSubmit}>
-                    <div className={` double`}>
-                        <div /* style={{width:"fit-content"}} */ className={`small`}>
+                    <div className={` formDouble double`}>
+                        <div /* style={{width:"fit-content"}} */ className={` ${styles.small} small`}>
                             <div className={`galleryContainer`}>
                                 {/* Main Large Image */}
                                 <div className="mainImageContainer">

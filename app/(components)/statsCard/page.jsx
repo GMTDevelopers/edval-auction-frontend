@@ -1,6 +1,7 @@
+'use client';
 import styles from "./statscard.module.css";
 
-const StatsCard = ({title, data, icon}) => {
+const StatsCard = ({title, data, icon: Icon}) => {
 
     return ( 
         <div className={styles.card}>
@@ -8,7 +9,7 @@ const StatsCard = ({title, data, icon}) => {
             <div className={styles.statPack}>
                 <div className={styles.stat} style={{fontStyle:'normal'}}>{data}</div>
                 <div className={styles.icon}>
-                   <icon/>
+                   <Icon/>
                 </div>
             </div>
         </div>

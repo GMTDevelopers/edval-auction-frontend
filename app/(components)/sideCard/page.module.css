@@ -1,8 +1,8 @@
 .sideCardCont{
     display: flex;
     gap: 5%;
-    min-width: 382px;
- /*    justify-content: space-between; */
+  /*   min-width: 382px; */
+
 }
 .left{
     background: #ffffff;
@@ -52,4 +52,31 @@
   -webkit-line-clamp: 6; /* Limits to 1 line, use 2 for a longer preview */
   -webkit-box-orient: vertical;  
   overflow: hidden;
+}
+
+
+@media (max-width: 1400px) {
+
+}
+@media (max-width: 1200px) {
+
+}
+@media (max-width: 992px) {
+    .payDuePrice{
+        font-size: 22px;
+    }
+}
+@media (max-width: 768px) {
+    .left img{
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+    .payDuePrice{
+        font-size: 21px;
+    }
+}
+@media (max-width: 576px) {
+
+
 }

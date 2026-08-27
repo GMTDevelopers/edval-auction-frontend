@@ -74,7 +74,6 @@ a{
 /* CONTAINERS */
 .container{
   width: 89%;
-/*   border: 1px solid var(--text-secondary); */
 }
 .headerCenter{
   width: 100%;
@@ -116,7 +115,9 @@ input, select, textarea{
   width: 100%;
   padding: 12px 24px;
   color: var(--foreground);
+  font-weight: 500;
   background: transparent;
+  font-size: 16px;
   outline: none;
   border: 1px solid var(--foreground);
   appearance: none;
@@ -277,25 +278,20 @@ option{
 .double{
   display: flex;
   justify-content: space-between;
-  align-items: center;
+/*   align-items: center; */
   gap: 5%;
- /*  gap: 40px; */
   height: fit-content;
-/*     border: 1px solid black; */
     
 }
 .big, .small{
-/*   border: 1px solid black; */
   height: fit-content;
   width: 100%;
-/*     border: solid 1px green; */
 }
 .big{
   display: flex;
   flex-direction: column;
   gap: 40px;
   width: 100%;
-/*   width: 150%; */
   padding-left: 1.5%;
 }
 
@@ -341,8 +337,6 @@ option{
 /* multiple gallery images  */
 .galleryContainer{
   width: fit-content;
- /*  width: 100%; */
-/*   width: 525px; */
   height: auto;
   display: flex;
   flex-direction: column;
@@ -351,8 +345,6 @@ option{
 }
 .mainImageContainer {
     margin-bottom: 1.25rem;
-  /*   width: fit-content; */
-  /*   width: 100%; */
     width: 525px;
     height: 519px;
     overflow: hidden;
@@ -371,14 +363,6 @@ option{
   transform: scale(1.02);
 }
 
-/* Thumbnails */
-/* .thumbnailsContainer {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  scrollbar-color: #ccc transparent;
-} */
 .thumbnailsContainer{
   display:grid;
   grid-template-columns: repeat(4, 1fr);
@@ -391,10 +375,6 @@ option{
   height: 6px;
 
 }
-
-/* .thumbnailsContainer::-webkit-scrollbar-thumb {
-  background-color: #ccc; 
-}*/
 
 .thumbnailWrapper {
   flex-shrink: 0;
@@ -441,6 +421,12 @@ option{
   h2{
     font-size:28px;
   }
+  form .double{
+    gap: 25px;
+  }
+  .formDouble{
+    flex-direction: column-reverse;
+  }
 }
 @media (max-width: 992px) {
   h2{
@@ -450,16 +436,29 @@ option{
     width: 60%;
     height: 322px;
   }
+  select,label{
+    font-size: 15px;
+  }
+  .double{
+   /*  flex-direction: column; */
+    gap: 15px;  
+  }
+  .big{
+    gap: 25px;
+  }
+
   .row2, .row3, .row4, .rowMultiple{
     grid-template-columns: 1fr 1fr;
   }
   .rowMultiple{
     grid-template-columns: 1fr;
   }
+  input::placeholder, textarea::placeholder, select::placeholder{
+    font-size: 15px;
+  }
   .artFeatureTxt{
     width: 90%;
     margin-left: 0px;
-    /* margin-left: 120px; */
   }
   .artFeatureTxt h2{
     font-size: 36px;
@@ -474,6 +473,12 @@ option{
     width: 233px;
     margin-top: 40px;
   }
+  .submit{
+    margin-top: 15px;
+  }
+  input, select, textarea{
+    font-size: 15px;
+  }
 }
 @media (max-width: 768px) {
   h2{
@@ -486,12 +491,21 @@ option{
     width: 80%;
     height: 352px;
   }
+  input::placeholder, textarea::placeholder, select::placeholder{
+    font-size: 14px;
+  }
+  select,label{
+    font-size: 14px;
+  }
   p{
     font-size: 15px;
   }
   .btn{
     padding: 12px 18px 12px 18px;
     font-size: 15px;
+  }
+  input, select, textarea{
+    font-size: 14px;
   }
   .artFeatureTxt h2{
     font-size: 32px;
@@ -502,9 +516,16 @@ option{
     font-size: 15px;
     line-height: 26px;
   }
+
 }
 @media (max-width: 576px) {
-
+  .galleryContainer{
+    width: 100%;
+  }
+  .mainImageContainer {
+    width: 100%;
+    height: 350px;    
+  }
   .pageHeader{
     width: 90%;
     height: 352px;

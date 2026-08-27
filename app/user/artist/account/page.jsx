@@ -112,7 +112,7 @@ const Account =  () => {
             last_name: user?.last_name || "",
             phone: user?.phone || "",
             portfolio_url: user?.artist_profile?.portfolio_url || "",
-            profile_image_url: user?.artist_profile?.profile_image_url || "",
+            profile_image_url: user?.profile_image_url || "",
             state: user?.artist_profile?.state || "",
             studio_name: user?.artist_profile?.studio_name || "",
             years_of_experience: user?.artist_profile?.years_of_experience || ""
@@ -147,27 +147,25 @@ const Account =  () => {
     return ( 
         <div>
             <div className="upcomingAuctions">
-                
-                <div style={{ alignItems:"start" }} className={`container double`}>
-                    <div className="small">
-                        <div className={Styles.imgPack}>
-                            <ImageUploader
-                                className="mainImageContainer"
-                                value={formData.profile_image_url || "/images/comission/comission.webp" }
-                                placeholder={`Add Image`}
-                                onUpload={(url) => {
-                                    const media = url;
-                                    setformData(prev => ({
-                                        ...prev,
-                                        profile_image_url: media
-                                    }));
-                                }}
-                            />
+                <form onSubmit={handleSubmit}>
+                    <div style={{ alignItems:"start" }} className={`container double formDouble`}>
+                        <div className="small">
+                            <div className={Styles.imgPack}>
+                                <ImageUploader
+                                    className="mainImageContainer"
+                                    value={formData?.profile_image_url || "/images/comission/comission.webp" }
+                                    placeholder={`Add Image`}
+                                    onUpload={(url) => {
+                                        const media = url;
+                                        setformData(prev => ({
+                                            ...prev,
+                                            profile_image_url: media
+                                        }));
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <button type='submit' className='submit btn'>Upload Profile Photo</button>
-                    </div>
-                    <div className="big">
-                        <form onSubmit={handleSubmit}>
+                        <div className="big">                        
                             <div className="double">
                                 <div>
                                     <label htmlFor="firstName">First name</label>
@@ -247,13 +245,12 @@ const Account =  () => {
                                 <span type="button" onClick={toggleVisibility} className={styles.visibility} aria-label={isVisible ? "Hide password" : "Show password"} >
                                     {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </span>
-                            </div> */}
-                            
+                            </div> */}                                
                             <button type='submit' className='submit btn'>Save changes</button>
-                        </form>
+                        </div>
+                        
                     </div>
-                    
-                </div>
+                </form>
             </div>
         </div>
     );

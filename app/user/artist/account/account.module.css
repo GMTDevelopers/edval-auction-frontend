@@ -6,8 +6,35 @@
     overflow: hidden;
     
 }
+.selectWrapper :global(.select__control) {
+  background-color: transparent;
+  border:1px solid var(--foreground);
+  outline: none;
+  box-shadow: none;
+}
+.selectWrapper :global(.select__placeholder) {
+    color: var(--foreground);
+    font-weight: 500;
+    font-style: 16px;
+}
+.selectWrapper :global(.select__indicator-separator) {
+    background: var(--foreground);
+}
+.selectWrapper :global(.select__indicator) {
+    color: var(--foreground);
+}
 .imgPack img{
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .selectWrapper :global(.select__placeholder) {
+        font-size:13px ;
+    }
+/*     .selectWrapper :global(.select__control) {
+        padding: 0px;
+        font-size:13px ;
+    } */
 }

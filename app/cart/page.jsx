@@ -20,7 +20,7 @@ const Cart = () => {
                 
             </div> :<> 
                 <div className='auctionPack'>
-                    <div className={`container double`}>
+                    <div className={`container double ${styles.cartDouble}`}>
                         <div className={`big ${styles.cartBig}`}>
                             {
                                 cart?.items?.map((item)=>(
@@ -55,20 +55,21 @@ const Cart = () => {
                     </div>
                     
                 </div>
-                <div className='auctionPack'>
+               {/* <div className='auctionPack'>
                     <div className="container">
                         <div>
                             <p className="subHeading">GALLERY</p>
                             <h2>Explore Other Artworks </h2>
                         </div>
-                    {/*  <div className="row4">
+                      <div className="row4">
                             {
                                 galleryData.map((data)=>(
                                     <GalleryCard key={data.id} slug={data.slug} name={data.name} price={data.price} img={data.img} artist={data.artist}/>))
                             }
-                        </div> */}
+                        </div> 
                     </div>
-                </div></>
+                </div>*/}
+                </>
             }  
         </>
     );
