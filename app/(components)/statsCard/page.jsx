@@ -2,7 +2,7 @@
 import styles from "./statscard.module.css";
 
 const StatsCard = ({title, data, icon: Icon}) => {
-
+    if (!Icon) return null; 
     return ( 
         <div className={styles.card}>
             <p className={styles.cardTitle}>{title}</p>
