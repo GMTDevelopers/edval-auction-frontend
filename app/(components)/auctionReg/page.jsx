@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import styles from './auctionReg.module.css';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { initializePayment } from '@/app/services/payment';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -40,6 +41,7 @@ const Register = async (formData,auctionId) => {
 
 
 const AuctionRegistration = ({auctionId, auctionLot}) => {
+    console.log('auction reg lot', auctionLot )
     const router = useRouter();
     const [formData, setformData] = useState({
         declared_amount: '',
@@ -48,6 +50,11 @@ const AuctionRegistration = ({auctionId, auctionLot}) => {
         refund_account_number: "",
         refund_bank_name: "",
         target_lot_id: ''
+    });
+    const [payData, setPayData] = useState({
+        callback_url: "",
+        item_type: "auction_registration",
+        registration_id: 0
     });
 
     const handleSubmit = async (e) => {
@@ -58,10 +65,35 @@ const AuctionRegistration = ({auctionId, auctionLot}) => {
             console.log(result)
             toast.error(result.err.message);
         }
-        if(result.success){
+        if (result.success) {
+            console.log('Registration successfull:', result);
+            try {
+                const callbackUrl = `${window.location.origin}/payment/callback`;
+                const initData = {
+                    ...payData,
+                    callback_url: callbackUrl ,
+                    registration_id: result?.data?.data.id,
+                }
+                const data = await initializePayment(initData);
+
+                // Most backends (and Paystack) return an authorization_url
+                if (data.data?.authorization_url) {
+                    window.location.href = data.data.authorization_url;
+                } else if (data.authorization_url) {
+                    window.location.href = data.authorization_url;
+                } else {
+                    console.log("Full response:", data);
+                    toast.error("Payment initialized but no redirect URL found");
+                }
+            } catch (err) {
+                console.error(err);
+                toast.error(err.message || "Payment failed");
+            }           
+        }
+/*         if(result.success){
             toast.success("Registration successfull.");
             console.log('Registration successfull:', result);
-        }  
+        }   */
     };
 
     return ( 
@@ -97,7 +129,7 @@ const AuctionRegistration = ({auctionId, auctionLot}) => {
                 </select>
                 <input
                 value={formData.declared_amount}
-                 type='tel'
+                 type='number'
                  step={0.01}
                  onChange={(e) => {
                     const value = e.target.value;
@@ -111,7 +143,7 @@ const AuctionRegistration = ({auctionId, auctionLot}) => {
                 name='entryBid' placeholder='What is your entry bid?' />
                 <input value={formData.refund_account_number} onChange={(e)=>setformData(prev=>({...prev, refund_account_number:e.target.value}))} type="tel" name='accNumber' placeholder='Account number (for refunds)' />
                 <input value={formData.refund_bank_name} onChange={(e)=>setformData(prev=>({...prev, refund_bank_name:e.target.value}))} type="text" name='bankName' placeholder='Bank name' />
-                <button className="btn submit">Proceed to pay commitment fee ($50)</button>
+                <button className="btn submit">Proceed to pay commitment fee</button>
             </form>
         </div>
     );

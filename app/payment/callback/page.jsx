@@ -7,8 +7,8 @@ import Loader from "@/app/(components)/loader/loader";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function PaymentCallback() {
-/*   const searchParams = useSearchParams(); */
-  const [searchParams, setSearchParams] = useState(null)
+/*   const searchParams = useSearchParams(); 
+  const [searchParams, setSearchParams] = useState(null)*/
   const [message, setMessage] = useState("Checking payment...");
   const router = useRouter()
   const [resData, setResData] = useState([]);
@@ -16,8 +16,8 @@ export default function PaymentCallback() {
   useEffect(() => {
     const searchString = window.location.search;
     const params = new URLSearchParams(searchString);
-    setSearchParams(params);
-    const reference = searchParams.get("reference") || searchParams.get("trxref");
+ /*    setSearchParams(params); */
+    const reference = params.get("reference") || params.get("trxref");
   
     if (!reference) {
       return;
@@ -47,8 +47,7 @@ export default function PaymentCallback() {
       })
       .catch(() => setMessage("Something went wrong."))
       .finally(() => setLoading(false));
-    setLoading(false)
-  }, [searchParams]);
+  }, [router]);
   if (loading) {
     return (
       <div className="emptyCont">

@@ -1,10 +1,9 @@
 'use client'
-import Image from 'next/image';
 import styles from  './page.module.css'
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, ShoppingCart, User } from 'lucide-react';
+import { ChevronDown, ShoppingCart, Menu, X  } from 'lucide-react';
 import Tab from '../(components)/tab/tabs';
 import { useModal } from '../(components)/ModalProvider/ModalProvider';
 import { useAuth } from '../context/authContext';
@@ -15,16 +14,27 @@ const Navbar = () => {
     const pathname = usePathname();
     const router = useRouter();
     const { openModal, closeModal } = useModal();
-    const {isAuthenticated, user, accessToken, logout, refreshToken} = useAuth();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const {isAuthenticated, user, logout} = useAuth();
     const {cart} = useCart();
-    const [isUser, setIsUser] = useState(null)
-    const [isOpen, setIsOpen] = useState(false)
-
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         console.log(isAuthenticated, user);
         console.log('this is the cart:', cart)
     }, []);
+
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [isMobileMenuOpen]);
     return ( 
         <div className={styles.navbar}>
             <div className="container">
@@ -42,31 +52,38 @@ const Navbar = () => {
                     {!isAuthenticated && <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
                         My Account
                     </div>}
-                    {isAuthenticated && user?.role==="registered_user" && (<div className={`btn ${styles.navBtnLoggedIn}`}>
-                        <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> {cart?.items?.length}</p> 
-                        <div className={styles.navBtnLoggedIn}>
-                            <img src="/images/contactUs.webp" alt="user" />
-                            <p  onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
-                        </div>
-                    </div>)}
-                    {isAuthenticated && user?.role==="artist" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
-                        <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> {cart?.items?.length}</p> 
-                        <div className={styles.navBtnLoggedIn}>
-                            <img src="/images/contactUs.webp" alt="user" />
-                            <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
-                        </div>
-                    </div>)}
-                    {isAuthenticated && user?.role==="super_admin" && (
-                        <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
-                            <p>visit Admin Dashboard</p>
-                        </div>
-                    )}
-                    {isAuthenticated && user?.role==="admin" && (
-                        <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
-                            <p>visit Admin Dashboard</p>
-                        </div>
-                    )}
+                    <div className='double'>
+                        {/* MOBILE HAMBURGER */}
+                        <button className={styles.hamburger} onClick={() => setIsMobileMenuOpen(true)} >
+                            <Menu  />
+                        </button>
+                        {isAuthenticated && user?.role==="registered_user" && (<div className={`btn ${styles.navBtnLoggedIn}`}>
+                            <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> {cart?.items?.length}</p> 
+                            <div className={styles.navBtnLoggedIn}>
+                                <img src="/images/contactUs.webp" alt="user" />
+                                <p  onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
+                            </div>
+                        </div>)}
+                        {isAuthenticated && user?.role==="artist" && (<div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtnLoggedIn}`}>
+                            <p onClick={()=> {router.push('/cart'); closeModal()}} className={styles.navBtnLoggedIn}><ShoppingCart size={21} /> {cart?.items?.length}</p> 
+                            <div className={styles.navBtnLoggedIn}>
+                                <img src="/images/contactUs.webp" alt="user" />
+                                <p className={styles.navBtnLoggedIn}>Hi, {user?.first_name || 'User'} <ChevronDown /> </p>
+                            </div>
+                        </div>)}
+                        {isAuthenticated && user?.role==="super_admin" && (
+                            <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
+                                <p>visit Admin Dashboard</p>
+                            </div>
+                        )}
+                        {isAuthenticated && user?.role==="admin" && (
+                            <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
+                                <p>visit Admin Dashboard</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
+              
                 <div className={isOpen&&!isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
                     <li className='btn' onClick={()=> {openModal(<Tab />); setIsOpen(false); }}>Sign in to my account</li>
                     <li className='btn' onClick={()=> {openModal(<Tab />); setIsOpen(false)}}>Create user account</li>
@@ -87,7 +104,45 @@ const Navbar = () => {
                     <li className='btn' onClick={()=> {setIsOpen(false); router.push('/user/client/account')}}>My Account</li>
                     <li className='btn' onClick={() => {logout(); setIsOpen(false);}} style={{color:"#FB0000"}}>Sign out</li>
                 </div>
-                
+                  {(isMobileMenuOpen || isOpen) && (
+                    <div className={styles.overlay} onClick={() => { setIsMobileMenuOpen(false); setIsOpen(false); }}/>
+                )}
+                {/* MOBILE DROPDOWN */}
+                <div className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.mobileMenuOpen : ""}`}>
+                    <div className={styles.mobileMenuHeader}>
+                        <img className={styles.logo} src="/images/logo.png" alt="logo" />
+                        <button className={styles.closeBtn} onClick={() => setIsMobileMenuOpen(false)} > <X size={30} /> </button>
+                    </div>
+                    <ul className={styles.mobileNavLinks}>
+                        <li onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/">Home</Link>
+                        </li>
+                        <li onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/pages/auctions">Auctions</Link>
+                        </li>
+                        <li onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/pages/gallery">Gallery</Link>
+                        </li>
+                        <li onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/pages/exhibition">Exhibitions</Link>
+                        </li>
+                        <li onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/pages/commissions">Commissions</Link>
+                        </li>
+                        <li onClick={() => setIsMobileMenuOpen(false)}>
+                            <Link href="/pages/contact">Contact</Link>
+                        </li>
+                    </ul>
+                    {!isAuthenticated && (
+                        <button className="btn" onClick={() => { openModal(<Tab />); setIsMobileMenuOpen(false);}}>
+                            My Account
+                        </button>
+                    ) /* : (
+                        <button className="btn" onClick={() => {router.push("/user/client/account"); setIsMobileMenuOpen(false); }}>
+                            My Account
+                        </button>
+                    ) */}
+                </div>
             </div>
         </div>
     );

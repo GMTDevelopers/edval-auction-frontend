@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function PaymentCallback() {
-  const [searchParams, setSearchParams] = useState(null)
-/*   const searchParams = useSearchParams(); */
+/*   const [searchParams, setSearchParams] = useState(null)
+  const searchParams = useSearchParams(); */
 
   const [message, setMessage] = useState("Checking payment...");
     
@@ -15,8 +15,8 @@ export default function PaymentCallback() {
     const accessToken = localStorage.getItem("access_token");
     const searchString = window.location.search;
     const params = new URLSearchParams(searchString);
-    setSearchParams(params);
-    const reference = searchParams.get("reference") || searchParams.get("trxref");
+/*     setSearchParams(params); */
+    const reference = params.get("reference") || params.get("trxref");
 
     if (!reference) {
       setMessage("No payment reference found.");
@@ -41,7 +41,7 @@ export default function PaymentCallback() {
       });
 
     setMessage(`Payment completed. Reference: ${reference}`);
-  }, [searchParams]);
+  }, [router]);
 
   return (
     <div style={{ padding: 40, textAlign: "center" }}>

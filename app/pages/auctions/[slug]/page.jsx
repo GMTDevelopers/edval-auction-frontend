@@ -229,7 +229,7 @@ const ProdDetPage =  () => {
                 </div>
                 <div className={styles.small}>
                     <div className={styles.smallPack}>
-                        <h3>Available Lots (3)</h3>
+                        <h3>Available Lots ({auctionLotData?.length})</h3>
                         <div className={styles.sideLots}>
                         
                             {

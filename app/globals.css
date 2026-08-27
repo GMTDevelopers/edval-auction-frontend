@@ -428,19 +428,28 @@ option{
   h2{
     font-size:30px;
   }
-
   .subHeading{
     letter-spacing: 6%;
     line-height: 32px;
   }
+  
   .btn{
-    padding: 12px 24px 12px 24px;
+    padding: 12px 20px 12px 20px;
   }
 }
 @media (max-width: 1200px) {
-
+  h2{
+    font-size:28px;
+  }
 }
 @media (max-width: 992px) {
+  h2{
+    font-size:26px;
+  }
+  .pageHeader{
+    width: 60%;
+    height: 322px;
+  }
   .row2, .row3, .row4, .rowMultiple{
     grid-template-columns: 1fr 1fr;
   }
@@ -448,24 +457,57 @@ option{
     grid-template-columns: 1fr;
   }
   .artFeatureTxt{
-    width: 70%;
-    margin-left: 60px;
+    width: 90%;
+    margin-left: 0px;
     /* margin-left: 120px; */
-
+  }
+  .artFeatureTxt h2{
+    font-size: 36px;
+    line-height: 52px;
+  }
+  .artFeatureTxt p{
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 28px;
+  }
+  .artFeatureBtn{
+    width: 233px;
+    margin-top: 40px;
   }
 }
 @media (max-width: 768px) {
+  h2{
+    font-size:24px;
+  }
   .subHeading{
-/*     letter-spacing: 6%; */
     font-size: 15px;
-/*     line-height: 32px; */
+  }
+  .pageHeader{
+    width: 80%;
+    height: 352px;
   }
   p{
     font-size: 15px;
   }
   .btn{
-/*     padding: 12px 24px 12px 24px; */
+    padding: 12px 18px 12px 18px;
     font-size: 15px;
+  }
+  .artFeatureTxt h2{
+    font-size: 32px;
+    line-height: 48px;
+  }
+  .artFeatureTxt p{
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 26px;
+  }
+}
+@media (max-width: 576px) {
+
+  .pageHeader{
+    width: 90%;
+    height: 352px;
   }
 }
 

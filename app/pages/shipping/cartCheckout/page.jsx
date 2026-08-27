@@ -171,15 +171,15 @@ const CartShippingDetails = () => {
                                 </p>
                                 {isDelivery && <p className="double">
                                     Shipping fee
-                                    <span>$15.00</span>
+                                    <span>₦15.00</span>
                                 </p>}
                                 {isAgreed && <p className="double">
                                     Insurance
-                                    <span>$50.00</span>
+                                    <span>₦50.00</span>
                                 </p>}
                                 <p className="double">
                                     VAT
-                                    <span>$0.00</span>
+                                    <span>₦0.00</span>
                                 </p>
                                 {/* <div className="double">
                                     <p><span>ORDER TOTAL</span></p>

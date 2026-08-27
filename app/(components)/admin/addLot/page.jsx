@@ -5,6 +5,9 @@ import Styles from '@/app/(components)/sideCard/page.module.css'
 import altStyles from '@/app/(components)/gallerySearch/galSearch.module.css'
 import { useState } from 'react';
 import { toast } from 'sonner';
+import Theme from '@/app/data/theme.json';
+import artType from '@/app/data/artType.json';
+import category from '@/app/data/category.json';
 import ImageUploader from '../../imageUploader/ImageUploader';
 import { useModal } from '../../ModalProvider/ModalProvider';
 
@@ -39,74 +42,30 @@ const CreateLot = async (formData, id) => {
 
 const AddNewLot = ({id}) => {
     const { closeModal } = useModal();
-    const Theme = [
-        { value: 'Nature', label: 'Nature' },
-        { value: 'Portraiture', label: 'Portraiture' },
-        { value: 'Abstract', label: 'Abstract' },
-        { value: 'Spirituality', label: 'Spirituality' },
-        { value: 'Culture & Heritage', label: 'Culture & Heritage' },
-        { value: 'Identity', label: 'Identity' },
-        { value: 'Family & Relationships', label: 'Family & Relationships' },
-        { value: 'Love', label: 'Love' },
-        { value: 'History', label: 'History' },
-        { value: 'Social Commentary', label: 'Social Commentary' },
-        { value: 'Urban Life', label: 'Urban Life' },
-        { value: 'Fantasy & Mythology', label: 'Fantasy & Mythology' },
-        { value: 'Animals & Wildlife', label: 'Animals & Wildlife' },
-        { value: 'Politics & Power', label: 'Politics & Power' },
-        { value: 'Hope & Resilience', label: 'Hope & Resilience' },
-    ]
-    const artType = [
-        'Oil on Canvas',
-        'Acrylic on Canvas',
-        'Watercolor',
-        'Mixed Media',
-        'Charcoal',
-        'Pencil Drawing',
-        'Pastel',
-        'Ink',
-        'Digital Art',
-        'Photography',
-        'Sculpture',
-        'Wood Carving',
-        'Bronze Sculpture',
-        'Ceramics',
-        'Printmaking'
-    ]
-    const categories = [
-        "Human Portrait",
-        "Landscape",
-        "Still Life",
-        "Abstract",
-        "Wildlife",
-        "Cityscape",
-        "Seascape",
-        "Religious & Spiritual",
-    ];
     const [lotData, setLotData] = useState({
-        "artist_id": 0,
-        "artwork_id": 0,
-        "artwork_type": "",
-        "category": "",
-        "depth": "",
-        "description": "",
-        "exhibition_artwork_id": 0,
-        "framed": true,
-        "image_urls": [
+        artist_id: '',
+        artwork_id: '',
+        artwork_type: "",
+        category: "",
+        depth: "",
+        description: "",
+        exhibition_artwork_id: '',
+        framed: true,
+        image_urls: [
             null,
             null,
             null,
             null
         ],
-        "length": "",
-        "lot_number": "",
-        "proof_of_authenticity": true,
-        "reserve_price": "",
-        "starting_bid": "",
-        "themes": '',
-        "title": "",
-        "width": "",
-        "year_created": ""
+        length: "",
+        lot_number: "",
+        proof_of_authenticity: true,
+        reserve_price: "",
+        starting_bid: "",
+        themes: '',
+        title: "",
+        width: "",
+        year_created: ""
     })
 
     const handleSubmit = async (e) => {
@@ -151,7 +110,18 @@ const AddNewLot = ({id}) => {
                     </div>
                     <div>
                         <label htmlFor="startingBid">Starting bid</label>
-                        <input value={lotData.starting_bid} onChange={(e) => setLotData(prev => ({ ...prev, starting_bid: Number(e.target.value) }))} placeholder="" type="tel" id="startingBid" required />
+                        <input value={lotData.starting_bid}
+                            step={0.01}
+                            onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*(\.\d{0,2})?$/.test(value)) {
+                                setLotData(prev => ({
+                                    ...prev,
+                                    starting_bid: Number(value)
+                                }));
+                            }
+                        }} 
+                        placeholder="0.00" type="number" id="startingBid" required />
                     </div>
                     <div>
                         <label htmlFor="lotNumber">Lot Number</label>
@@ -164,11 +134,11 @@ const AddNewLot = ({id}) => {
                             <option value="" disabled>
                                 Select a category
                             </option>
-                            {categories.map((category) => (
-                                <option key={category} value={category}>
-                                {category}
+                            {category.map((type, index) => (
+                                <option key={index} value={type.value}>
+                                    {type.label}
                                 </option>
-                            ))}                                                             
+                            ))}                                                              
                         </select>        
                                              
                     </div>
@@ -187,10 +157,10 @@ const AddNewLot = ({id}) => {
                             Select artwork type
                         </option>
                         {artType.map((type, index) => (
-                            <option key={index} value={type}>
-                                {type}
+                            <option key={index} value={type.value}>
+                                {type.label}
                             </option>
-                        ))}                                                               
+                        ))}                                                                     
                     </select>
                     <div style={{marginTop:"0px"}} className="row3">
                         <div>
@@ -236,10 +206,21 @@ const AddNewLot = ({id}) => {
                     </div>
                    <div>
                         <label htmlFor="reservePrice">Artwork Reserve Price</label>
-                        <input value={lotData.reserve_price} onChange={(e) => setLotData(prev => ({ ...prev, reserve_price: Number(e.target.value) }))} placeholder="" type="tel" id="reservePrice" required />
+                        <input value={lotData.reserve_price} 
+                            step={0.01}
+                            onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*(\.\d{0,2})?$/.test(value)) {
+                                setLotData(prev => ({
+                                    ...prev,
+                                    reserve_price: Number(value)
+                                }));
+                            }
+                        }} 
+                        placeholder="0.00" type="number" id="reservePrice" required />
                     </div>
                     
-                    <div className="double">
+                    <div className="thumbnailsContainer">
                         {[1,2,3,4].map(index => (
                             <ImageUploader
                                 key={index}

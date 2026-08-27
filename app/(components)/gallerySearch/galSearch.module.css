@@ -2,6 +2,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
+.searchForm input{
+    flex-direction: row;
+    justify-content: space-between;
+}
 .searchForm .selectWrapper{
     width: 100%;
     background: transparent !important;
@@ -31,3 +35,37 @@
 .selectWrapper :global(.select__option--is-focused) {
   background-color:var(--background);
 }
+
+@media (max-width: 1400px) {
+
+}
+@media (max-width: 1200px) {
+
+}
+@media (max-width: 992px) {
+
+}
+@media (max-width: 768px) {
+    .searchForm input{
+        padding: 10px 10px;
+    }
+    .searchForm input::placeholder{
+        font-size:13px ;
+    }
+    .selectWrapper :global(.select__control) {
+        padding: 0px;
+        font-size:13px ;
+    }
+}
+@media (max-width: 576px) {
+    .searchForm {
+        gap: 10px;
+    }
+    .selectWrapper :global(.select__control) {
+        font-size:12px ;
+    }
+    .selectWrapper :global(.select__indicator) {
+        padding: 0;
+    }
+}
+

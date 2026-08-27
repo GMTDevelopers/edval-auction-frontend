@@ -152,7 +152,14 @@
     .cardTimmer{
         font-size: 15px;
     }
+    .status{
+        width: 40%;
+        font-size: 12px;
+    }
     .cardTxt h4{
         font-size: 17px;
     }
+}
+@media (max-width: 768px) {
+    
 }
