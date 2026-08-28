@@ -11,8 +11,10 @@ import { useCart } from '@/app/context/cartContext';
 const ShippingDetails = () => {
     const [isAgreed, setIsAgreed] = useState(false);
     const [error, setError] = useState('');
-    const searchParams = useSearchParams();
-    const winer = searchParams.get('winner');
+/*     const searchParams = useSearchParams();
+    const winer = searchParams.get('winner'); */
+    const searchString = window.location.search;
+    const winer = new URLSearchParams(searchString);
     const [isDelivery, setIsDevlivery] = useState(false);
     const {cartCheckoutFunction} = useCart();
     const [loading, setLoading] = useState(false)
