@@ -13,8 +13,7 @@ const ShippingDetails = () => {
     const [error, setError] = useState('');
 /*     const searchParams = useSearchParams();
     const winer = searchParams.get('winner'); */
-    const searchString = window.location.search;
-    const winer = new URLSearchParams(searchString);
+
     const [isDelivery, setIsDevlivery] = useState(false);
     const {cartCheckoutFunction} = useCart();
     const [loading, setLoading] = useState(false)
@@ -34,6 +33,9 @@ const ShippingDetails = () => {
         shipping_state: ""
     })
     useEffect(() => {
+        const searchString = window.location.search;
+        const params = new URLSearchParams(searchString);
+        const winer = params.get("winner");
         if (winer) {
             try {
                 setWinnerData(JSON.parse(decodeURIComponent(winer)));
