@@ -43,7 +43,7 @@ const ShippingDetails = () => {
                 console.error("Error parsing filters from URL:", e);
             }
         }
-    }, [winer]);
+    }, []);
     const [payinitData, setPayInitData] = useState({
         callback_url: "",
         item_id: 0,
