@@ -427,6 +427,15 @@ option{
   .formDouble{
     flex-direction: column-reverse;
   }
+  .formDoubleReverse{
+    width: 100%;
+    flex-direction: column;
+    gap: 60px;
+  }
+  .formDoubleReversePage{
+    flex-direction: column;
+    gap: 60px;
+  }
 }
 @media (max-width: 992px) {
   h2{

@@ -310,7 +310,7 @@ const ProdDetPage = () => {
             </div>
             
             <br /><br />
-            <div style={{alignItems:"normal"}} className={`container double`}>
+            <div style={{alignItems:"normal"}} className={`container double formDoubleReverse`}>
                 <div className={styles.big}>
                     <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
                     {/* <img  src="/images/auction/live.webp" alt="live" /> */}
