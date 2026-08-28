@@ -19,8 +19,8 @@ const ProdDetPage =  () => {
     const [isLogin, setIsLogin] = useState(false);
     const [isWinner, setIsWinner] = useState(true);
     const {slug} = useParams();
-    const searchParams = useSearchParams()
-    const auctId = searchParams.get('auctionID')
+    const searchParams = useSearchParams();
+    const auctId = searchParams.get('auctionID');
     const [auctionData, setAuctionData] = useState(null);
     const [winningData, setWinningData] = useState([]);
     const [auctionLotData, setAuctionLotData] = useState(null);
@@ -244,11 +244,10 @@ const ProdDetPage =  () => {
                     {/* Conditional Rendering */}
                     <div style={{backgroundColor: isWinner ? "#FADB5D" : "#F2F0DB"}} className={`${styles.winners}`}>
                         <h3>Winnings</h3>
-                        <br />
                         {
                             winningData?.length > 0 ? 
                             winningData.map((win,index) => (
-                                <Winner key={index} name={win?.title} img={win?.artwork?.images[0].url} artistFirst={win?.artwork?.artist_details?.first_name} artistLast={win?.artwork?.artist_details?.last_name} startBid={win?.starting_bid} endBid={win?.winning_bid_amount} time={win?.payment_due_at} />
+                                <Winner key={index} id={win.id} payStatus={win?.payment_status} name={win?.title} img={win?.artwork?.images[0].url} artistFirst={win?.artwork?.artist_details?.first_name} artistLast={win?.artwork?.artist_details?.last_name} startBid={win?.starting_bid} endBid={win?.winning_bid_amount} time={win?.payment_due_at} />
                             ))                            
                             : <div className={styles.noWinner}>
                                 <Ban color={"var(--text-primary)"} size={37}/>

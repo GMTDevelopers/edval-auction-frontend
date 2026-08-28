@@ -53,7 +53,8 @@
     color:  #FB6900;
 }
 .timer{
-    background: #F2F0DB;
+
+    font-size: 25px;
 }
 .timerBtn{
     background: var(--foreground);

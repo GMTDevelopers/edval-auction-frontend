@@ -221,7 +221,7 @@ const AddNewArt = () => {
                                     price:Number(value)}))
                                 
                                 }
-                            }} placeholder="Selling price 0.00" type="tel" name="sellPrice" />
+                            }} placeholder="Selling price (₦ 0.00)" type="tel" name="sellPrice" />
                             <button className="btn submit">Submit request</button>
                         </div>
                     </div>

@@ -52,7 +52,7 @@ const Navbar = () => {
                     {!isAuthenticated && <div onClick={() => !isOpen ? setIsOpen(true) : setIsOpen(false)} className={`btn ${styles.navBtn}`}>
                         My Account
                     </div>}
-                    <div className='double'>
+                    <div className={`double ${styles.mobileDouble}`}>
                         {/* MOBILE HAMBURGER */}
                         <button className={styles.hamburger} onClick={() => setIsMobileMenuOpen(true)} >
                             <Menu  />

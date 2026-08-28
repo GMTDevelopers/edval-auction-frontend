@@ -96,10 +96,10 @@ const CartShippingDetails = () => {
                     <div className={styles.part2}>
                         <form onSubmit={handleSubmit}>
                             <select value={formData.delivery_method} onChange={(e)=>{setIsDevlivery(!isDelivery); setformData(prev=>({...prev, delivery_method:e.target.value}))}}  name="deliveryMethod">                                   
-                                <option value="Pickup">
+                                <option value="pickup">
                                     Physical Pickup
                                 </option>      
-                                  <option value="Shipping">
+                                  <option value="delivery">
                                     Address delivery
                                 </option>                                                         
                             </select>

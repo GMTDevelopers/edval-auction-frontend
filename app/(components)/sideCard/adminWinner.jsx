@@ -11,8 +11,8 @@ const AdminWinner = ({winner, lotWon, payStatus, img, time}) => {
             <div className={styles.right}>
                 <p><span>{winner}</span></p>
                 <p>Artwork Won: <span>{lotWon}</span></p>
-                <p>Payment status: <span>{payStatus.toUpperCase()}</span></p>
-                <p>Payment window: <span style={{color:"#FB6900"}}><Countdown endTime={time} /></span></p>
+                <p>Payment status: <span className={styles[payStatus]}>{payStatus.toUpperCase()}</span></p>
+                {payStatus !== 'paid' && <p>Payment window: <span style={{color:"#FB6900"}}><Countdown endTime={time} /></span></p>}
             </div>
         </div>
     );

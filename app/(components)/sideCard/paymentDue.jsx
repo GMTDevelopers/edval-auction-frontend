@@ -12,7 +12,7 @@ const PaymentDue = ({name, artist, price, img}) => {
                 </div>
                 
                 
-                <p className={styles.payDuePrice}>{price}</p>
+                <p className={styles.payDuePrice}>₦ {price}</p>
             </div>
         </div>
     );

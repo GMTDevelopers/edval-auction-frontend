@@ -181,11 +181,28 @@
     }
     .navBtnLoggedIn p{
         padding: 0 0;
+    }    
+}
+@media (max-width: 576px) {
+    .logo{
+        width: 103px;
+        height: 41px;
+        object-fit: contain;
     }
-/*     .hamburger{
-        height: 20px;
-        width: 20px;
-        overflow: hidden;
+/*     .mobileDouble{
+        gap:10px;
     } */
-    
+    .navBtnLoggedIn {
+        padding: 4px 4px;
+        gap: 5px;
+    }
+/*    
+    .navBtnLoggedIn img{
+        width: 29px;
+        height: 30px;
+    }
+
+    .navBtnLoggedIn p{
+        padding: 0 0;
+    }     */
 }

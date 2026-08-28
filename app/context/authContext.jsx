@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [refreshToken, setRefreshToken] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
     const router = useRouter();
     // LOGIN FUNCTION
     const login = async (credentials) => {
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
                 response.data.refresh_token
             );
 
-            getUser();
+            await getUser();
             setIsAuthenticated(true);
 
             return {
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
                 response.refresh_token
             );
 
-            getUser();
+            await getUser();
             setIsAuthenticated(true);
 
             return {
@@ -93,7 +93,9 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         setLoading(true);
         try {
-            await logoutUser(refreshToken);
+            const storedRefreshToken = localStorage.getItem("refresh_token");
+            await logoutUser(storedRefreshToken);
+/*             await logoutUser(refreshToken); */
         } catch (err) {
             console.error(err);
         } finally {
@@ -173,11 +175,12 @@ export const AuthProvider = ({ children }) => {
                     console.log(
                         "Token refreshed successfully, retrying getUser..."
                     );
-                    window.location.reload()
-                    return getUser();
+                   /*  window.location.reload() */
+                    return await getUser();
                 }
             }
-
+            setUser(null);
+            setIsAuthenticated(false);
             return {
                 success: false,
                 error: err.message,
@@ -192,13 +195,19 @@ export const AuthProvider = ({ children }) => {
 
         if (!access || !refreshToken) {
             setIsAuthenticated(false);
+            setLoading(false);
             return;
         }
 
         setAccessToken(access);
         setRefreshToken(refreshToken);
 
-        await getUser();
+        try {
+            await getUser();
+        } finally {
+            setLoading(false);
+        }
+
     };
     useEffect(() => {
         initializeAuth();

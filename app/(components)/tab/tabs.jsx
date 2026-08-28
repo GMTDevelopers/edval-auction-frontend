@@ -39,11 +39,21 @@ const Tab = () => {
         if (result.success) {
             setIsSuccess("Login successful!");
            console.log('Login successful:', user);
-           if (user?.role==='admin'){
-            router.push('/admin/overview');
-           }
+           
            setTimeout(() => {
-            closeModal();
+                if (user?.role==='admin'){
+                    router.push('/admin/overview');
+                }
+                if (user?.role==='super_admin'){
+                    router.push('/admin/overview');
+                }
+                if (user?.role==='artist'){
+                    router.push('/user/artist/myArtworks');
+                }
+                if (user?.role==='registered_user'){
+                    router.push('/user/client');
+                }
+                closeModal();
            }, 1000);
         } else {
             if(error.status === 401) {

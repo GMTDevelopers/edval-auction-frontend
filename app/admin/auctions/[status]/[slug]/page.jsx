@@ -526,7 +526,6 @@ const ProdDetPage = () => {
                             {winners?.length > 0 ? (
                                 <>
                                     <h3>Winnings</h3>
-                                    <br />
                                     {winners.map((win, index)=>(
                                         <AdminWinner key={index} img={win?.winner?.profile_image_url} winner={win.winning_user_name} lotWon={win.title} payStatus={win.payment_status} /* img={win.artwork.images[0].url} */ endBid={win.winning_bid_amount} time={win.payment_due_at} />))}
                                 </>

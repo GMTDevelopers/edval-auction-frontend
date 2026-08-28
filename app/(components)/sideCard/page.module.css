@@ -33,6 +33,12 @@
     align-items: left;
     gap: 8px;
 }
+.paid{
+    color: #419E5A !important;
+}
+.unpaid{
+    color: #FB0000 !important;
+}
 .right p span{
     font-weight: 700;
     color: var(--foreground);
@@ -53,7 +59,9 @@
   -webkit-box-orient: vertical;  
   overflow: hidden;
 }
-
+.winner{
+    margin-top: 40px ;
+}
 
 @media (max-width: 1400px) {
 

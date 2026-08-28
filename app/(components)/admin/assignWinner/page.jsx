@@ -4,6 +4,8 @@ import LotSide from '../../sideCard/lot';
 import styles from './assignWinner.module.css';
 import Styles from '@/app/(components)/sideCard/page.module.css'
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useModal } from '../../ModalProvider/ModalProvider';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -56,6 +58,7 @@ const assignWinners = async (lotId, formData) => {
         }
         return {
             success:true,
+            data: data
         };
     } catch (err) {
         return {
@@ -68,25 +71,24 @@ const assignWinners = async (lotId, formData) => {
 
 
 const AssignWinner = ({name, artist, year, id, regBidders, activeLotData, status, img}) => {
+    const router = useRouter();
+    const { openModal, closeModal } = useModal();
     const [formData, setformData] = useState({
         winner_user_id: 0,
         winning_amount: activeLotData?.current_bid,
     });
     console.log('winner active', activeLotData)
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const winner = assignWinners(id, formData)
+        const winner = await assignWinners(id, formData)
         console.log('assign winners function', winner)
         if (winner.success){
-/*             const closeLot = CloseLot(id);
-            if(!closeLot?.success){
-                console.log(closeLot)
-            }
-            if(closeLot?.success){
-                console.log('Artwork created successfully:', closeLot);
-                router.back()
-            } */
             toast.success("Winner selected successfully");
+           
+            setTimeout(() => {
+               router.refresh(); 
+                closeModal();
+            }, 1000);
         }
         if(!winner.success){
             console.log(winner)
@@ -108,7 +110,7 @@ const AssignWinner = ({name, artist, year, id, regBidders, activeLotData, status
                     <h3>{name || "Black or Beauty?"}</h3>
                     <p>Artist: <span>{ artist || "Sharon Bailey"}</span></p>
                     <p>Year: <span>{ year || 2022}</span></p>
-                    <p>Current bid: <span>${activeLotData?.current_bid}</span></p>
+                    <p>Current bid: <span>₦ {activeLotData?.current_bid}</span></p>
                 </div>
             </div>
             <form className={styles.form} onSubmit={handleSubmit}>

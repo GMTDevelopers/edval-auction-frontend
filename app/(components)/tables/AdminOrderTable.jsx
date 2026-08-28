@@ -10,8 +10,9 @@ const AdminOrderTable = ({orderData}) => {
             <table className={styles.table}>
                 <thead>
                     <tr>
-                        <th>Item</th>
-                        <th>From</th>
+                       {/*  <th>Item</th>
+                        <th>From</th> */}
+                        <th>Order ID</th>
                         <th>Avenue</th>
                         <th>Date</th>
                         <th>Status</th>
@@ -21,7 +22,7 @@ const AdminOrderTable = ({orderData}) => {
                 <tbody> 
                 {orderData.length !==0 && orderData.map((order, index) => (
                     <tr onClick={()=>openModal(<AdminOrderDetails data={order}/>)} className={styles.dataRow} key={index} >
-                        <td>
+                        {/* <td>
                             <div className={styles.tableDouble}>
                                 <img src={b?.item.img} alt="item" />
                                 <div>
@@ -38,17 +39,19 @@ const AdminOrderTable = ({orderData}) => {
                                     <p>{b?.email}</p>
                                 </div>
                             </div>
-                        </td>
-                        <td className={styles.amount}>{b?.avenue}</td>
+                        </td> */}
+                        <td className={styles.amount}>{order?.order_type}</td>
                         
-                        <td>{new Date(b?.date).toDateString() || "N/A"}</td>
+                        <td className={styles.amount}>{order?.order_type}</td>
+                        
+                        <td>{new Date(order?.created_at).toDateString() || "N/A"}</td>
                         
                         <td> 
-                            <span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
-                            {b?.status}
+                            <span className={`${styles.status} ${styles[order.status?.toLowerCase()]}`}>
+                            {order?.status}
                             </span>
                         </td>
-                        <td className={styles.amount}>₦{b?.amount.toLocaleString() || "N/A"}</td>
+                        <td className={styles.amount}>₦{order?.total_amount.toLocaleString() || "N/A"}</td>
                     </tr>
                 ))}
                 </tbody>
