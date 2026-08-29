@@ -189,20 +189,8 @@
         height: 41px;
         object-fit: contain;
     }
-/*     .mobileDouble{
-        gap:10px;
-    } */
     .navBtnLoggedIn {
         padding: 4px 4px;
         gap: 5px;
     }
-/*    
-    .navBtnLoggedIn img{
-        width: 29px;
-        height: 30px;
-    }
-
-    .navBtnLoggedIn p{
-        padding: 0 0;
-    }     */
 }

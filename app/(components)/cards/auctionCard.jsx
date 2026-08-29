@@ -1,11 +1,13 @@
+'use client'
 import { ArrowRight } from 'lucide-react';
 import styles from './cards.module.css'
 import Link from 'next/link';
 import Countdown from '../counter/page';
+import { useRouter } from 'next/navigation';
 const AuctionCard = ({name,price,duration,img,time,auctionId,slug,auctStatus}) => {
-
+    const router =  useRouter()
     return ( 
-        <div className={styles.card}>
+        <div onClick={()=> router.push(`/pages/auctions/${slug}?auctionID=${auctionId}`)} className={styles.card}>
             <div className={styles.imgContainer}>
                 <img src={img} alt="auction item" />
                 <div className={`${styles.status} ${styles[auctStatus]}`}> {auctStatus} </div>

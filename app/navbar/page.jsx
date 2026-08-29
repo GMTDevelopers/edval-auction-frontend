@@ -39,7 +39,7 @@ const Navbar = () => {
         <div className={styles.navbar}>
             <div className="container">
                 <div className={styles.navContainer}>
-                    <img className={styles.logo} src="/images/logo.png" alt="logo" />
+                    <img onClick={()=> router.push('/')} className={styles.logo} src="/images/logo.png" alt="logo" />
                     <ul className={styles.navLinks}>
                         <li className={ pathname==='/' ? `${styles.active}`: "" }><Link href="/" >Home</Link></li>
                         <li className={ pathname==='#aboutUs' ? `${styles.active}`: "" }><Link href="#aboutUs" >About</Link></li>

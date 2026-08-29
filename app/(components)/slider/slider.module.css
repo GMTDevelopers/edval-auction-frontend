@@ -4,23 +4,22 @@
 }
 
 .embla {
-    width: 85%;
-    overflow: hidden;
-    margin: auto;
+  width: 85%;
+  overflow: hidden;
+  margin: auto;
 }
 
 .slideContainer {
   display: flex;
-  /* gap: 56px;  */          /* Adjust spacing between cards */
   padding: 1rem 0;
 
 }
 
 .slide {
-    flex-shrink: 0;
-    width: 180px;           /* Adjust card width */
-    text-align: center;
-    margin-left: 4%;
+  flex-shrink: 0;
+  width: 180px;           /* Adjust card width */
+  text-align: center;
+  margin-left: 4%;
 }
 
 .imageWrapper {
@@ -68,16 +67,53 @@
   font-size: 1.25rem;
 }
 
-/* .arrowLeft:hover,
-.arrowRight:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  background: #f9fafb;
-} */
-
 .arrowLeft {
   left: -3%;
 }
 
 .arrowRight {
   right: -3%;
+}
+
+@media (max-width: 1400px) {
+
+}
+@media (max-width: 992px) {
+  .name {
+    font-size: 16px;
+  }
+
+}
+@media (max-width: 768px) {
+  .slideContainer {
+    display: flex;
+    padding: 1rem 0;
+  }
+  .name {
+    font-size: 15px;
+    margin-bottom: 4.5px;
+  }
+  .joined, .submissions {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .embla {
+    width: 100%;
+    overflow: hidden;
+    margin: auto;
+  }
+  .slide {
+    width: fit-content;
+    text-align: center;
+  }
+  .profileImage {
+    width: 125px;
+    height: 125px;
+  }
+}
+@media (max-width: 576px) {
+  .profileImage {
+    width: 110px;
+    height: 110px;
+  }
 }

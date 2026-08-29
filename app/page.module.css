@@ -174,8 +174,8 @@
   }
   .header img{
     top: 10;
-
   }
+  
 }
 @media (max-width: 992px) {
   .bannerTxt h1{
@@ -200,8 +200,24 @@
   .faqContainer{
     width: 70%;
   }
+  .questionHeader h3{
+    font-size: 18px;
+  }
 }
 @media (max-width: 768px) {
+/*   .questionHeader{
+    gap: 20px;
+  } */
+  .aboutContainer img{
+    width: 100%;
+    height:534px;
+    object-fit:contain;
+    object-position: top;
+  }
+  .questionHeader h3{
+    font-size: 16px;
+    width: 85%;
+  }
   .bannerTxt{
     width: 80%;
   }
@@ -217,8 +233,31 @@
   .bannerBtn{
     margin-top:28px ;
   }
+  .faqContainer{
+    width: 85%;
+  }
 }
 @media (max-width: 576px) {
+  .aboutContainer img{
+    width: 100%;
+    height:434px;
+    object-fit:cover;
+    object-position: top;
+  }
+  .aboutTxt{
+    gap:41px;
+  }
+  .aboutcardPack{
+    grid-template-columns:1fr;
+    gap:31px;
+  }
+  .faqContainer{
+    width: 90%;
+  }
+  .questionHeader svg{
+    height: 18px;
+    width: 18px;
+  }
 /*   .bannerTxt{
     width: 80%;
   }

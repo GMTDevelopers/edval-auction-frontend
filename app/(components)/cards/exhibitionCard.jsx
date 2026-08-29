@@ -7,7 +7,7 @@ const ExhibitionCard = ({name,venue,img,slug,time,date,status,attending}) => {
     const router = useRouter();
 
     return ( 
-        <div className={styles.card}>
+        <div onClick={()=>router.push(`/pages/exhibition/${slug}`)} className={styles.card}>
             <div className={styles.imgContainer}>
                 <img src={img} alt="auction item" />
                 <div className={status==="upcoming" ? `${styles.status} ${styles.upcoming}` : `${styles.status} ${styles.live}`}> {status} </div>

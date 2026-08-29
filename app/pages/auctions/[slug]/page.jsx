@@ -138,8 +138,13 @@ const ProdDetPage =  () => {
         <div className={``}>
             <div style={{marginLeft:"auto", marginRigth:"auto"}} className={`${styles.auctionPack}`}>
                 <div className={`container double formDoubleReversePage`}>
-                    <div className={styles.big}>
-                        <img className={styles.streamVideo} src="/images/auction/live.webp" alt="live" />
+                    <div className={`${styles.big} ${styles.auctionBig}`}>
+                        {
+                            auctionData?.status==='live' ? 
+                                <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                            :   <img className={styles.streamVideo} src="/images/auction/live.webp" alt="live" />
+                        }                       
+                        
                         <h2>{auctionData?.name||"Sisters of the Sound - Art Auction (LIVE)"}</h2>
                         <p>Artworks: 
                             {auctionLotData?.map((lot,index)=>(  

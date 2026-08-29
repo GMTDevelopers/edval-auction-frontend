@@ -2,20 +2,17 @@
     height: fit-content;
     display: flex;
     flex-direction: column;
-/*     justify-content: center; */
     align-items: center;
     margin-top: 85px;
 }
 .double{
     display: flex;
     justify-content: space-between;
-   /*  gap: 40px; */
     height: 100%;
     margin-bottom:120px ;
 }
 .big, .small{
     height: max-content;
-/*     border: solid 1px green; */
 }
 .big{
     display: flex;
@@ -23,17 +20,16 @@
     gap: 12px;
     padding-left: 1.5%;
 }
+.auctionBig{
+    width: 100%;
+}
 .big h2{
     font-size: 24px;
 }
-/* .big p span{
-    font-weight: 700;
-    color: var(--foreground);
-} */
 .streamVideo{
-/*     width: 1053px; */
     width: 100%;
     height: 515px;
+    object-fit: cover;
 }
 .timerPack{
     display: flex;
@@ -53,7 +49,6 @@
     color:  #FB6900;
 }
 .timer{
-
     font-size: 25px;
 }
 .timerBtn{
@@ -64,7 +59,6 @@
 .small{
     width: auto;
     height: fit-content;
-  
 }
 .smallPack{
     padding: 24px 49px 57px 32px;
@@ -72,7 +66,6 @@
 }
 .sideLots{
     display: flex;
-
     margin-top: 24px;
     flex-direction: column;
     gap: 12px;
@@ -84,7 +77,6 @@
     gap: 0px;
     margin: 24px 0px 32px 0px;
 }
-
 .placeBid button{
     background: var(--foreground);
     color: var(--background);
@@ -141,3 +133,51 @@
 .noWinner p{
     line-height: 24px;
 }
+
+@media (max-width: 1400px) {
+    .streamVideo{
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+}
+@media (max-width: 1200px) {
+    .small{
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 50px;
+    }
+
+}
+@media (max-width: 992px) {
+
+}
+@media (max-width: 768px) {
+    .streamVideo{
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+}
+@media (max-width: 576px) {
+
+    .statsCard{
+        padding:16px 20px 16px 20px;
+        min-height: fit-content;
+    }
+    .statsPack{
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .winners, .smallPack{
+        padding: 24px 20px 57px 20px;
+    }
+    .noWinner{
+        width: 100%;
+    }
+    .small{
+       margin-bottom: 50px;
+    }
+}
+
