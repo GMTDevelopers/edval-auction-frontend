@@ -265,6 +265,7 @@ const ProdDetPage = () => {
         const payload = {
             ...formData,
             placed_by_admin_id: user?.id,
+            user_id: user?.id,
         };
 
         try {
@@ -319,7 +320,7 @@ const ProdDetPage = () => {
                     {
                         auctionData?.status==='live' ? 
                             <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
-                        :   <img className={styles.streamVideo} src="/images/auction/live.webp" alt="live" />
+                        :   <img className={styles.streamVideo} src={auctionData?.cover_image_url || "/images/auction/live.webp"} alt="live" />
                     }   
                    {/*  <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /> */}
                     {/* <img  src="/images/auction/live.webp" alt="live" /> */}
@@ -471,7 +472,7 @@ const ProdDetPage = () => {
                                         </select>
                                     </div>
                                     <div className="rowMultiple">
-                                        <p>Amount bid</p>
+                                        <p>Amount bid (₦) </p>
                                         <input type="text" inputMode="decimal" value={formData.amount}
                                             onChange={(e) => {
                                                 const value = e.target.value;
