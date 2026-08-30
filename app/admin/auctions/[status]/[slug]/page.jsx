@@ -312,10 +312,19 @@ const ProdDetPage = () => {
             <br /><br />
             <div style={{alignItems:"normal"}} className={`container double formDoubleReverse`}>
                 <div className={`${styles.big} ${styles.auctionBig}`}>
-                    <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                    {
+                        auctionData?.status==='live' ? 
+                            <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                        :   <img className={styles.streamVideo} src="/images/auction/live.webp" alt="live" />
+                    }   
+                   {/*  <iframe className={styles.streamVideo} src={auctionData?.stream_url} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen /> */}
                     {/* <img  src="/images/auction/live.webp" alt="live" /> */}
                     <h2>{auctionData?.name}</h2>
-                    <p>Artworks: <span> Black or Beauty?, Dancing in the Wind, Calm & Open  </span> </p>
+                    <p>Artworks: 
+                        {auctionLotData?.map((lot,index)=>(  
+                            <span key={index}> {lot?.title}, </span> 
+                        ))}
+                    </p>
                      { auctionData?.status==='live' ? 
                         <div className={styles.endsIn}>
                             <p>Auction ends in</p>
