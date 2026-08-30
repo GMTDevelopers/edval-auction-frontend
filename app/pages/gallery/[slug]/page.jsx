@@ -3,9 +3,10 @@
 import styles from './galleryDet.module.css';
 import GalleryCard from "@/app/(components)/cards/galleryCard";
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import ArtworkDetail from "@/app/(components)/lotDetail/artworkDetail";
 import Loader from '@/app/(components)/loader/loader';
+import { ChevronLeft } from 'lucide-react';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GetArtwork = async (slug) => {
   try {
@@ -70,6 +71,7 @@ const GalleryDetailsPage = () => {
     const {slug} = useParams()
     const searchParams = useSearchParams();
     const category = searchParams.get('category');
+    const router = useRouter();
     useEffect(() => {
         console.log('searchParams', category.toString())
         const trying = async () => {
@@ -91,6 +93,9 @@ const GalleryDetailsPage = () => {
     {/* if we get here by slug you need to filter by slog*/}
     return ( 
       <div>
+        <div style={{display:"flex", width:"100%", justifyContent:"space-between", alignSelf:"flex-start"}}>
+          <div onClick={() => router.back()} className={`btn ${styles.backBtn}`}><ChevronLeft /> <p><span>go back</span></p> </div>
+        </div>
         {loading?<div className='emptyCont'> <Loader /> </div>: <ArtworkDetail className={`container ${styles.detailsContainer}`} data={artwork.data}/>}
         {!loading && <div className="upcomingAuctions">
           <div className="container">

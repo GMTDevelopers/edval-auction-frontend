@@ -251,7 +251,7 @@ export default function Home() {
       </section>
       <section id="aboutUs" className={styles.aboutUs}>
         <div className={`container ${styles.aboutContainer}`}>
-            <img src="/images/homepage/aboutus.png" alt="about us" />
+            <img src="/images/homepage/aboutUs.png" alt="about us" />
             <div className={styles.aboutTxt}>
               <div className={styles.aboutTxtHeader}>
                 <p className="subHeading">ABOUT US</p>
