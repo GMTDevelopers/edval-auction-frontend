@@ -9,7 +9,7 @@ const LotSide = ({name, artist, year, bid, status, img}) => {
                 <h3>{name}</h3>
                 <p>Artist: <span>{artist}</span></p>
                 <p>Year: <span>{year}</span></p>
-                <p>Starting bid: <span>{bid}</span></p>
+                <p>Starting bid: <span>{bid.toLocaleString()}</span></p>
                 <p>Status: <span>{status}</span></p>
             </div>
         </div>

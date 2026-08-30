@@ -63,8 +63,8 @@ const Winner = ({name, artistFirst, artistLast, payStatus, startBid, id, endBid,
             <div className={styles.right}>
                 <h3>{name}</h3>
                 <p>Artist: <span>{artistFirst} {artistLast}</span></p>
-                <p>Starting bid: <span>₦ {startBid}</span></p>
-                <p>Winning Bid: <span>₦ {endBid}</span></p>
+                <p>Starting bid: <span>₦ {startBid.toLocaleString()}</span></p>
+                <p>Winning Bid: <span>₦ {endBid.toLocaleString()}</span></p>
                 { payStatus!=='paid' &&<p>Payment window: <span style={{color:"#FB0000"}}> <Countdown endTime={time} /> </span></p>}
                 { payStatus === 'paid' &&<p>Payment status: <span style={{color:"#419E5A"}}> {payStatus} </span></p>}
                 { payStatus!=='paid' &&

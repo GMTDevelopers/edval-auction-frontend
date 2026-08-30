@@ -62,7 +62,7 @@ export default function PaymentCallback() {
           <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
             <CircleOff size={52} color="#419E5A"/>
             <h1>{message}</h1>
-            <button className="btn" onClick={()=>router.push('/gallery')}>continue shopping</button>
+{/*             <button className="btn" onClick={()=>router.push('/gallery')}>continue shopping</button> */}
           </div>          
         </div>
        }

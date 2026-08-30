@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './exhibition.module.css';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Loader from '@/app/(components)/loader/loader';
 import { toast } from 'sonner';
 import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
@@ -32,6 +32,7 @@ const ExhibitionDetails = () => {
     const [loading, setLoading] = useState(false);
     const accessToken = localStorage.getItem("access_token");
     const {slug} = useParams();
+    const router = useRouter();
 
     const handleAttendance = async () =>{
         try {
@@ -86,6 +87,9 @@ const ExhibitionDetails = () => {
         <>
             {loading ? <div className='emptyCont'><Loader /></div> : 
                 <div className={styles.container}>
+                    <div  style={{display:"flex", width:"100%", justifyContent:"space-between", alignSelf:"flex-start"}}>
+                        <div onClick={() => router.back()} className={`btn ${styles.backBtn}`}><ChevronLeft /> <p><span>go back</span></p> </div>
+                    </div>
                     <div className={styles.galleryContainer}>
                         {/* Main Large Image */}
                         <img src={auctionData.banner_url} alt="exhibition" className={styles.mainImage} />

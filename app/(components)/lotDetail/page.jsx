@@ -48,7 +48,7 @@ const LotDetails = ({data}) => {
                 <div className={styles.artistPack}>
                     <h2>{data?.title}</h2>
                     <p>Artist:<span> {data.artwork.artist_details.first_name} {data.artwork.artist_details.lasst_name} </span></p>
-                    {data.reserve_price? <p className={styles.price}>${data.reserve_price}</p> : <p>Starting Bid:<span> ${data.reserve_price} </span></p>}
+                    {data.reserve_price? <p className={styles.price}>${data.reserve_price.toLocaleString()}</p> : <p>Starting Bid:<span> ${data.reserve_price.toLocaleString()} </span></p>}
                 </div>
                 <p style={{lineHeight:"24px"}}>
                     {data.artwork.description}
