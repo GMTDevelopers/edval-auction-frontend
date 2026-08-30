@@ -339,13 +339,12 @@ const ProdDetPage = () => {
                         <div className={styles.endsIn}>
                             <p>Auction Starts in</p>
                             <div className={styles.timerPack}>
-                                <div className={styles.timerPackUp}>
-                                    <p>{new Date(auctionData?.scheduled_at).toDateString()}</p>
-                                    <p>{new Date(auctionData?.scheduled_at).toLocaleTimeString()}</p>
+                                <div className={styles.timer}>
+                                    <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
                                 </div>
                                 
                                 {/*the button (components) needs to have conditional rendering */}
-                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders />)}>View registered bidders (77)</div>
+                               <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders.length})</div>
                             </div>
                         </div>
                     }
