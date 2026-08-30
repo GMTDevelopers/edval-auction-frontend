@@ -53,7 +53,7 @@ const CartShippingDetails = () => {
         if (result.success) {
             try {
                 
-                const callbackUrl = `${window.location.origin}/cart/callback`;
+                const callbackUrl = `${window.location.origin}/payment/callback`;
                 const initData = {
                     ...payinitData,
                     callback_url: callbackUrl ,
