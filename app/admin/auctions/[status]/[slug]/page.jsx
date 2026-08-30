@@ -121,6 +121,9 @@ const ProdDetPage = () => {
             if (response.ok) {
                 toast.success("Auction status changed successfully.");
                 console.log('Auction status changed successfully:', data);
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2000);
             }
         } catch (err) {
             console.log(err)
@@ -286,12 +289,6 @@ const ProdDetPage = () => {
             };
         }
     }
-  
-  
-
-
-
-
 
     useEffect(() => {
         getAuction();
