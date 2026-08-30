@@ -38,9 +38,9 @@ export default function PaymentCallback() {
         if (data.data.status === "completed") {
           
           setMessage("Payment successful! 🎉");
-/*           setTimeout(() => {
+          setTimeout(() => {
             router.back()
-          }, 2500); */
+          }, 2500);
         } else {
           setMessage("Payment not confirmed yet.");
         }

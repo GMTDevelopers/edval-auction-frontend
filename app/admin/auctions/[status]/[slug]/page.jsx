@@ -265,11 +265,8 @@ const ProdDetPage = () => {
         const payload = {
             ...formData,
             placed_by_admin_id: user?.id,
-            user_id: user?.id,
         };
-
         try {
-           
             const response = await fetch(`${BASE_URL}/lots/${activeLotData.id}/bids`, { 
             method: "POST",
                 headers: {
@@ -297,7 +294,6 @@ const ProdDetPage = () => {
             };
         }
     }
-
     useEffect(() => {
         getAuction();
         getAuctionLots();
@@ -335,7 +331,7 @@ const ProdDetPage = () => {
                             <p>Auction ends in</p>
                             <div className={styles.timerPack}>
                                 <div className={styles.timer}>
-                                    <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
+                                    <Countdown startTime={auctionData?.started_at} duration={auctionData?.duration_minutes}/>
                                 </div>
                                 {/*VIEW REGISTERED BIDDERS*/}
                                 <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders.length})</div>
@@ -345,7 +341,7 @@ const ProdDetPage = () => {
                             <p>Auction Starts in</p>
                             <div className={styles.timerPack}>
                                 <div className={styles.timer}>
-                                    <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
+                                    <Countdown startTime={auctionData?.scheduled_at} />
                                 </div>
                                 
                                 {/*the button (components) needs to have conditional rendering */}

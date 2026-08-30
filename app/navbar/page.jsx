@@ -42,7 +42,7 @@ const Navbar = () => {
                     <img onClick={()=> router.push('/')} className={styles.logo} src="/images/logo.png" alt="logo" />
                     <ul className={styles.navLinks}>
                         <li className={ pathname==='/' ? `${styles.active}`: "" }><Link href="/" >Home</Link></li>
-                        <li className={ pathname==='#aboutUs' ? `${styles.active}`: "" }><Link href="#aboutUs" >About</Link></li>
+                        <li className={ pathname==='#aboutUs' ? `${styles.active}`: "" }><Link href="/#aboutUs" >About</Link></li>
                         <li className={ pathname.startsWith('/pages/auctions') ? `${styles.active}`: "" }><Link href="/pages/auctions" >Auctions</Link></li>
                         <li className={ pathname.startsWith('/pages/gallery') ? `${styles.active}`: "" }><Link href="/pages/gallery" >Gallery</Link></li>
                         <li className={ pathname.startsWith('/pages/exhibition')  ? `${styles.active}`: "" }><Link href="/pages/exhibition" >Exhibitions</Link></li>

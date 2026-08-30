@@ -207,7 +207,7 @@ const EditArtwork = ({lot}) => {
                         </div>
                         <div>
                             <label htmlFor="price">Price</label>
-                            <input value={formData.price.toLocaleString()} onChange={(e)=>setformData(prev=>({...prev, price:Number(e.target.value)}))} min="0.00" step="0.01" type="number" name="sellPrice" />
+                            <input value={formData.price} onChange={(e)=>setformData(prev=>({...prev, price:Number(e.target.value)}))} min="00000000000.00" step="0.01" type="number" name="sellPrice" />
                         </div>                        
                         <button className="btn submit">Edit Artwork</button>
                     </div>

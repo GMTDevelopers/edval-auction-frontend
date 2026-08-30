@@ -142,7 +142,7 @@ const Setting = () => {
                                         <div className={Styles.imgPack}>
                                             <ImageUploader
                                                 className="mainImageContainer"
-                                                value={activeAdmin?.profile_image_url || "/images/comission/comission.webp"}
+                                                value={user?.profile_image_url || "/images/comission/comission.webp"}
                                                 placeholder={`Add Image`}
                                                 onUpload={(url) => {
                                                     const media = url;
