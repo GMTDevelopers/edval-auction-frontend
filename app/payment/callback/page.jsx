@@ -38,9 +38,9 @@ export default function PaymentCallback() {
         if (data.data.status === "completed") {
           
           setMessage("Payment successful! 🎉");
-          setTimeout(() => {
+/*           setTimeout(() => {
             router.back()
-          }, 2500);
+          }, 2500); */
         } else {
           setMessage("Payment not confirmed yet.");
         }
@@ -62,6 +62,7 @@ export default function PaymentCallback() {
           <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
             <CircleOff size={52} color="#419E5A"/>
             <h1>{message}</h1>
+            <button className="btn" onClick={()=>router.push('/gallery')}>continue shopping</button>
           </div>          
         </div>
        }

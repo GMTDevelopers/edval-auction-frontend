@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    align-self: center;
+/*     align-self: center; */
 }
 .galleryContainer img {
     margin-bottom: 1.25rem;

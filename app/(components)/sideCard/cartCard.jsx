@@ -17,7 +17,7 @@ const CartCard = ({id, name, artist, description, price, img}) => {
                 <p className={styles.description}>{description}</p>
                 <br />
                 <div className="double">
-                    <p className={styles.payDuePrice}>${price}</p>
+                    <p className={styles.payDuePrice}>${price.toLocalString()}</p>
                     <Trash2 onClick={()=>removeItem(id)} color="#FB0000" size={24} />
                 </div>
             </div>

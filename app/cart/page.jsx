@@ -38,7 +38,7 @@ const Cart = () => {
                                         cart?.items.map((item)=>(
                                             <li key={item.id} className='double'>
                                                 <p>{item.title}</p>
-                                                <p><span>${item.price}</span></p>
+                                                <p><span>${item.price.toLocalString()}</span></p>
                                             </li>
                                         ))
                                     }
@@ -46,7 +46,7 @@ const Cart = () => {
                                 <div className={styles.totalOrder}>
                                     <div className="double">
                                         <p>ORDER TOTAL</p>
-                                        <p className={styles.totalPrice}>${cart?.subtotal}</p>
+                                        <p className={styles.totalPrice}>${cart?.subtotal.toLocalString()}</p>
                                     </div>
                                     <div onClick={()=> {router.push('/pages/shipping/cartCheckout')}} className="btn">Proceed to checkout</div>
                                 </div>

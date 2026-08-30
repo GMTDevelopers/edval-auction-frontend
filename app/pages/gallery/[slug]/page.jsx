@@ -93,7 +93,7 @@ const GalleryDetailsPage = () => {
     {/* if we get here by slug you need to filter by slog*/}
     return ( 
       <div>
-        <div style={{display:"flex", width:"100%", justifyContent:"space-between", alignSelf:"flex-start"}}>
+        <div className='container' style={{display:"flex", width:"100%", justifyContent:"space-between", alignSelf:"flex-start"}}>
           <div onClick={() => router.back()} className={`btn ${styles.backBtn}`}><ChevronLeft /> <p><span>go back</span></p> </div>
         </div>
         {loading?<div className='emptyCont'> <Loader /> </div>: <ArtworkDetail className={`container ${styles.detailsContainer}`} data={artwork.data}/>}

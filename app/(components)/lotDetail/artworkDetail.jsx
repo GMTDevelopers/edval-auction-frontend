@@ -54,7 +54,7 @@ const ArtworkDetail = ({data}) => {
                 <div className={styles.artistPack}>
                     <h2>{data?.title}</h2>
                     <p>Artist:<span> {data.artist_details.first_name} {data.artist_details.lasst_name} </span></p>
-                    {data.price? <p className={styles.price}>${data.price}</p> : <p>Starting Bid:<span> ${data.price} </span></p>}
+                    {data.price? <p className={styles.price}>${data.price}</p> : <p>Starting Bid:<span> ${data.price.toLocalString()} </span></p>}
                 </div>
                 <p style={{lineHeight:"24px"}}>
                     {data.description}
