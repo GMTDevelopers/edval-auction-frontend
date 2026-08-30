@@ -34,8 +34,9 @@ const ProdDetPage = () => {
 
     const [formData, setformData] = useState({
         amount: '',
-        channel: "",
-        placed_by_admin_id: user?.id,
+        channel: "platform",
+        placed_by_admin: true,
+        placed_by_admin_id: 0,
         user_id: 0,
     });
     const [startAuctionForm, setStartAuctionForm] = useState({
@@ -261,14 +262,20 @@ const ProdDetPage = () => {
     }
     const handlePlaceBid = async () => {
         const accessToken = localStorage.getItem("access_token");
+        const payload = {
+            ...formData,
+            placed_by_admin_id: user?.id,
+        };
+
         try {
+           
             const response = await fetch(`${BASE_URL}/lots/${activeLotData.id}/bids`, { 
             method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "authorization": `Bearer ${accessToken}`,
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(payload),
             });
             const data = await response.json();
             if (!response.ok) {
@@ -355,10 +362,10 @@ const ProdDetPage = () => {
                                         <p>Active Lot: <span> {activeLotData?.title} </span></p>
                                     </li>
                                     <li>
-                                        <p>Starting Bid: <span>$ {activeLotData?.starting_bid}</span></p>
+                                        <p>Starting Bid: <span>₦ {activeLotData?.starting_bid}</span></p>
                                     </li>
                                     <li>
-                                        <p>Current Bid: <span>  $ {activeLotData?.current_bid} </span></p>
+                                        <p>Current Bid: <span>  ₦ {activeLotData?.current_bid} </span></p>
                                     </li>
                                     <li>
                                         <p>Bidder: <span> {activeLotData?.current_bidder_name} </span></p>
@@ -372,27 +379,27 @@ const ProdDetPage = () => {
                                 <h3>Current Bid</h3>
                                 <div className={styles.statsList}>
                                     <li>
-                                        <p> <span> Maryam Rita </span> bidded <span> $1,900.00 </span></p>
+                                        <p> <span> Maryam Rita </span> bidded <span> ₦1,900.00 </span></p>
                                         <p className={styles.time}>Just now</p>
                                     </li>
                                     <li>
-                                        <p> <span> Mike Olumide  </span> bidded <span> $1,600.00 </span></p>
+                                        <p> <span> Mike Olumide  </span> bidded <span> ₦1,600.00 </span></p>
                                         <p className={styles.time}>Just now</p>
                                     </li>
                                     <li>
-                                        <p> <span> Eliab Banjo </span> bidded <span> $1,450.00 </span></p>
+                                        <p> <span> Eliab Banjo </span> bidded <span> ₦1,450.00 </span></p>
                                         <p className={styles.time}>1 mins ago</p>
                                     </li>
                                     <li>
-                                        <p> <span> Maryam Rita </span> bidded <span> $1,350.00 </span></p>
+                                        <p> <span> Maryam Rita </span> bidded <span> ₦1,350.00 </span></p>
                                         <p className={styles.time}>2 mins ago</p>
                                     </li>
                                     <li>
-                                        <p> <span> James Docka </span> bidded <span> $1,320.00 </span></p>
+                                        <p> <span> James Docka </span> bidded <span> ₦1,320.00 </span></p>
                                         <p className={styles.time}>5 mins ago</p>
                                     </li>
                                     <li>
-                                        <p> <span>Mike Olumide  </span> bidded <span> $1,900.00 </span></p>
+                                        <p> <span>Mike Olumide  </span> bidded <span> ₦1,900.00 </span></p>
                                         <p className={styles.time}>6 mins ago</p>
                                     </li>
                                     
@@ -445,17 +452,17 @@ const ProdDetPage = () => {
                                     </div>
                                 </form>
                                 <form className={pageStyles.form} onSubmit={(e)=>{e.preventDefault(); handlePlaceBid()}}>
-                                    <p> <span>PLACE BID </span></p>
+                                    <p> <span>PLACE BID</span></p>
                                     
                                     <div className="rowMultiple">
                                         <p>Bid Channel</p>
                                         <select className={styles.graphType} value={formData.channel} onChange={(e)=>setformData(prev=>({...prev, channel:e.target.value}))} name="activeLot" id="">
-                                            <option value="Website Platform">Website Platform</option>
-                                            <option value="Phone Bidding">Phone Bidding</option>
+                                            <option value="Platform">Website Platform</option>
+                                            <option value="phone">Phone Bidding</option>
                                         </select>
                                     </div>
                                     <div className="rowMultiple">
-                                        <p>Current bid (User)</p>
+                                        <p>Current bid (₦) (User)</p>
                                         <select className={styles.graphType} value={formData.user_id} onChange={(e)=>setformData(prev=>({...prev, user_id:Number(e.target.value)}))} name="activeLot" id="">
                                             <option value="Active lot">Select user</option>
                                             {regBidders?.length && regBidders?.map((user,index)=>(

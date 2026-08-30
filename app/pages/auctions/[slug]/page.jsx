@@ -128,7 +128,7 @@ const ProdDetPage =  () => {
         const interval = setInterval(() => {
             getActiveLot();
             getMyWinnings();
-        }, 60000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [auctId, status]);
