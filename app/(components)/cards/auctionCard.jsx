@@ -14,7 +14,7 @@ const AuctionCard = ({name,price,duration,img,time,auctionId,slug,auctStatus}) =
             </div>
             <div className={styles.cardTxt}>
                 <h4>{name}</h4>
-                <p>starting bid: <span>${price}</span></p>
+                <p>starting bid: <span>${price.toLocaleString()}</span></p>
                 <div className={styles.cardTimmer}>
                     {auctStatus==='live'? <p>CLOSING IN: <Countdown startTime={time} duration={duration}/></p> :
                         <p>STARTS: <span >{new Date(time).toDateString()}</span> </p>

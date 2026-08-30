@@ -45,7 +45,7 @@ const Table = ({data}) => {
                                 {b?.status}
                                 </span>
                             </td>
-                            <td className={styles.amount}>₦{b?.total_amount?.toLocalString() || "N/A"}</td>
+                            <td className={styles.amount}>₦{b?.total_amount?.toLocaleString() || "N/A"}</td>
                         </tr>
                     ))}
                     </tbody>
