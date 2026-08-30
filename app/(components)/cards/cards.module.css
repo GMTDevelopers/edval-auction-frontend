@@ -202,10 +202,10 @@
         font-size: 15px;
     }
 }
-@media (max-width: 419px) {
+/* @media (max-width: 419px) {
     .imgContainer img, .galImg{
-        height:auto !important;
+        height:180px;
         object-fit: contain;
         object-position: top;
     }
-}
+} */

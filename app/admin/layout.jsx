@@ -10,7 +10,7 @@ const AdminLayout = ({children}) => {
     const { openModal } = useModal();
 
     return ( 
-        <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
+        
             <div className={styles.layoutContainer}>
                 <div className="container">
                     <ul className={styles.navBar}>
@@ -26,8 +26,8 @@ const AdminLayout = ({children}) => {
                 </div>
                 
             </div>
-        </ProtectedRoute>
+
     );
 }
- 
+/*  <ProtectedRoute allowedRoles={['admin', 'super_admin']}>        </ProtectedRoute> */
 export default AdminLayout;
