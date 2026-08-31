@@ -1,8 +1,41 @@
 'use client';
 import styles from '@/app/(components)/lotDetail/lotDetail.module.css';
+import Styles from'./adminTables.module.css';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+const EditRequestStatus = async (formData, comId) => {
+    const accessToken = localStorage.getItem("access_token");
+    try {
+        const response = await fetch(`${BASE_URL}/commissions/${comId}/status`, { 
+        method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw( 
+                response.status,
+                data.error|| "commission status function failed"
+            )
+        }
+        return {
+            success:true,
+            data: data
+        };
+    } catch (err) {
+        console.log(err)
+        return {
+            success: false,
+            err,
+        };
+    }
+};
 
 const AdminRequestPCDetails = ({data}) => {
     const [showing, setShowing] = useState('Processing');
@@ -13,13 +46,33 @@ const AdminRequestPCDetails = ({data}) => {
         setCurrentIndex(index);
     };
    
-    if (!data?.images?.length) {
-        return <p>No images provided.</p>;
+    const [formData, setFormData] = useState({
+        status:'',
+    });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const result = await EditRequestStatus(formData, data?.id);
+        if(!result.success){
+            console.log(result)
+            toast.error(result.err.message);
+        }
+        if(result.success){
+            toast.success("Status updated successfully.");
+            console.log('Status updated successfully:', result);
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        }  
     }
+
+/*     if (!data?.images?.length) {
+        return <p>No images provided.</p>;
+    } */
     
 
     return ( 
-        <div className={`${styles.adminArtistDetailsContainer} ${styles.container}`}>
+        <div className={`${Styles.adminArtistDetailsContainer} ${styles.container}`}>
             <div className={styles.galleryContainer}>
                 {/* Main Large Image */}
                 <div className={styles.mainImageContainer}>
@@ -57,7 +110,7 @@ const AdminRequestPCDetails = ({data}) => {
                    
                     <li>
                         <p>Name</p>
-                        <p>{data?.title}</p>
+                        <p>{data?.artwork_title}</p>
                     </li>
                     <li>
                         <p>Email</p>
@@ -73,23 +126,23 @@ const AdminRequestPCDetails = ({data}) => {
                     </li>
                     <li>
                         <p>Artwork type</p>
-                        <p>{data?.artwork?.artwork_type}</p>
+                        <p>{data?.commission?.type_of_artwork}</p>
                     </li>
                     <li>
                         <p>Preferred deadline</p>
-                        <p>{data.year}</p>
+                        <p>{new Date(data?.commission?.deadline).toDateString()}</p>
                     </li>
                     <li>
                         <p>Artwork category</p>
-                        <p>{data?.artwork?.category}</p>
+                        <p>{data?.commission?.preferred_style}</p>
                     </li>
                     <li>
                         <p>Intended purpose</p>
-                        <p>Home and office use</p>
+                        <p>{data?.commission?.intended_purpose}</p>
                     </li>
                     <li>
                         <p>Dimensions</p>
-                        <p>{data?.artwork?.dimensions}  (h x w x d in cm)</p>
+                        <p>{data?.commission?.dimensions}</p>
                     </li>
                     <li>
                         <p>Budget range</p>
@@ -97,32 +150,40 @@ const AdminRequestPCDetails = ({data}) => {
                     </li>
                     <li>
                         <p>Requested artist</p>
-                        <p>Michael Scarlett</p>
+                        <p>{data?.artist?.full_name}</p>
                     </li>
                     
                 </div>  
                 <div style={{border:"1px solid #807D67", padding:"5%"}}>
                     <p><span>ADDITIONAL INSTRUCTIONS</span></p>
                     <br />
-                    <p>Tortor pellentesque sed mattis lacus vestibulum quis id amet. Nec pellentesque et accumsan vitae amet morbi suspendisse odio nisl. Vitae ac mi donec nulla ac pellentesque. Neque vel bibendum ut diam porttitor blandit egestas feugiat. Morbi nulla proin non donec.</p>   
-                </div>
-                       
-                <div style={{whiteSpace:"nowrap", alignItems:"center", gap:"12px", fontWeight:500}} className="double">
-                    Update status
-                    <select value={showing} onChange={(e)=> setShowing(e.target.value)} name="nowShowing"> 
-                        <option value="pending">
-                            Pending
-                        </option>                                            
-                        <option value="completed">
-                            Completed
-                        </option>                                
-                                                                                    
-                    </select>
-                </div>
-                <br />  
-                <div className="double">                    
-                    <div style={{marginTop:0, width:"fit-content", whiteSpace:"nowrap"}} className="btn submit">Update request status</div>
-                </div>
+                    <p>{data?.commission?.additional_instructions}</p>   
+                </div>            
+
+                <form>         
+                    <div style={{whiteSpace:"nowrap", alignItems:"center", gap:"12px", fontWeight:500}} className="row2">
+                        Update status
+                        <select value={formData.status} onChange={(e)=>setFormData(prev=>({...prev, status:e.target.value}))} name="nowShowing"> 
+                            <option value="-">
+                                -
+                            </option>                                            
+                            <option value="in_progress">
+                                In Progresss
+                            </option>                                            
+                            <option value="completed">
+                                Completed
+                            </option>                                
+                            <option value="cancelled">
+                                cancelled
+                            </option>                                
+                                                                                        
+                        </select>
+                    </div>
+                    <br />  
+                    <div className="double">                    
+                        <div onClick={handleSubmit} style={{marginTop:0, width:"fit-content"}} className="btn submit">Update request status</div>
+                    </div>
+                </form>  
             </div>
             
         </div>
