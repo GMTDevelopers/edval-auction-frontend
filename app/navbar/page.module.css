@@ -28,7 +28,7 @@
 }
 .logo{
     width: 173px;
-    height: 41px;
+    height: 100%;
     object-fit: cover;
 }
 .navLinks{
@@ -151,8 +151,8 @@
 }
 @media (max-width: 992px) {
     .logo{
-        width: 153px;
-        height: 41px;
+        width: 177px;
+        height: 61px;
         object-fit: contain;
     }
     .navLinks{
@@ -168,7 +168,7 @@
 @media (max-width: 768px) {
     .logo{
         width: 133px;
-        height: 41px;
+        height: 51px;
         object-fit: contain;
     }
     .navBtnLoggedIn img{

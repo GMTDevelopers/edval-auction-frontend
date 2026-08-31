@@ -1,34 +1,87 @@
 'use client';
 import styles from '@/app/(components)/lotDetail/lotDetail.module.css';
+import Styles from'./adminTables.module.css';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+const EditRequestStatus = async (formData, subId) => {
+    const accessToken = localStorage.getItem("access_token");
+    try {
+        const response = await fetch(`${BASE_URL}/admin/exhibitions/artworks/${subId}/review`, { 
+        method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw( 
+                response.status,
+                data.error|| "Order status function failed"
+            )
+        }
+        return {
+            success:true,
+            data: data
+        };
+    } catch (err) {
+        console.log(err)
+        return {
+            success: false,
+            err,
+        };
+    }
+};
 
 const AdminRequestExhDetails = ({data}) => {
     const [showing, setShowing] = useState('Processing');
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [approved, setIsapproved] = useState(false);
 
     const handleThumbnailClick = (index) => {
         setCurrentIndex(index);
     };
    
-    if (!data?.images?.length) {
-        return <p>No images provided.</p>;
+    const [formData, setFormData] = useState({
+        status:'',
+        feedback:''
+    });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const result = await EditRequestStatus(formData, data?.id);
+        if(!result.success){
+            console.log(result)
+            toast.error(result.err.message);
+        }
+        if(result.success){
+            toast.success("Status updated successfully.");
+            console.log('Status updated successfully:', result);
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        }  
     }
+
+/*     if (!data?.images?.length) {
+        return <p>No images provided.</p>;
+    } */
     
 
     return ( 
-        <div className={`${styles.adminArtistDetailsContainer} ${styles.container}`}>
+        <div className={`${Styles.adminArtistDetailsContainer} ${styles.container}`}>
             <div className={styles.galleryContainer}>
                 {/* Main Large Image */}
-                <div className={styles.mainImageContainer}>
+                <div className={`${styles.mainImageContainer} ${Styles.mainImageContainer}`}>
                     <img src={data.images[currentIndex]} alt={`Gallery image ${currentIndex + 1}`} className={styles.mainImage} />
                 </div>
 
                 {/* Thumbnails */}
                 <div className={styles.thumbnailsContainer}>
-                    {data.images.map((image, index) => (
+                    {data?.images?.map((image, index) => (
                         <div key={index} className={`${styles.thumbnailWrapper} ${index === currentIndex ? styles.active : '' }`} onClick={() => handleThumbnailClick(index)} >
                             <img src={image} alt={`Thumbnail ${index + 1}`} className={styles.thumbnail} />
                         </div>
@@ -48,26 +101,26 @@ const AdminRequestExhDetails = ({data}) => {
                 <div style={{border:"1px solid #807D67", padding:"5%"}}>
                     <p><span>ARTIST BIO</span></p>
                     <br />
-                    <p>Tortor pellentesque sed mattis lacus vestibulum quis id amet. Nec pellentesque et accumsan vitae amet morbi suspendisse odio nisl. Vitae ac mi donec nulla ac pellentesque. Neque vel bibendum ut diam porttitor blandit egestas feugiat. Morbi nulla proin non donec.y </p>
+                    <p>{data?.artist_bio}</p>
                     
                 </div>
                 <div style={{border:"1px solid #807D67", padding:"5%"}}>
                     <p><span>ARTWORK DESCRIPTION</span></p>
                     <br />
-                    <p>Tortor pellentesque sed mattis lacus vestibulum quis id amet. Nec pellentesque et accumsan vitae amet morbi suspendisse odio nisl. Vitae ac mi donec nulla ac pellentesque. Neque vel bibendum ut diam porttitor blandit egestas feugiat. Morbi nulla proin non donec.</p>   
+                    <p>{data?.artwork?.description}</p>   
                 </div>
                 <div className={styles.otherDetailsPack}>
                     <li>
                         <p>Email</p>
-                        <p>sammy.studios@example.com</p>
+                        <p>{data?.email}</p>
                     </li>
                     <li>
                         <p>Phone number</p>
-                        <p><span>+234 801 234 5678</span></p>
+                        <p><span>{data?.phone}</span></p>
                     </li>
                      <li>
                         <p>Portfolio link</p>
-                        <p>www.instagram.com/sharon_studios</p>
+                        <p>{data?.portfolio_link}</p>
                     </li>
                     <li>
                         <p>Location</p>
@@ -75,57 +128,63 @@ const AdminRequestExhDetails = ({data}) => {
                     </li>
                      <li>
                         <p>Artwork category</p>
-                        <p>{data.category}</p>
+                        <p>{data?.artwork?.category}</p>
                     </li>
                     <li>
                         <p>Year created</p>
-                        <p>{data.year}</p>
+                        <p>{data?.artwork?.year_created}</p>
                     </li>
                    
                     <li>
                         <p>Themes</p>
-                        <p>{data.theme.map(them=>(
-                            <span>{them}, </span>
-                        ))}</p>
+                        <p> <span>{data?.artwork.themes}</span></p>
                     </li>
                     <li>
                         <p>Artwork type</p>
-                        <p>{data?.type}</p>
+                        <p>{data?.artwork?.artwork_type}</p>
                     </li>
                     <li>
                         <p>Dimensions</p>
-                        <p>{data?.size} (h x w x d in inches)</p>
+                        <p>{data?.artwork?.dimensions} (h x w x d in cm)</p>
                     </li>
                     <li>
                         <p>Selling price</p>
-                        <p>$400</p>
+                        <p>₦{data?.amount.toLocaleString()}</p>
                     </li>
                     <li>
                         <p>Frame</p>
-                        <p>{data?.frame}</p>
+                        <p>{data?.artwork?.framed.toString()}</p>
                     </li>
                     <li>
                         <p>Proof of Authenticy</p>
-                        <p>{data.proofOfAuth}</p>
+                        <p>{data?.artwork?.proof_of_authenticity.toString()}</p>
                     </li>                   
                 </div>  
-                           
-                <div style={{whiteSpace:"nowrap", alignItems:"center", gap:"12px", fontWeight:500}} className="double">
-                    Update status
-                    <select value={showing} onChange={(e)=> setShowing(e.target.value)} name="nowShowing"> 
-                        <option value="pending">
-                            Pending
-                        </option>                                            
-                        <option value="completed">
-                            Completed
-                        </option>                                
-                                                                                    
-                    </select>
-                </div>
-                 <br />  
-                <div className="double">                    
-                    <div style={{marginTop:0, width:"fit-content"}} className="btn submit">Update request status</div>
-                </div>
+                <form>         
+                    <div style={{whiteSpace:"nowrap", alignItems:"center", gap:"12px", fontWeight:500}} className="row2">
+                        Update status
+                        <select value={formData.status} onChange={(e)=>setFormData(prev=>({...prev, status:e.target.value}))} name="nowShowing"> 
+                            <option value="-">
+                                -
+                            </option>                                            
+                            <option value="rejected">
+                                Rejected
+                            </option>                                            
+                            <option value="approved">
+                                Approved
+                            </option>                                
+                                                                                        
+                        </select>
+                    </div>
+                    <div style={{whiteSpace:"nowrap",marginTop:'0px', alignItems:"center", fontWeight:500}} className="row2">
+                        Feedback
+                        <textarea value={formData.feedback} onChange={(e)=>setFormData(prev=>({...prev, feedback:e.target.value}))} name="artDesc" placeholder="Artwork description" />
+                    </div>
+                    <br />  
+                    <div className="double">                    
+                        <div onClick={handleSubmit} style={{marginTop:0, width:"fit-content"}} className="btn submit">Update request status</div>
+                    </div>
+                </form>  
             </div>
             
         </div>

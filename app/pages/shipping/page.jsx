@@ -8,6 +8,39 @@ import { toast } from 'sonner';
 import ButtonLoader from '@/app/(components)/loader/buttonloader';
 import { useCart } from '@/app/context/cartContext';
 
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const SubmitShipping = async (formData) => {
+    const accessToken = localStorage.getItem("access_token");
+    try {
+        const response = await fetch(`${BASE_URL}/auction/winnings/shipping`, { 
+        method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            throw( 
+                response.status,
+                data.error|| "shipping function failed"
+            )
+        }
+        return {
+            success:true,
+            data: data
+        };
+    } catch (err) {
+        console.log(err)
+        return {
+            success: false,
+            err,
+        };
+    }
+};
 const ShippingDetails = () => {
     const [isAgreed, setIsAgreed] = useState(false);
     const [error, setError] = useState('');
@@ -51,21 +84,16 @@ const ShippingDetails = () => {
     })
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!isAgreed){
-            setError('You must accept the terms to continue.');
-            return;
-        } 
         setLoading(true);
         const pickupDate = new Date(date);
         const dataToSubmit = {
             ...formData,
             pickup_date: pickupDate
         }
-        const result = await cartCheckoutFunction(dataToSubmit);
+        const result = await SubmitShipping(dataToSubmit);
         console.log('checkout result', result)
         if (result.success) {
             try {
-                
                 const callbackUrl = `${window.location.origin}/payment/callback`;
                 const initData = {
                     ...payinitData,

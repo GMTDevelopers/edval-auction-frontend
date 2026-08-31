@@ -37,7 +37,7 @@ const AdminRequestPCDetails = ({data}) => {
             </div>
             <div style={{gap:"14px"}} className={styles.detailsContainer}>
                 <div className={styles.artistPack}>
-                    <h2>{data.name}</h2>
+                    <h2>{data.commission.title}</h2>
                 </div>
                 
                 <div style={{marginTop:"24px"}} className={styles.otherDetailsPack}>
@@ -49,7 +49,7 @@ const AdminRequestPCDetails = ({data}) => {
                 <div style={{border:"1px solid #807D67", padding:"5%"}}>
                     <p><span>ARTWORK DESCRIPTION</span></p>
                     <br />
-                    <p>Tortor pellentesque sed mattis lacus vestibulum quis id amet. Nec pellentesque et accumsan vitae amet morbi suspendisse odio nisl. Vitae ac mi donec nulla ac pellentesque. Neque vel bibendum ut diam porttitor blandit egestas feugiat. Morbi nulla proin non donec.y </p>
+                    <p>{data?.commission?.description} </p>
                     
                 </div>
                 
@@ -57,15 +57,15 @@ const AdminRequestPCDetails = ({data}) => {
                    
                     <li>
                         <p>Name</p>
-                        <p>sammy.studios@example.com</p>
+                        <p>{data?.title}</p>
                     </li>
                     <li>
                         <p>Email</p>
-                        <p>sammy.studios@example.com</p>
+                        <p>{data?.email}</p>
                     </li>
                     <li>
                         <p>Phone number</p>
-                        <p><span>+234 801 234 5678</span></p>
+                        <p><span>{data?.phone}</span></p>
                     </li>
                     <li>
                         <p>Location</p>
@@ -73,7 +73,7 @@ const AdminRequestPCDetails = ({data}) => {
                     </li>
                     <li>
                         <p>Artwork type</p>
-                        <p>{data?.type}</p>
+                        <p>{data?.artwork?.artwork_type}</p>
                     </li>
                     <li>
                         <p>Preferred deadline</p>
@@ -81,7 +81,7 @@ const AdminRequestPCDetails = ({data}) => {
                     </li>
                     <li>
                         <p>Artwork category</p>
-                        <p>{data.category}</p>
+                        <p>{data?.artwork?.category}</p>
                     </li>
                     <li>
                         <p>Intended purpose</p>
@@ -89,11 +89,11 @@ const AdminRequestPCDetails = ({data}) => {
                     </li>
                     <li>
                         <p>Dimensions</p>
-                        <p>{data?.size} (h x w x d in inches)</p>
+                        <p>{data?.artwork?.dimensions}  (h x w x d in cm)</p>
                     </li>
                     <li>
                         <p>Budget range</p>
-                        <p>$500 - $1200</p>
+                        <p>₦{data?.budget.toLocaleString()}</p>
                     </li>
                     <li>
                         <p>Requested artist</p>

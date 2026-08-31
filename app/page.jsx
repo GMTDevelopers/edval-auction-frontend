@@ -197,7 +197,7 @@ export default function Home() {
             <div className="row3">
               {
                 auctionData?.length > 0 && auctionData?.map((data)=>(
-                  <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.min_participation_amount} img={data.img || `/images/homepage/auction1.png`} duration={data.duration_minutes} time={data.scheduled_at} auctStatus={data.status} slug={data.slug}/>
+                  <AuctionCard key={data.id} auctionId={data.id} name={data.name} price={data.min_participation_amount} img={data.img || `/images/homepage/auction1.png`} duration={data.duration_minutes} time={data.scheduled_at} startTime={data.started_at} auctStatus={data.status} slug={data.slug}/>
                 ))
               }
               {
@@ -290,9 +290,9 @@ export default function Home() {
             <div className={styles.questionPack}>
               <div className={styles.questionHeader} onClick={()=>isOpen!=="Q1"?setIsOpen("Q1"):setIsOpen("")}>
                 <h3>What is an Art Auction?</h3>
-                {isOpen==="Q1"? <Minus /> : <Plus />}
+                {isOpen==="Q1"? <Minus /> : <Plus className={`${styles.icon} ${isOpen === "Q1" ? styles.iconOpen : ""}`} />}
               </div>
-              <p className={isOpen==="Q1"? `${styles.answer}`: `${styles.answerNoShow}` }>
+              <p className={isOpen==="Q1"? styles.answer: styles.answerNoShow }>
                 An art auction is a public sale where artwork is sold to the highest bidder. Auctions can be held in person, online, or as a combination of both.
               </p>
             </div>
@@ -355,7 +355,7 @@ export default function Home() {
           <div className="artFeatureTxt">
             <h2>Do you want your artwork featured on Edval Art Auction?</h2>
             <p>We welcome submissions from emerging and established artists interested in exhibition opportunities, gallery representation, and auction consideration. Provide details about yourself and the artwork you would like reviewed. Our curatorial team will assess submissions and contact selected artists regarding next steps.</p>
-            <div className="btn artFeatureBtn">Fill request form</div>
+            <div onClick={()=> {router.push('/user/artist/artistRegistration')}} className="btn artFeatureBtn">Create Account</div>
           </div>
         </div>
       </section>

@@ -22,8 +22,8 @@ const ArtistCommissionsTable = ({ sub }) => {
                 <tbody> 
                 {sub.length !==0 && sub?.data?.map((b,index) => (
                     <tr onClick={()=>openModal(<ArtistLotDetails lot={b}/>)} className={styles.dataRow} key={index} >
-                        <td>{b?.code}</td>
-                        <td>
+                        <td data-label="Artwork ID">{b?.code}</td>
+                        <td data-label="Artwork">
                             <div className={styles.tableDouble}>
                                 <img src={b?.images?.[0].url} alt="item" />
                                 <div>
@@ -32,10 +32,10 @@ const ArtistCommissionsTable = ({ sub }) => {
                                 </div>
                             </div>
                         </td>
-                        <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
-                        <td>{b?.request_type || "N/A"}</td>
-                        <td>{b?.status}</td>
-                        <td> 
+                        <td data-label="Date submitted">{new Date(b?.created_at).toDateString() || "N/A"}</td>
+                        <td data-label="Request type">{b?.request_type || "N/A"}</td>
+                        <td data-label="Approval">{b?.status}</td>
+                        <td data-label="Status"> 
                             <span style={{textTransform:"capitalize"}} className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
                             {b?.display_status || "N/A"}
                             </span>

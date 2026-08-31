@@ -528,6 +528,11 @@ option{
 
 }
 @media (max-width: 576px) {
+  .pageHeader h1{
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 52px;
+  }
   .galleryContainer{
     width: 100%;
   }
@@ -537,7 +542,7 @@ option{
   }
   .pageHeader{
     width: 90%;
-    height: 352px;
+    height: 405px;
   }
 }
 

@@ -20,7 +20,7 @@ const AdminUserTable = ({data}) => {
                 <tbody> 
                 {data?.length !==0 && data?.map((b, index) => (
                     <tr onClick={()=>openModal(<AdminUserDetails data={b}/>)} className={styles.dataRow} key={index} >
-                        <td>
+                        <td data-label="User">
                             <div className={styles.tableDouble}>
                                 <img className={styles.roundedImg} src={b?.profile_image_url||'/images/auction/3.webp'} alt="item" />
                                 <div>
@@ -29,10 +29,10 @@ const AdminUserTable = ({data}) => {
                                 </div>
                             </div>
                         </td>
-                        <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
-                        <td>{b?.email || "-"}</td>
-                        <td className={styles.amount}>{b?.phone || "-"}</td>
-                        <td> 
+                        <td data-label="Date Added">{new Date(b?.created_at).toDateString() || "N/A"}</td>
+                        <td data-label="Email">{b?.email || "-"}</td>
+                        <td data-label="Phone" className={styles.amount}>{b?.phone || "-"}</td>
+                        <td data-label="Status"> 
                             <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>
                             {b?.is_active ? 'Active' : 'Not active'}
                             </span>

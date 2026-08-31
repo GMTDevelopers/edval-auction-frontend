@@ -33,9 +33,10 @@ export const signupUser = async (userData) => {
     const data = await response.json();
 
     if (!response.ok) {
+        console.log('service result', data)
         throw {
             status: response.status,
-            message: data.message || "Signup failed",
+            message: data.error.message || "Signup failed",
         };
     }
 
@@ -84,7 +85,7 @@ export const getUserData = async () => {
         } */
         throw {
             status: response.status,
-            message: data.message || "failed to get user",
+            message: data.error.message || "failed to get user",
         };
     }
 
@@ -105,7 +106,7 @@ export const refreshUser = async (refresh_token) => {
     if (!response.ok) {
         throw {
             status: response.status,
-            message: data.message || "Refresh failed",
+            message: data.error.message || "Refresh failed",
         };
     }
 /*     if (response.ok) {

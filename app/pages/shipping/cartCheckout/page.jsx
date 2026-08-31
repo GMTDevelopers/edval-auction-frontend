@@ -38,10 +38,6 @@ const CartShippingDetails = () => {
     })
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!isAgreed){
-            setError('You must accept the terms to continue.');
-            return;
-        } 
         setLoading(true);
         const pickupDate = new Date(date);
         const dataToSubmit = {

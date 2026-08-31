@@ -21,7 +21,7 @@ const AdminArtworkTable = ({data}) => {
                 <tbody> 
                 {data?.length !==0 && data?.map((b, index) => (
                     <tr onClick={()=>openModal(<AdminArtistLotDetails data={b}/>)} className={styles.dataRow} key={index} >
-                        <td>
+                        <td data-label="Artwork">
                             <div className={styles.tableDouble}>
                                 <img src={b?.images[0]?.url || null} alt="item" />
                                 <div>
@@ -30,11 +30,11 @@ const AdminArtworkTable = ({data}) => {
                                 </div>
                             </div>
                         </td>
-                        <td>{b?.category}</td>
-                        <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
-                        <td className={styles.amount}>₦{b?.price.toLocaleString() || "N/A"}</td>
+                        <td data-label="Category">{b?.category}</td>
+                        <td data-label="Date Added">{new Date(b?.created_at).toDateString() || "N/A"}</td>
+                        <td data-label="Price" className={styles.amount}>₦{b?.price.toLocaleString() || "N/A"}</td>
                         
-                        <td> 
+                        <td data-label="Status"> 
                             <span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
                             {b?.status}
                             </span>

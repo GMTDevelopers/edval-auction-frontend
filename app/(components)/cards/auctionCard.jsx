@@ -4,7 +4,8 @@ import styles from './cards.module.css'
 import Link from 'next/link';
 import Countdown from '../counter/page';
 import { useRouter } from 'next/navigation';
-const AuctionCard = ({name,price,duration,img,time,auctionId,slug,auctStatus}) => {
+import CardCountdown from '../counter/cardCounter';
+const AuctionCard = ({name,price,duration,img,time,auctionId,startTime,slug,auctStatus}) => {
     const router =  useRouter()
     return ( 
         <div onClick={()=> router.push(`/pages/auctions/${slug}?auctionID=${auctionId}`)} className={styles.card}>
@@ -16,7 +17,7 @@ const AuctionCard = ({name,price,duration,img,time,auctionId,slug,auctStatus}) =
                 <h4>{name}</h4>
                 <p>starting bid: <span>${price.toLocaleString()}</span></p>
                 <div className={styles.cardTimmer}>
-                    {auctStatus==='live'? <p>CLOSING IN: <Countdown startTime={time} duration={duration}/></p> :
+                    {auctStatus==='live'? <div className={styles.counterDiv}>CLOSING IN: <CardCountdown startTime={startTime} duration={duration}/></div> :
                         <p>STARTS: <span >{new Date(time).toDateString()}</span> </p>
                     }
                     <div className={styles.timmerBtn}>

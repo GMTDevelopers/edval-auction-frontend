@@ -22,7 +22,7 @@ const AdminArtistTable = ({data}) => {
                 <tbody> 
                 {data?.length !==0 && data?.map((b, index) => (
                     <tr onClick={()=>openModal(<AdminArtistDetails data={b}/>)} className={styles.dataRow} key={index} >
-                        <td>
+                        <td data-label="Artist name">
                             <div className={styles.tableDouble}>
                                 <img className={styles.roundedImg} src={b?.profile_image_url||'/images/auction/3.webp'} alt="item" />
                                 <div>
@@ -31,11 +31,11 @@ const AdminArtistTable = ({data}) => {
                                 </div>
                             </div>
                         </td>
-                        <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
-                        <td>{b?.artist_profile?.artistic_style || "-"}</td>
-                        <td className={styles.amount}>{b?.artist_profile?.years_of_experience || "-"} year(s)</td>
-                        <td className={styles.amount}>{b?.stats.total_artworks || "-"}</td>
-                        <td> 
+                        <td data-label="Date Added">{new Date(b?.created_at).toDateString() || "N/A"}</td>
+                        <td data-label="Style">{b?.artist_profile?.artistic_style || "-"}</td>
+                        <td data-label="Experience" className={styles.amount}>{b?.artist_profile?.years_of_experience || "-"} year(s)</td>
+                        <td data-label="Artworks" className={styles.amount}>{b?.stats.total_artworks || "-"}</td>
+                        <td data-label="Status"> 
                             <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>
                             {b?.is_active ? 'Active' : 'Not active'}
                             </span>

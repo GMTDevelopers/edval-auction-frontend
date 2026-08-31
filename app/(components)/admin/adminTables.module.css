@@ -1,0 +1,7 @@
+.adminArtistDetailsContainer{
+    height: 90vh;
+    overflow: scroll;
+}
+.mainImageContainer{
+    height: fit-content;
+}

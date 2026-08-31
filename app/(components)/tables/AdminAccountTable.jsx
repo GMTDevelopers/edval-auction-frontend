@@ -61,7 +61,7 @@ const AdminAccountTable = (data) => {
                 <tbody> 
                 {data.data?.length !==0 && data.data?.map((b,index) => (
                     <tr className={styles.dataRow} key={index} >
-                        <td>
+                        <td data-label="Admin name">
                             <div className={styles.tableDouble}>
                                 <img className={styles.roundedImg} src={b?.profile_image_url || "/images/auction/2.webp"} alt="item" />
                                 <div>
@@ -70,10 +70,10 @@ const AdminAccountTable = (data) => {
                                 </div>
                             </div>
                         </td>
-                        <td>{b?.phone}</td>
-                        <td>{b?.role}</td>
-                        <td className={styles.amount}>{new Date(b?.last_active_at).toDateString()  || 'N/A' }</td>
-                        <td> 
+                        <td data-label="Phone">{b?.phone}</td>
+                        <td data-label="Role">{b?.role}</td>
+                        <td data-label="Last active" className={styles.amount}>{new Date(b?.last_active_at).toDateString()  || 'N/A' }</td>
+                        <td data-label="Status"> 
                             <div style={{marginTop:0}} className="row2">
                                 <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>
                                     {b?.is_active ? 'Active' : 'Inactive'}

@@ -59,21 +59,19 @@ export const AuthProvider = ({ children }) => {
             const response = await signupUser(userData);
 
           /*   setUser(response.user); */
-            setAccessToken(response.access_token);
-            setRefreshToken(response.refresh_token);
+            setAccessToken(response.data.access_token);
+            setRefreshToken(response.data.refresh_token);
             localStorage.setItem(
                 "access_token",
-                response.access_token
+                response.data.access_token
             );
 
             localStorage.setItem(
                 "refresh_token",
-                response.refresh_token
+                response.data.refresh_token
             );
-
-            await getUser();
             setIsAuthenticated(true);
-
+            await getUser();
             return {
                 success: true,
                 data: response,
@@ -143,9 +141,6 @@ export const AuthProvider = ({ children }) => {
             console.error("Refresh failed:", err);
 
             await logout();
-
-            window.alert('logIn again')
-
             return false;
         }
     };
@@ -175,7 +170,6 @@ export const AuthProvider = ({ children }) => {
                     console.log(
                         "Token refreshed successfully, retrying getUser..."
                     );
-                   /*  window.location.reload() */
                     return await getUser();
                 }
             }

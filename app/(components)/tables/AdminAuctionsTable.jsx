@@ -19,15 +19,15 @@ const AuctionTable = ({Data}) => {
                 <tbody> 
                 {data.length !==0 && data.map((b) => (
                     <tr onClick={() => router.push(`/admin/auctions/${b?.status}/${b?.slug}?id=${b?.id}`)} className={styles.dataRow} key={b.id} >
-                        <td>
+                        <td data-label="Auction Title">
                             <p>{b?.name || "-"}</p>    
                             <p>[{b?.code || "-"}]</p>
                             
                         </td>
-                        <td> {new Date(b?.scheduled_at).toDateString() || "N/A"} </td>
-                        <td>{b?.lots_count || "-"}</td>
-                        <td>{b?.registered_bidders_count || "-"}</td>
-                        <td> 
+                        <td data-label="Date"> {new Date(b?.scheduled_at).toDateString() || "N/A"} </td>
+                        <td data-label="Lots">{b?.lots_count || "-"}</td>
+                        <td data-label="Registered bidders">{b?.registered_bidders_count || "-"}</td>
+                        <td data-label="Status"> 
                             {<span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
                             {b?.status || "-"}
                             </span>}

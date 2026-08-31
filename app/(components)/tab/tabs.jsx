@@ -38,29 +38,29 @@ const Tab = () => {
         const result = await login(loginData);
         if (result.success) {
             setIsSuccess("Login successful!");
-           console.log('Login successful:', user);
-           
-           setTimeout(() => {
-                if (user?.role==='admin'){
+           console.log('Login successful:', result);           
+            setTimeout(() => {
+                if (result?.data?.data?.user?.role==='admin'){
                     router.push('/admin/overview');
                 }
-                if (user?.role==='super_admin'){
+                if (result?.data?.data?.user?.role==='super_admin'){
                     router.push('/admin/overview');
                 }
-                if (user?.role==='artist'){
+                if (result?.data?.data?.user?.role==='artist'){
                     router.push('/user/artist/myArtworks');
                 }
-                if (user?.role==='registered_user'){
+                if (result?.data?.data?.user?.role==='registered_user'){
                     router.push('/user/client');
                 }
                 closeModal();
-           }, 1000);
+            }, 1000);
         } else {
-            if(error.status === 401) {
+/*             if(error.status === 401) {
                 setIsError("You do not have an account, please sign up first.");
             } else {
                 setIsError(error.message);
-            }
+            } */
+            setIsError(error.message);
            /*  setIsError(result.message);
             console.error('Login failed:', error.message); */
         }
@@ -72,17 +72,23 @@ const Tab = () => {
             setIsError("Passwords do not match!");
             return;
         }
-        const result = await signup(signupData);
-        if (result.success) {
-            setIsSuccess("User created successfully!");
-            console.log('Signup successful');
-            setTimeout(() => {
-                closeModal();
-            }, 1000);
-        } else {
-            setIsError(error.message);
-            console.error('Signup failed:', error.status, error.message);
+        try {
+            const result = await signup(signupData);
+            if (result.success) {
+                setIsSuccess("User created successfully!");
+                console.log('Signup successful', result);
+                setTimeout(() => {
+                    closeModal();
+                }, 1000);
+            }
+            if (!result.success) {
+               setIsError(result.error);
+            }
+        } catch (error) {
+            setIsError(error);
+            console.log('Signup failed:');
         }
+        
     };
 
     const renderContent = () => {

@@ -28,7 +28,7 @@ const Table = ({data}) => {
                     <tbody> 
                     {data.length !==0 && data.map((b, index) => (
                         <tr key={index} onClick={()=>openModal(<OrderDet status={b?.status} data={b}/>)} className={styles.dataRow} >
-                            <td>{b?.code}</td>
+                            <td data-label="Order ID">{b?.code}</td>
                             {/* <td>
                                 <div className={styles.tableDouble}>
                                     <img src={b?.item.img} alt="item" />
@@ -38,14 +38,14 @@ const Table = ({data}) => {
                                     </div>
                                 </div>
                             </td> */}
-                            <td>{b?.order_type}</td>
-                            <td>{new Date(b?.created_at).toDateString() || "N/A"}</td>
-                            <td> 
+                            <td data-label="Avenue">{b?.order_type}</td>
+                            <td data-label="Date">{new Date(b?.created_at).toDateString() || "N/A"}</td>
+                            <td data-label="Status"> 
                                 <span className={`${styles.status} ${styles[b.status?.toLowerCase()]}`}>
                                 {b?.status}
                                 </span>
                             </td>
-                            <td className={styles.amount}>₦{b?.total_amount?.toLocaleString() || "N/A"}</td>
+                            <td data-label="Amount" className={styles.amount}>₦{b?.total_amount?.toLocaleString() || "N/A"}</td>
                         </tr>
                     ))}
                     </tbody>

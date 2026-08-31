@@ -10,8 +10,8 @@ const AdminOrderTable = ({orderData}) => {
             <table className={styles.table}>
                 <thead>
                     <tr>
-                       {/*  <th>Item</th>
-                        <th>From</th> */}
+                        <th>Item(s)</th>
+                        <th>From</th> 
                         <th>Order ID</th>
                         <th>Avenue</th>
                         <th>Date</th>
@@ -22,36 +22,36 @@ const AdminOrderTable = ({orderData}) => {
                 <tbody> 
                 {orderData.length !==0 && orderData.map((order, index) => (
                     <tr onClick={()=>openModal(<AdminOrderDetails data={order}/>)} className={styles.dataRow} key={index} >
-                        {/* <td>
+                        <td data-label="Item(s)">
                             <div className={styles.tableDouble}>
-                                <img src={b?.item.img} alt="item" />
+                                <img src={order?.items[0]?.artwork.images[0].url} alt="item" />
                                 <div>
-                                    <p>{b?.item.name}</p>
-                                    <p>{b?.orderId}</p>
+                                    {order?.items.length>1 ? <p>{order?.items[0]?.title}...</p> : <p>{order?.items[0]?.title}</p>}
+                                    <p>{order?.items.length} items</p>
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="From">
                             <div className={styles.tableDouble}>
-                                <img className={styles.roundedImg} src={b?.item.img} alt="item" />
+                                <img className={styles.roundedImg} src={order?.buyer?.profile_image_url} alt="profile" />
                                 <div>
-                                    <p>{b?.item.artist}</p>
-                                    <p>{b?.email}</p>
+                                    <p>{order?.buyer?.full_name}</p>
+                                    <p>{order?.buyer?.email}</p>
                                 </div>
                             </div>
-                        </td> */}
-                        <td className={styles.amount}>{order?.order_type}</td>
+                        </td> 
+                        <td data-label="Order ID" className={styles.amount}>{order?.order_type}</td>
                         
-                        <td className={styles.amount}>{order?.order_type}</td>
+                        <td data-label="Avenue" className={styles.amount}>{order?.order_type}</td>
                         
-                        <td>{new Date(order?.created_at).toDateString() || "N/A"}</td>
+                        <td data-label="Date">{new Date(order?.created_at).toDateString() || "N/A"}</td>
                         
-                        <td> 
+                        <td data-label="Status"> 
                             <span className={`${styles.status} ${styles[order.status?.toLowerCase()]}`}>
                             {order?.status}
                             </span>
                         </td>
-                        <td className={styles.amount}>₦{order?.total_amount.toLocaleString() || "N/A"}</td>
+                        <td data-label="Price" className={styles.amount}>₦{order?.total_amount.toLocaleString() || "N/A"}</td>
                     </tr>
                 ))}
                 </tbody>

@@ -135,7 +135,39 @@
   margin-bottom: 10px;
   cursor: pointer;
 }
-.answer{
+.answer {
+  max-height: 200px; /* Larger than your longest answer */
+  opacity: 1;
+  overflow: hidden;
+  line-height: 27px;
+  width: 80%;
+
+  transform: translateY(0);
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    transform 0.35s ease;
+}
+
+.answerNoShow {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transform: translateY(-8px);
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    transform 0.35s ease;
+}
+.icon {
+  transition: transform 0.3s ease;
+}
+
+.iconOpen {
+  transform: rotate(180deg);
+}
+/* .answer{
   width: 80%;
   line-height: 27px;
 }
@@ -143,7 +175,7 @@
   height: 0;
   display: hidden;
   overflow: hidden;
-}
+} */
 
 @media (max-width: 1400px) {
   .bannerTxt{
