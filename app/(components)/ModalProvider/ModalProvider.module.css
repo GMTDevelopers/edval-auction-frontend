@@ -65,3 +65,16 @@
   scrollbar-width:thin;
   scrollbar-color: var(--foreground) var(--background);
 }
+
+@media (max-width: 568px) {
+  .modal {
+    width: 100%;
+  }
+  .content {
+    padding: 2.5rem 1.2rem 2rem 1.2rem;
+  /*    overflow-y: scroll; */
+    scrollbar-width:thin;
+    scrollbar-color: var(--foreground) var(--background);
+  }
+
+}

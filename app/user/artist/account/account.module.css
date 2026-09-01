@@ -33,8 +33,10 @@
     .selectWrapper :global(.select__placeholder) {
         font-size:13px ;
     }
-/*     .selectWrapper :global(.select__control) {
-        padding: 0px;
-        font-size:13px ;
-    } */
+    .imgPack{
+        width: 100%;
+        height: 477px;
+        overflow: hidden;
+        border-radius: 1000px;
+    }
 }

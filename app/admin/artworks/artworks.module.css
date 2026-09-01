@@ -12,6 +12,7 @@
     height: 40px;
     width: 70%;
 }
+
 .searchBar input{
 /*     padding:8px 16px ; */
      height: 40px;
@@ -35,4 +36,42 @@
     width: 50%;
     height: 40px;
     padding:4px 16px ; 
+}
+
+@media (max-width: 1400px) {
+
+}
+@media (max-width: 1200px) {
+  
+}
+@media (max-width: 992px) {
+
+}
+@media (max-width: 768px) {
+    .searchContainer{
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .searchBar div{
+        white-space: wrap;
+        margin-top: 10px;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+    .searchBar{
+        display: grid;
+        margin-top: 0;
+        height: 40px;
+        width: 100%;
+    }
+    .searchBar div select{
+        width: 50%;
+        height: 40px;
+        padding:4px 16px ; 
+    }
+}
+@media (max-width: 576px) {
+    
 }

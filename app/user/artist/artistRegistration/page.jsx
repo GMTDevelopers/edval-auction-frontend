@@ -89,7 +89,7 @@ const ArtistRegistration  = () => {
             setIsAuthenticated(true);
             setTimeout(() => {
                 router.push('/user/artist/myArtworks');
-                window.location.reload();
+                /* window.location.reload(); */
             }, 5000);
         }         
     }

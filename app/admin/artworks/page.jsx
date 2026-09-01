@@ -64,7 +64,7 @@ const Artworks = () => {
             <div className={`double ${styles.searchContainer}`}>
                 <h3>Artworks ({artworks?.data?.length || 0})</h3>
                 <form className={`row3 ${styles.searchBar}`}>
-                    <div className="double">
+                    <div className={`double ${styles.searchBarDouble}`}>
                         Now showing
                         <select style={{cursor:'pointer'}} value={filter.status} onChange={handleSubmit} name="nowShowing">
                             <option value={''}>All items</option>                 

@@ -87,7 +87,7 @@ const Navbar = () => {
                 <div className={isOpen&&!isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
                     <li className='btn' onClick={()=> {openModal(<Tab />); setIsOpen(false); }}>Sign in to my account</li>
                     <li className='btn' onClick={()=> {openModal(<Tab />); setIsOpen(false)}}>Create user account</li>
-                    <li className='btn' onClick={()=> {router.push('/user/artist/artistRegistration'); closeModal()}}>Create artist account</li>
+                    <li className='btn' onClick={()=> {router.push('/user/artist/artistRegistration'); setIsOpen(false)}}>Create artist account</li>
                 </div>
                 <div className={isOpen&&user?.role==="artist"&&isAuthenticated ? `${styles.menu}` : `${styles.noMenu}`}>
                     <li className='btn' onClick={()=> {setIsOpen(false)}}><Link href="/user/artist/myArtworks">My Artworks</Link></li>
@@ -137,7 +137,14 @@ const Navbar = () => {
                         <button className="btn" onClick={() => { openModal(<Tab />); setIsMobileMenuOpen(false);}}>
                             My Account
                         </button>
-                    ) /* : (
+                    )}
+                    {user?.role==="super_admin"&&isAuthenticated && (
+                        <button style={{color:"#FDFBEC", backgroundColor:"#FB0000", fontWeight: 600, outline:"none", border:"none"}} className="btn" onClick={() => {logout(); setIsOpen(false);}}>
+                            Sign out
+                        </button>
+                    )}
+                    
+                 {/*    (
                         <button className="btn" onClick={() => {router.push("/user/client/account"); setIsMobileMenuOpen(false); }}>
                             My Account
                         </button>

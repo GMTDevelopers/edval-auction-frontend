@@ -61,7 +61,7 @@ const AdminArtistLotDetails = ({data}) => {
     }
     
     return ( 
-        <div className={styles.container}>
+        <div className={`${styles.container} `}>
             <div className={styles.galleryContainer}>
                 {/* Main Large Image */}
                 <div className={styles.mainImageContainer}>

@@ -1,5 +1,5 @@
 'use client'
-import { Banknote, Loader, Palette, Plus } from 'lucide-react';
+import { Banknote, CircleOff, Loader, Palette, Plus } from 'lucide-react';
 import styles from '../myArtworks/myArtworks.module.css';
 import StatsCard from '@/app/(components)/statsCard/page';
 import ArtistCommissionsTable from '@/app/(components)/tables/artistCommission';

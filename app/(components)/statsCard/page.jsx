@@ -7,7 +7,7 @@ const StatsCard = ({title, data, icon: Icon}) => {
         <div className={styles.card}>
             <p className={styles.cardTitle}>{title}</p>
             <div className={styles.statPack}>
-                <div className={styles.stat} style={{fontStyle:'normal'}}>{data}</div>
+                <div className={styles.stat} style={{fontStyle:'normal'}}>{data.toLocaleString()}</div>
                 <div className={styles.icon}>
                    <Icon/>
                 </div>

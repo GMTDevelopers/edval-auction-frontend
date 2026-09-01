@@ -101,7 +101,7 @@ const Overview = () => {
                 <StatsCard title="Total Sales" data={loading? <Loader /> : dashStats.kpi.total_sales} icon={Banknote} />
                 <StatsCard title="Pending Payments" data={loading? <Loader /> : dashStats.kpi.pending_payments} icon={Banknote} />
             </div>
-            <div className="double">                
+            <div className={`double ${styles.double}`}>                
                 <div className="big">
                     <div className=''>
                         <div style={{alignItems:"center", marginBottom:"40px"}} className={"double"}>

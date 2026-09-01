@@ -133,6 +133,9 @@
 /*     height: 85vh; */
     overflow-x: hidden;
   }
+  .adminArtcontainer{
+    width: 90vw;
+  }
   .galleryContainer{
     width: 100%;
     height: auto;

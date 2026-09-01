@@ -111,6 +111,9 @@ form .double{
   gap: 5%;
   align-items: center;
 }
+.formDouble{
+  margin:auto auto;
+}
 input, select, textarea{
   width: 100%;
   padding: 12px 24px;
@@ -436,6 +439,9 @@ option{
     flex-direction: column;
     gap: 60px;
   }
+  .big{
+    padding-left: 0px;
+  }
 }
 @media (max-width: 992px) {
   h2{
@@ -515,6 +521,7 @@ option{
   }
   input, select, textarea{
     font-size: 14px;
+    padding: 12px 20px;
   }
   .artFeatureTxt h2{
     font-size: 32px;
@@ -525,13 +532,21 @@ option{
     font-size: 15px;
     line-height: 26px;
   }
-
+  .container{
+    width: 91%;
+  }
 }
 @media (max-width: 576px) {
+  .container{
+    width: 96%;
+  }
   .pageHeader h1{
     font-weight: 700;
     font-size: 40px;
     line-height: 52px;
+  }
+  input, select, textarea{
+    padding: 12px 12px;
   }
   .galleryContainer{
     width: 100%;

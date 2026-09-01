@@ -34,3 +34,23 @@
 .graphType{
     width: 173px;
 }
+
+@media (max-width: 1400px) {
+
+}
+@media (max-width: 1200px) {
+  
+}
+@media (max-width: 992px) {
+
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 576px) {
+    .double{
+        flex-direction: column-reverse;
+        gap: 60px;
+    }
+}
+
