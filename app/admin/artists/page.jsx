@@ -23,13 +23,13 @@ const GetUsers = async (filter) => {
                 data.error|| "failed to get Artworks"
             )
         }
-        console.log(data)
+     /*    console.log(data) */
         return {
             success:true,
             data: data
         };
     } catch (err) {
-        console.log(err)
+   /*      console.log(err) */
         return {
             success: false,
             err,
@@ -53,10 +53,10 @@ const Artists = () => {
             const users = await GetUsers(filter)
             setUserDetails(users?.data || [])
             setLoading(false);
-            console.log('users',users?.data)
+/*             console.log('users',users?.data) */
         }
         trying()
-        console.log(filter)
+/*         console.log(filter) */
     }, [filter]);
     return ( 
         <div>

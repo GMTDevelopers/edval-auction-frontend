@@ -43,7 +43,7 @@ const getAuctionData = async () => {
   const data = await response.json();
   return data;
   } catch (err) {
-    console.error('Error fetching auction data:', err);
+/*     console.error('Error fetching auction data:', err); */
     return {
       success: false,
       error: err.message,

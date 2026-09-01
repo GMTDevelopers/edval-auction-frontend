@@ -40,7 +40,7 @@ const ProdDetPage =  () => {
             const data = await response.json();
             setAuctionData(data?.data);
             setStatus(data?.data?.status)
-            console.log("auction data:", data);
+/*             console.log("auction data:", data); */
         } catch (err) {
             return {
                 success: false,
@@ -61,7 +61,7 @@ const ProdDetPage =  () => {
             setAuctionLotData(data?.data.lots);
          /*    setAuctionLotDataPass(data); */
             
-            console.log("auction lots data:", data.data);
+          /*   console.log("auction lots data:", data.data); */
         } catch (err) {
             return {
                 success: false,
@@ -82,7 +82,7 @@ const ProdDetPage =  () => {
             });
             const data = await response.json();
             setActiveLotData(data?.data);
-            console.log("active lot data:", data);
+/*             console.log("active lot data:", data); */
         } catch (err) {
             setError(err);
             return {
@@ -104,8 +104,8 @@ const ProdDetPage =  () => {
             });
             const data = await response.json();
             setWinningData(data?.data);
-
-            console.log("winning data:", data.data);
+/* 
+            console.log("winning data:", data.data); */
         } catch (err) {
             return {
                 success: false,

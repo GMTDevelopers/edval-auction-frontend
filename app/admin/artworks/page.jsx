@@ -24,13 +24,13 @@ const GetArtworks = async (filter) => {
                 data.error|| "failed to get Artworks"
             )
         }
-        console.log(data)
+    /*     console.log(data) */
         return {
             success:true,
             data: data
         };
     } catch (err) {
-        console.log(err)
+        /* console.log(err) */
         return {
             success: false,
             err,
@@ -55,7 +55,7 @@ const Artworks = () => {
             const result = await GetArtworks(filter);
             setArtworks(result.data || []);
             setLoading(false);
-            console.log('artworks',result);
+/*             console.log('artworks',result); */
         }
         trying()
     }, [filter]);

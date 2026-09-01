@@ -20,7 +20,7 @@ const getAuctionData = async () => {
   const data = await response.json();
   return data;
   } catch (err) {
-    console.error('Error fetching auction data:', err);
+/*     console.error('Error fetching auction data:', err); */
     return {
       success: false,
       error: err.message,
@@ -42,13 +42,13 @@ const GetArtworks = async () => {
         data.error|| "failed to get Artworks"
       )
     }
-    console.log(data)
+/*     console.log(data) */
     return {
       success:true,
       data: data
     };
   } catch (err) {
-    console.log(err)
+/*     console.log(err) */
     return {
       success: false,
       err,
@@ -157,7 +157,7 @@ export default function Home() {
         const result = await GetArtworks();
         setAuctionData(data.data);
         setArtworks(result.data || []);
-        console.log('artwork', result.data)
+       /*  console.log('artwork', result.data) */
         setLoading(false);
       } catch (err) {
         setError(err.message);

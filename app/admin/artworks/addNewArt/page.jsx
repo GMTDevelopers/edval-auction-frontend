@@ -88,14 +88,14 @@ const AddNewArt = () => {
         };
 
         const result = await AddArtwork(payload);
-        console.log('handle submit result', result)
+ /*        console.log('handle submit result', result) */
         if(!result.success){
             console.log(result)
             toast.error(result.err.message);
         }
         if(result.success){
             toast.success("Artwork created successfully.");
-            console.log('Artwork created successfully:', result);
+/*             console.log('Artwork created successfully:', result); */
             router.back()
         }  
     };

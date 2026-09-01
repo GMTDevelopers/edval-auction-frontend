@@ -38,7 +38,7 @@ const Tab = () => {
         const result = await login(loginData);
         if (result.success) {
             setIsSuccess("Login successful!");
-           console.log('Login successful:', result);           
+/*            console.log('Login successful:', result);         */   
             setTimeout(() => {
                 if (result?.data?.data?.user?.role==='admin'){
                     router.push('/admin/overview');
@@ -86,7 +86,7 @@ const Tab = () => {
             }
         } catch (error) {
             setIsError(error);
-            console.log('Signup failed:');
+/*             console.log('Signup failed:'); */
         }
         
     };

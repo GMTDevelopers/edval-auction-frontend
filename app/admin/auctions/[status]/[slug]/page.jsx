@@ -57,7 +57,7 @@ const ProdDetPage = () => {
             const data = await response.json();
             setAuctionData(data?.data);
             setStatus(data?.data?.status)
-            console.log("auction data:", data);
+/*             console.log("auction data:", data); */
         } catch (err) {
             setError(err);
             if (err.status === 401) {
@@ -86,7 +86,7 @@ const ProdDetPage = () => {
             });
             const data = await response.json();
             setAuctionLotData(data?.data.lots);
-            console.log("auction lots data:", data.data);
+        /*     console.log("auction lots data:", data.data); */
         } catch (err) {
             setError(err);
             if (err.status === 401) {
@@ -117,11 +117,11 @@ const ProdDetPage = () => {
             const data = await response.json();
             if (!response.ok) {
                 toast.error(data.error.message);
-                console.log(data)
+                /* console.log(data) */
             }
             if (response.ok) {
                 toast.success("Auction status changed successfully.");
-                console.log('Auction status changed successfully:', data);
+              /*   console.log('Auction status changed successfully:', data); */
                 setTimeout(() => {
                     window.location.reload()
                 }, 2000);
@@ -146,9 +146,9 @@ const ProdDetPage = () => {
             });
             const data = await response.json();
             setWinners(data?.data);
-            console.log("auction winners:", data.data);
+            /* console.log("auction winners:", data.data); */
         } catch (err) {
-            console.log('auction error', err)
+  /*           console.log('auction error', err) */
             return {
                 success: false,
                 error: err.message,
@@ -168,7 +168,7 @@ const ProdDetPage = () => {
             });
             const data = await response.json();
             setActiveLotData(data?.data);
-            console.log("active lot data:", data);
+  /*           console.log("active lot data:", data); */
         } catch (err) {
             setError(err);
             return {
@@ -194,15 +194,15 @@ const ProdDetPage = () => {
             const data = await response.json();
             if (!response.ok) {
                 toast.error(data.error.message);
-                console.log(data)
+              /*   console.log(data) */
             }
             if (response.ok) {
                 getActiveLot();
                 toast.success("Active lot changed successfully.");
-                console.log('Active lot changed successfully:', data);
+         /*        console.log('Active lot changed successfully:', data); */
             }
         } catch (err) {
-            console.log(err)
+/*             console.log(err) */
             return {
                 success: false,
                 err,
@@ -295,16 +295,16 @@ const ProdDetPage = () => {
             const data = await response.json();
             if (!response.ok) {
                 toast.error(data.error.message);
-                console.log(data)
+              /*   console.log(data) */
             }
             if (response.ok) {
                 getActiveLot();
                 getBidStreams()
                 toast.success("Bid placed successfully.");
-                console.log('Bid placed successfully:', data);
+               /*  console.log('Bid placed successfully:', data); */
             }
         } catch (err) {
-            console.log(err)
+ /*            console.log(err) */
             return {
                 success: false,
                 err,

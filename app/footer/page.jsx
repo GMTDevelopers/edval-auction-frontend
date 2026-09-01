@@ -49,7 +49,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className={styles.copyright}>
-                    <p>Copyright © 2026 EDVAL ART AUCTION   |   Designed and Developed by GMTDevs</p>
+                    <p>Copyright © 2026 EDVALTOURS SERVICES NIGERIAN LIMITED  |   Designed and Developed by <Link href='https://wwww.gmtdevs.com' target='_blank'>GMTDevs Global</Link> </p>
                 </div>
             </div>
         </footer>
