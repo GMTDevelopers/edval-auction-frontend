@@ -3,7 +3,7 @@ import styles from '@/app/pages/auctions/[slug]/prodDet.module.css';
 /* import styles from '@/app/pages/auctions/productDetails/prodDet.module.css'; */
 import pageStyles from './page.module.css';
 import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Ban, ChevronLeft, Plus } from 'lucide-react';
 import LotDetails from '@/app/(components)/lotDetail/page';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -25,13 +25,13 @@ const ProdDetPage = () => {
     const [activeLot, setActiveLot] = useState(null);
     const [activeLotData, setActiveLotData] = useState([]);
     const [winners, setWinners] = useState([]);
-    const [liveBid, setLiveBid] = useState("");
+    const [liveBid, setLiveBid] = useState([]);
     const [status, setStatus] = useState();
     const [error, setError] = useState(null);
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const router = useRouter();
-
+    const chatEndRef = useRef(null);
     const [formData, setformData] = useState({
         amount: '',
         channel: "platform",
@@ -210,7 +210,24 @@ const ProdDetPage = () => {
         }
     }
     const getBidStreams = async () => {
-        try {
+        const eventSource = new EventSource(`${BASE_URL}/auctions/${id}/live`);
+        // Listen to incoming bids
+        eventSource.addEventListener('bid', (event) => {
+            try {
+                const newBid = JSON.parse(event.data);
+                setLiveBid((prev) => [...prev, newBid]);
+            } catch (error) {
+                console.error('Parsing error:', error);
+            }
+        });
+         // Error handling (disconnections/reconnections)
+        eventSource.onerror = (error) => {
+            console.error('SSE connection lost. Reconnecting...', error);
+        };
+        return () => {
+            eventSource.close();
+        };
+       /*  try {
             const accessToken = localStorage.getItem("access_token");
             const response = await fetch(`${BASE_URL}/auctions/${id}/live`, {
                 method: "GET",
@@ -229,7 +246,7 @@ const ProdDetPage = () => {
                 error: err.message,
                 status: err.status,
             };
-        }
+        } */
     }
     const getRegBidders = async () => {
         try {
@@ -295,13 +312,19 @@ const ProdDetPage = () => {
         }
     }
     useEffect(() => {
+        getBidStreams();
+    }, []);
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [liveBid]);
+    useEffect(() => {
         getAuction();
         getAuctionLots();
         getRegBidders();
         getActiveLot();
-        getBidStreams();
         getAuctionWinners();
     }, [status, activeLot]);
+
 
     return ( 
         <div className={styles.auctionPack}>
@@ -334,7 +357,7 @@ const ProdDetPage = () => {
                                     <Countdown startTime={auctionData?.started_at} duration={auctionData?.duration_minutes}/>
                                 </div>
                                 {/*VIEW REGISTERED BIDDERS*/}
-                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders.length})</div>
+                                <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders?.length})</div>
                             </div>
                         </div> : 
                         <div className={styles.endsIn}>
@@ -345,7 +368,7 @@ const ProdDetPage = () => {
                                 </div>
                                 
                                 {/*the button (components) needs to have conditional rendering */}
-                               <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders.length})</div>
+                               <div className={`btn ${styles.timerBtn}`} onClick={()=> openModal(<RegisteredBidders auctionID={id} bidders={regBidders}/>)}>View registered bidders ({regBidders?.length})</div>
                             </div>
                         </div>
                     }
@@ -372,34 +395,19 @@ const ProdDetPage = () => {
                                     </li>
                                 </div>
                             </div>
-                            <div style={{backgroundColor:"#FDE4D3"}} className={styles.statsCard}>
+                            <div style={{backgroundColor:"#FDE4D3"}} className={`${styles.statsCard} ${styles.LiveStreamCard}`}>
                                 <h3>Current Bid</h3>
                                 <div className={styles.statsList}>
-                                    <li>
-                                        <p> <span> Maryam Rita </span> bidded <span> ₦1,900.00 </span></p>
-                                        <p className={styles.time}>Just now</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> Mike Olumide  </span> bidded <span> ₦1,600.00 </span></p>
-                                        <p className={styles.time}>Just now</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> Eliab Banjo </span> bidded <span> ₦1,450.00 </span></p>
-                                        <p className={styles.time}>1 mins ago</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> Maryam Rita </span> bidded <span> ₦1,350.00 </span></p>
-                                        <p className={styles.time}>2 mins ago</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> James Docka </span> bidded <span> ₦1,320.00 </span></p>
-                                        <p className={styles.time}>5 mins ago</p>
-                                    </li>
-                                    <li>
-                                        <p> <span>Mike Olumide  </span> bidded <span> ₦1,900.00 </span></p>
-                                        <p className={styles.time}>6 mins ago</p>
-                                    </li>
-                                    
+                                    {liveBid?.length === 0 ? (
+                                        <p>No bids yet.</p>
+                                    ) : (
+                                        liveBid.map((bid, index) => (
+                                            <li key={index}>
+                                                <p> <span> {bid?.bidder_name} </span> bidded <span> ₦{bid.amount.toLocaleString()} </span></p>
+                                                <p className={styles.time}>{bid.time}</p>
+                                            </li>
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -440,10 +448,10 @@ const ProdDetPage = () => {
                                     <p> <span>CHANGE ACTIVE LOT</span></p>
                                     <div className="rowMultiple">
                                         <p>Active lot</p>
-                                        <select value={activeLot} className={styles.graphType} onChange={(e)=>{e.preventDefault(); const activeLot = e.target.value; setActiveLot(activeLot), handleSetActiveLot(activeLot)}} name="activeLot" id="">
+                                        <select value={activeLot || ''} className={styles.graphType} onChange={(e)=>{e.preventDefault(); const activeLot = e.target.value; setActiveLot(activeLot), handleSetActiveLot(activeLot)}} name="activeLot" id="">
                                             <option value="Active lot">{activeLotData?.title}</option>
                                             {auctionLotData?.length && auctionLotData?.map((lot, index)=>(
-                                                <option key={index} value={lot.lot_number}>{lot.artwork.title}</option>
+                                                <option key={index} value={lot?.lot_number}>{lot?.artwork?.title}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -459,11 +467,11 @@ const ProdDetPage = () => {
                                         </select>
                                     </div>
                                     <div className="rowMultiple">
-                                        <p>Current bid (₦) (User)</p>
+                                        <p>Current bidder (User)</p>
                                         <select className={styles.graphType} value={formData.user_id} onChange={(e)=>setformData(prev=>({...prev, user_id:Number(e.target.value)}))} name="activeLot" id="">
                                             <option value="Active lot">Select user</option>
                                             {regBidders?.length && regBidders?.map((user,index)=>(
-                                                <option key={index} value={user.id}>{user.first_name} {user.last_name }</option>
+                                                <option key={index} value={user.user.id}>{user.full_name}</option>
                                             ))}
                                         </select>
                                     </div>

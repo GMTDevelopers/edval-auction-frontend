@@ -92,7 +92,12 @@
 }
 .statsCard{
     padding:16px 32px 16px 32px ;
-    min-height:407px ;
+    height:407px ;
+}
+.LiveStreamCard{
+    height: 407px;
+    overflow-y: scroll;
+    scrollbar-width: none !important;
 }
 .statsCard li{
     list-style-type: none;

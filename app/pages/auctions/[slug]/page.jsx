@@ -19,6 +19,7 @@ const ProdDetPage =  () => {
     const [isLogin, setIsLogin] = useState(false);
     const [isWinner, setIsWinner] = useState(true);
     const {slug} = useParams();
+    const chatEndRef = useRef(null);
     const searchParams = useSearchParams();
     const auctId = searchParams.get('auctionID');
     const [auctionData, setAuctionData] = useState(null);
@@ -26,6 +27,7 @@ const ProdDetPage =  () => {
     const [auctionLotData, setAuctionLotData] = useState(null);
     const [activeLotData, setActiveLotData] = useState([]);
     const [status, setStatus] = useState();
+    const [liveBid, setLiveBid] = useState([]);
 
     const getAuction = async () => {
         try {
@@ -112,7 +114,31 @@ const ProdDetPage =  () => {
             };
         }
     }
-
+    const getBidStreams = async () => {
+        const eventSource = new EventSource(`${BASE_URL}/auctions/${id}/live`);
+        // Listen to incoming bids
+        eventSource.addEventListener('bid', (event) => {
+            try {
+                const newBid = JSON.parse(event.data);
+                setLiveBid((prev) => [...prev, newBid]);
+            } catch (error) {
+                console.error('Parsing error:', error);
+            }
+        });
+         // Error handling (disconnections/reconnections)
+        eventSource.onerror = (error) => {
+            console.error('SSE connection lost. Reconnecting...', error);
+        };
+        return () => {
+            eventSource.close();
+        };
+    }
+    useEffect(() => {
+        getBidStreams();
+    }, []);
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [liveBid]);
     useEffect(() => {
         if (!slug || !auctId) return;
         getAuction();
@@ -121,10 +147,8 @@ const ProdDetPage =  () => {
     //get these data every 5 sec
     useEffect(() => {
         if (!auctId || status !== "live") return;
-
         getActiveLot();
         getMyWinnings();
-
         const interval = setInterval(() => {
             getActiveLot();
             getMyWinnings();
@@ -199,34 +223,19 @@ const ProdDetPage =  () => {
                                     </li>
                                 </div>
                             </div>
-                            <div style={{backgroundColor:"#FDE4D3"}} className={styles.statsCard}>
+                            <div style={{backgroundColor:"#FDE4D3"}} className={`${styles.statsCard} ${styles.LiveStreamCard}`}>
                                 <h3>Current Bid</h3>
                                 <div className={styles.statsList}>
-                                    <li>
-                                        <p> <span> Maryam Rita </span> bidded <span> ₦1,900.00 </span></p>
-                                        <p className={styles.time}>Just now</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> Mike Olumide  </span> bidded <span> ₦1,600.00 </span></p>
-                                        <p className={styles.time}>Just now</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> Eliab Banjo </span> bidded <span> ₦1,450.00 </span></p>
-                                        <p className={styles.time}>1 mins ago</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> Maryam Rita </span> bidded <span> ₦1,350.00 </span></p>
-                                        <p className={styles.time}>2 mins ago</p>
-                                    </li>
-                                    <li>
-                                        <p> <span> James Docka </span> bidded <span> ₦1,320.00 </span></p>
-                                        <p className={styles.time}>5 mins ago</p>
-                                    </li>
-                                    <li>
-                                        <p> <span>Mike Olumide  </span> bidded <span> ₦1,900.00 </span></p>
-                                        <p className={styles.time}>6 mins ago</p>
-                                    </li>
-                                    
+                                    {liveBid?.length === 0 ? (
+                                        <p>No bids yet.</p>
+                                    ) : (
+                                        liveBid.map((bid, index) => (
+                                            <li key={index}>
+                                                <p> <span> {bid?.bidder_name} </span> bidded <span> ₦{bid.amount.toLocaleString()} </span></p>
+                                                <p className={styles.time}>{bid.time}</p>
+                                            </li>
+                                        ))
+                                    )}
                                 </div>
                             </div>
                         </div>}

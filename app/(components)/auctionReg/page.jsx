@@ -128,7 +128,7 @@ const AuctionRegistration = ({auctionId, auctionLot}) => {
                     </option>))}                                                                                  
                 </select>
                 <input
-                value={formData.declared_amount.toLocaleString()}
+                value={formData.declared_amount}
                  type='number'
                  step={0.01}
                  onChange={(e) => {
