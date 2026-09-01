@@ -3,7 +3,7 @@ import LotSide from '@/app/(components)/sideCard/lot';
 import styles from './prodDet.module.css';
 import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
 import Tab from '@/app/(components)/tab/tabs';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AuctionRegistration from '@/app/(components)/auctionReg/page';
 import { Ban } from 'lucide-react';
 import LotDetails from '@/app/(components)/lotDetail/page';
