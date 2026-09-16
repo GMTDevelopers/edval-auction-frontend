@@ -12,7 +12,7 @@ const PaymentDue = ({name, artist, price, img}) => {
                 </div>
                 
                 
-                <p className={styles.payDuePrice}>₦{price.toLocaleString()}</p>
+                <p className={styles.payDuePrice}>₦{price?.toLocaleString()}</p>
             </div>
         </div>
     );
