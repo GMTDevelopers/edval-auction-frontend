@@ -83,7 +83,7 @@ const AdminArtistLotDetails = ({data}) => {
                     <p>Artist:<span> {data?.artist_details?.first_name} {data?.artist_details?.last_name} </span></p>
                     <p>Email address:<span> {data?.artist_details?.email} </span></p> 
                     <p>Phone number:<span> {data?.artist_details?.phone} </span></p>  
-                    <p className={styles.price}>${data?.price?.toLocaleString()}</p>
+                    <p className={styles.price}>₦{data?.price?.toLocaleString()}</p>
                    {/*  <p>Status:<span style={{textTransform:"uppercase", color: data.status==="rejected"? "#FB0000": "#419E5A"}}> {data.status} </span></p> */}
                 </div>
                 <p style={{lineHeight:"24px"}}>

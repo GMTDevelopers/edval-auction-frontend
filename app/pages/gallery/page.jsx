@@ -241,7 +241,7 @@ const Gallery = () => {
             </div>: 
             <div className="row4">              
               {artworks?.data?.map((data)=>(
-                <GalleryCard key={data.id} category={data.category} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artist={data.artist_details.first_name || data.artist_details.first_name}/>
+                <GalleryCard key={data.id} category={data.category} slug={data.slug} name={data.title} price={data.price} img={data.images[0].url} artistFirst={data.artist_details.first_name} artistLast={data.artist_details.last_name}/>
               )) }               
             </div>
           } 

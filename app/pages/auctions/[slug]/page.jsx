@@ -84,7 +84,7 @@ const ProdDetPage =  () => {
             setActiveLotData(data?.data);
 /*             console.log("active lot data:", data); */
         } catch (err) {
-            setError(err);
+            /* setError(err); */
             return {
                 success: false,
                 error: err.message,

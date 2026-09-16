@@ -12,7 +12,7 @@ const GalleryCard = ({img,name,artist,artistFirst,artistLast,price,slug,category
             <div className={`${styles.cardTxt} ${styles.GallerycardTxt}`}>
                 <h4>{name}</h4>
                 <p>Artist: <span>{artistFirst} {artistLast}</span></p>
-                <p className={styles.cardPrice}>₦{price}</p>
+                <p className={styles.cardPrice}>₦{price.toLocaleString()}</p>
             </div>
         </div>
     );

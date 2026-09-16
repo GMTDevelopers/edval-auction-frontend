@@ -54,7 +54,7 @@ const ArtworkDetail = ({data}) => {
                 <div className={styles.artistPack}>
                     <h2>{data?.title}</h2>
                     <p>Artist:<span> {data.artist_details.first_name} {data.artist_details.lasst_name} </span></p>
-                    {data.price? <p className={styles.price}>${data.price.toLocaleString()}</p> : <p>Starting Bid:<span> ${data.price.toLocaleString()} </span></p>}
+                    {data.price? <p className={styles.price}>₦{data.price.toLocaleString()}</p> : <p>Starting Bid:<span> ₦{data.price.toLocaleString()} </span></p>}
                 </div>
                 <p style={{lineHeight:"24px"}}>
                     {data.description}
@@ -84,7 +84,7 @@ const ArtworkDetail = ({data}) => {
                     </li>
                     <li>
                         <p>Size</p>
-                        <p>{data?.dimension} (h x w x d in inches)</p>
+                        <p>{data?.dimensions}</p>
                     </li>
                     <li>
                         <p>Frame</p>
