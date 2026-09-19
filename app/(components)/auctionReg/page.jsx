@@ -40,7 +40,7 @@ const Register = async (formData,auctionId) => {
 };
 
 
-const AuctionRegistration = ({auctionId, auctionLot}) => {
+const AuctionRegistration = ({auctionId, commitmentFee, auctionLot}) => {
     console.log('auction reg lot', auctionLot )
     const router = useRouter();
     const [formData, setformData] = useState({
@@ -100,7 +100,7 @@ const AuctionRegistration = ({auctionId, auctionLot}) => {
         <div className={styles.container}>
             <div className={styles.subHeading}>
                 <h2>Register to Participate</h2>
-                <p>A refundable commitment fee of $50 is required to authorize your phone-in bidding privileges. If you do not win any lots, this fee will be fully refunded within three business days.</p>
+                <p>A refundable commitment fee of ₦{commitmentFee} is required to authorize your phone-in bidding privileges. If you do not win any lots, this fee will be fully refunded within three business days.</p>
             </div>
             <form onSubmit={handleSubmit} className={styles.regForm}>
                 <select placeholder='Employment status' value={formData.employment_status} onChange={(e)=>setformData(prev=>({...prev, employment_status:e.target.value}))} name="employmentStatus">

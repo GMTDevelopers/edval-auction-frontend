@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
 import AddNewLot from '@/app/(components)/admin/addLot/page';
 import { useState } from 'react';
+import ImageUploader from '@/app/(components)/imageUploader/ImageUploader';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 
@@ -40,13 +41,16 @@ const NewAuction = () => {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [formData, setFormData] = useState({
-        description: "cdccfsdc",
+        description: "",
+        commitment_fee:'',
+        cover_image_url: " ",
         duration_minutes: 60,
         min_participation_amount: 1000,
-        name: "james",
+        name: "",
         participant_limit: 10000,
         scheduled_at: " ",
-        stream_url: " "
+        stream_url: " ",
+        venue:''
     })
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -76,6 +80,7 @@ const NewAuction = () => {
                     <section className={styles.section}>
                         <p>SECTION A: <span>GENERAL INFORMATION</span></p>
                         <input value={formData.name} onChange={(e)=>setFormData(prev =>({...prev, name: e.target.value}))} placeholder="Auction name" type="text" name="auctionName" required />
+                        <textarea value={formData.description} onChange={(e)=>setFormData(prev =>({...prev, description: e.target.value}))} placeholder="Auction Description" type="text" name="auctionDescription" required />
                         <div style={{marginTop:"0px"}} className="row2">
                             <div>
                                 <label htmlFor="auctionDate">Date</label>
@@ -87,6 +92,21 @@ const NewAuction = () => {
                             </div>                            
                         </div>
                         <input value={formData.stream_url} onChange={(e)=>setFormData(prev =>({...prev, stream_url: e.target.value}))} placeholder="Video link" type="url" name="livestreamLink" id="" />
+                        <div>
+                            <label htmlFor="commitmentFee">Commitment fee</label>
+                            <input value={formData.commitment_fee}
+                                step={0.01}
+                                onChange={(e) => {
+                                const value = e.target.value;
+                                if (/^\d*(\.\d{0,2})?$/.test(value)) {
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        commitment_fee: Number(value)
+                                    }));
+                                }
+                            }} 
+                            placeholder="0.00" type="number" id="commitmentFee" required />
+                        </div>
                         <div style={{marginTop:"0px"}} className="row2">
                             <div>
                                 <label htmlFor="participants">Maximum Participants</label>
@@ -97,8 +117,22 @@ const NewAuction = () => {
                                 <input value={formData.duration_minutes} onChange={(e)=>setFormData(prev =>({...prev, duration_minutes: Number(e.target.value)}))} placeholder="Duration in Minutes" type="tel" name="duration" id="duration" required />
                             </div>                            
                         </div>
+                        <input value={formData.venue} onChange={(e)=>setFormData(prev =>({...prev, venue: e.target.value}))} placeholder="Physical Auction Venue" type="text" name="auctionVenue" />
                     </section>
-
+                    <div className="">                        
+                        <ImageUploader
+                            className="mainImageContainer"
+                            value={formData?.cover_image_url }
+                            placeholder={`Add Cover Image`}
+                            onUpload={(url) => {
+                                const media = url;
+                                setFormData(prev => ({
+                                    ...prev,
+                                    cover_image_url: media
+                                }));
+                            }}
+                        />                       
+                    </div>
                     {/* <section className={styles.section}>
                         <p>SECTION B: <span>AUCTION LOTS</span></p>
                         <input placeholder="Artwork name" type="text" name="artistWorkName" id="" />

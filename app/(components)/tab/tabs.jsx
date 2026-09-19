@@ -104,7 +104,7 @@ const Tab = () => {
                                     {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </span>
                             </div>
-                            <p>Forgot password?</p>
+                            <p style={{ cursor: 'pointer' }} onClick={()=>{router.push('/forgot-password'); closeModal()}}>Forgot password?</p>
 
   
                             { isError && <div className="error"><CircleX color="#D32F2F" />{isError}</div> }

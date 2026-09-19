@@ -40,7 +40,7 @@ const ProdDetPage =  () => {
             const data = await response.json();
             setAuctionData(data?.data);
             setStatus(data?.data?.status)
-/*             console.log("auction data:", data); */
+            console.log("auction data:", data);
         } catch (err) {
             return {
                 success: false,
@@ -193,7 +193,7 @@ const ProdDetPage =  () => {
                                         <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
                                     </div>                                    
                                     {/*the button (components) needs to have conditional rendering */}
-                                    <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration auctionId={auctionData.id} auctionLot={auctionLotData} />)}>Register to participate</div>
+                                    <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration commitmentFee={auctionData.commitment_fee} auctionId={auctionData.id} auctionLot={auctionLotData} />)}>Register to participate</div>
                                 </div>
                             </div>
                         }
