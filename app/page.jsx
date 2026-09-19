@@ -173,7 +173,7 @@ export default function Home() {
       <header className={styles.header}>
         <div className={styles.bannerTxt}>
           <h1> Discover, Bid, & Collect Art from Around the World. </h1>
-          <p>A curated destination for live art auctions, exhibitions, fine art sales, and artist discovery.</p>
+          <p>A premier, curated destination connecting discerning collectors with live auctions, exclusive exhibitions, and exceptional fine art, antiques, and rare objects</p>
         </div>
         <div className={`btn ${styles.bannerBtn}`} onClick={()=>router.push('/pages/gallery')}> Explore our collection</div>
         <img src="/images/homepage/bannerImgCroped.webp" alt="banner" />

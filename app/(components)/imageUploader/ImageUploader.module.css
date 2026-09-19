@@ -30,6 +30,9 @@
     justify-content: center;
     flex-direction: column;
 }
+.placeholder2{
+    font-size: 10px;
+}
 .previewContainer{
     width: 100%;
     height: 100%;
@@ -58,7 +61,10 @@
 }
 @media (max-width: 576px) {
 
-    .placeholder p{
+    .placeholder1{
         font-size: 12px;
+    }
+    .placeholder2{
+        font-size: 8px;
     }
 }

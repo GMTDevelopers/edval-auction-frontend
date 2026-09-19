@@ -77,7 +77,7 @@ const RegisteredBidders = ({ auctionID, bidders }) => {
               <img src={user?.user?.profile_image_url} alt="user" />
               <div>
                 <p className={styles.name}>
-                  {user?.first_name} {user?.last_name}
+                  {user?.first_name} {user?.last_name} {user?.auction_code && `(${user?.auction_code})`}
                 </p>
                 <p style={{ color: '#3A3930' }}>{user?.email}</p>
               </div>

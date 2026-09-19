@@ -66,7 +66,7 @@ const Artists = () => {
                     <div className="double">
                         Now showing
                         <select value={filter} style={{cursor:'pointer'}} onChange={handleSubmit} name="nowShowing"> 
-                            <option value="artists">
+                            <option value="artist">
                                 Artists
                             </option>              
                             <option value="registered_user">

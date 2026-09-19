@@ -168,7 +168,7 @@ const ProdDetPage = () => {
             });
             const data = await response.json();
             setActiveLotData(data?.data);
-  /*           console.log("active lot data:", data); */
+             console.log("active lot data:", data);
         } catch (err) {
             setError(err);
             return {
@@ -382,10 +382,10 @@ const ProdDetPage = () => {
                                         <p>Active Lot: <span> {activeLotData?.title} </span></p>
                                     </li>
                                     <li>
-                                        <p>Starting Bid: <span>₦ {activeLotData?.starting_bid}</span></p>
+                                        <p>Starting Bid: <span>₦ {activeLotData?.starting_bid?.toLocaleString()}</span></p>
                                     </li>
                                     <li>
-                                        <p>Current Bid: <span>  ₦ {activeLotData?.current_bid} </span></p>
+                                        <p>Current Bid: <span>  ₦ {activeLotData?.current_bid?.toLocaleString()} </span></p>
                                     </li>
                                     <li>
                                         <p>Bidder: <span> {activeLotData?.current_bidder_name} </span></p>
@@ -420,7 +420,7 @@ const ProdDetPage = () => {
                                     <p> <span>CLOSE AUCTION</span></p>
                                     <div className="rowMultiple">
                                         <p>Auction status</p>
-                                        <select className={styles.graphType} value={startAuctionForm?.status || auctionData?.status} onChange={(e)=>{const newStatus = e.target.value; setStartAuctionForm(prev=>({...prev, status:newStatus})); handleStartAuction()}} name="auctionStatus" >          
+                                        <select className={styles.graphType} value={startAuctionForm?.status || auctionData?.status} onChange={(e)=>{setStartAuctionForm(prev=>({...prev, status:e.target.value})); handleStartAuction()}} name="auctionStatus" >          
                                             <option value="draft">
                                                 Draft
                                             </option>                                
@@ -471,7 +471,7 @@ const ProdDetPage = () => {
                                         <select className={styles.graphType} value={formData.user_id} onChange={(e)=>setformData(prev=>({...prev, user_id:Number(e.target.value)}))} name="activeLot" id="">
                                             <option value="Active lot">Select user</option>
                                             {regBidders?.length && regBidders?.map((user,index)=>(
-                                                <option key={index} value={user.user.id}>{user.full_name}</option>
+                                                <option key={index} value={user.user.id}>{user.full_name} {user?.auction_code && `(${user?.auction_code})`}</option>
                                             ))}
                                         </select>
                                     </div>

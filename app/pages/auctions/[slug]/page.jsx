@@ -183,7 +183,7 @@ const ProdDetPage =  () => {
                                         <Countdown startTime={auctionData?.scheduled_at} duration={auctionData?.duration_minutes}/>
                                     </div>
                                     {/*the button (components) needs to have conditional rendering */}
-                                    <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration auctionId={auctionData.id} auctionLot={auctionLotData} />)}>Register to participate</div>
+                                    {/* <div className={`btn ${styles.timerBtn}`} onClick={()=>isLogin ? openModal(<Tab />): openModal(<AuctionRegistration auctionId={auctionData.id} auctionLot={auctionLotData} />)}>Register to participate</div> */}
                                 </div>
                             </div> : 
                             <div className={styles.endsIn}>
@@ -198,10 +198,10 @@ const ProdDetPage =  () => {
                             </div>
                         }
                         {/* Conditionaly rendered */}
-                        {auctionData?.status==='live'&&<form className={styles.placeBid} action="">
+                        {/*auctionData?.status==='live'&&<form className={styles.placeBid} action="">
                             <input type="number" step={0.01} id='bid' name="bid" placeholder='Enter your bid here...' />
                             <button className=''> place bid</button>
-                        </form> }
+                        </form> */}
                         {auctionData?.status==='live'&&<div className={styles.statsPack}>
                             <div style={{backgroundColor:"#F2F0DB"}} className={styles.statsCard}>
                                 <h3>Auction Overview</h3>
@@ -210,10 +210,10 @@ const ProdDetPage =  () => {
                                         <p>Active Lot: <span> {activeLotData?.title} </span></p>
                                     </li>
                                     <li>
-                                        <p>Starting Bid: <span>₦ {activeLotData?.starting_bid}</span></p>
+                                        <p>Starting Bid: <span>₦ {activeLotData?.starting_bid?.toLocaleString()}</span></p>
                                     </li>
                                     <li>
-                                        <p>Current Bid: <span>  ₦ {activeLotData?.current_bid} </span></p>
+                                        <p>Current Bid: <span>  ₦ {activeLotData?.current_bid?.toLocaleString()} </span></p>
                                     </li>
                                     <li>
                                         <p>Bidder: <span> {activeLotData?.current_bidder_name} </span></p>

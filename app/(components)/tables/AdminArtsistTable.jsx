@@ -34,7 +34,7 @@ const AdminArtistTable = ({data}) => {
                         <td data-label="Date Added">{new Date(b?.created_at).toDateString() || "N/A"}</td>
                         <td data-label="Style">{b?.artist_profile?.artistic_style || "-"}</td>
                         <td data-label="Experience" className={styles.amount}>{b?.artist_profile?.years_of_experience || "-"} year(s)</td>
-                        <td data-label="Artworks" className={styles.amount}>{b?.stats.total_artworks || "-"}</td>
+                        <td data-label="Artworks" className={styles.amount}>{b?.stats?.total_artworks || "-"}</td>
                         <td data-label="Status"> 
                             <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>
                             {b?.is_active ? 'Active' : 'Not active'}

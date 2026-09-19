@@ -16,6 +16,8 @@ const ImageUploader = ({
         'image/png': ['.png']
     },
     placeholder = "Upload Image",
+    placeholder2 = "jpeg, jpg, png, heic, hief",
+    placeholder3 = "Max size 2mb",
     maxFiles = 1,
 }) => {
 
@@ -116,7 +118,9 @@ const ImageUploader = ({
                             (
                                 <div className={styles.placeholder}>
                                     <h2>+</h2>
-                                    <p>{placeholder}</p>
+                                    <p className={styles.placeholder1}>{placeholder}</p>
+                                    <p className={styles.placeholder2}>{placeholder2}</p>
+                                    <p className={styles.placeholder2}>{placeholder3}</p>
                                 </div>
                             )
 
