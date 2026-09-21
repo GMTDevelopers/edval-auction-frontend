@@ -1,0 +1,68 @@
+
+.regForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.regContainer{
+    width: 63%;
+    background: #F2F0DB;
+    padding: 56px 70px 70px 70px;
+}
+.section{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 40px;
+}
+.ruleItemPack{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ruleItem{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.ruleItem li{
+    margin-left:20px;
+}
+@media (max-width: 1400px) {
+    .regContainer{
+        width: 70%;
+        background: #F2F0DB;
+        padding: 56px 80px 70px 80px;
+    }
+}
+@media (max-width: 1200px) {
+    .regContainer{
+        width: 90%;
+        background: #F2F0DB;
+        padding: 56px 50px 70px 50px;
+    }
+}
+@media (max-width: 768px) {
+    .regContainer{
+        width: 100%;
+        background: #F2F0DB;
+        padding: 56px 50px 70px 50px;
+    }
+    .planContainer{
+        flex-direction: column;
+    }
+    .planInner{
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        height: fit-content;
+    }
+}
+@media (max-width: 576px) {
+    .regContainer{
+       
+        background: #F2F0DB;
+        padding: 56px 30px 70px 30px;
+    }
+}
+

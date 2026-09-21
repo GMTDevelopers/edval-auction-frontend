@@ -1,37 +1,10 @@
 'use client';
-
+import { useState } from 'react';
 import styles from './artistReg.module.css';
 
-const StepTwo = ({
-    subscription,
-    setSubscription,
-    previousStep,
-    handleSubmit,
-    loading,
-    formData
-}) => {
-
-    const plans = [
-        {
-            id:'monthly',
-            title:'Monthly',
-            price:'₦5,000',
-            period:'Per Month'
-        },
-        {
-            id:'biannual',
-            title:'Bi-Annual',
-            price:'₦27,000',
-            period:'Every 6 Months'
-        },
-        {
-            id:'annual',
-            title:'Annual',
-            price:'₦50,000',
-            period:'Per Year'
-        }
-    ];
-
+const StepTwo = ({subscription, setSubscription, previousStep, handleSubmit, loading, setFormData, formData, plans}) => {
+    console.log('sub plans',plans)
+    const [isAgreed, setIsAgreed] = useState(false);
     return (
         <>
             <h2>Subscription</h2>
@@ -40,85 +13,59 @@ const StepTwo = ({
                 Complete your artist registration by selecting your preferred billing cycle.
             </p>
 
-            <div className={styles.subscriptionCard}>
-                <h3>Edval Artist Membership</h3>
-
-                <p>
-                    Access exhibitions, artwork submissions,
-                    artist dashboard, auctions and future premium benefits.
-                </p>
-            </div>
-
             <div className={styles.planContainer}>
 
-                {plans.map((plan)=>(
-                    <div
-                        key={plan.id}
-                        onClick={()=>
-                            setSubscription({
-                                billing_cycle:plan.id
-                            })
-                        }
-                        className={
-                            subscription.billing_cycle===plan.id
-                            ? styles.activePlan
-                            : styles.plan
-                        }
-                    >
-                        <div>
-                            <h3>{plan.title}</h3>
-                            <p>{plan.period}</p>
+                {plans?.map((plan)=>(
+                    <div key={plan.id} className={subscription.billing_cycle===plan?.id ? styles.activePlan : styles.plan } onClick={()=>
+                        {setFormData(prev=>({
+                            ...prev,
+                            plan_id:plan.id,
+                            plan_slug: plan.slug,
+                        }));
+                        setSubscription({
+                            billing_cycle:plan.id
+                        })}
+                    } >
+                        <div className={styles.planInner}>
+                            <h3>{plan?.name}</h3>
+                            <h2>{plan?.price.toLocaleString()}</h2>
+                            <p>{plan?.billing_cycle}</p>
+                            <p>{plan?.description}</p>
+                            <hr />
+                            <p>Whats is included</p>
+                            {plan.features.map((feat,index)=>(
+                                <div key={index} className={styles.features}>
+                                    <li>{feat}</li>
+                                </div>
+                                    
+                            ))}
                         </div>
 
-                        <h2>{plan.price}</h2>
+                        
                     </div>
                 ))}
 
             </div>
+            <form>
+                <section className={styles.section}>
+                    <div className="checkboxPack">
+                        <input
+                            type="checkbox"
+                            checked={isAgreed}
+                            onChange={(e)=>setIsAgreed(e.target.checked)}
+                        />
+                        <p>I agree to the <a style={{color:"#D2B270"}} href="/pages/terms&conditions" target='_blank'>Terms and Conditions.</a> </p>
+                    </div>
 
-            <div className={styles.summaryCard}>
-                <h3>Registration Summary</h3>
-
-                <div className={styles.summaryRow}>
-                    <span>Artist</span>
-
-                    <span>
-                        {formData.first_name} {formData.last_name}
-                    </span>
-                </div>
-
-                <div className={styles.summaryRow}>
-                    <span>Studio</span>
-
-                    <span>{formData.studio_name}</span>
-                </div>
-
-                <div className={styles.summaryRow}>
-                    <span>Billing Cycle</span>
-
-                    <span>{subscription.billing_cycle}</span>
-                </div>
-            </div>
-
+                </section>
+            </form>
             <div className={styles.buttonRow}>
-                <button
-                    type="button"
-                    className="btn"
-                    onClick={previousStep}
-                >
+                <button type="button" className="btn submit" onClick={previousStep}>
                     Back
                 </button>
 
-                <button
-                    type="button"
-                    className="btn submit"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                >
-                    {loading
-                        ? 'Creating Account...'
-                        : 'Complete Registration'
-                    }
+                <button type="button" className="btn submit" onClick={handleSubmit} disabled={!isAgreed} >
+                    {loading ? 'Creating Account...' : 'Complete Registration'}
                 </button>
             </div>
         </>

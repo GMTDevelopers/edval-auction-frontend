@@ -36,9 +36,10 @@ const Tab = () => {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         const result = await login(loginData);
+        console.log('Login result:', result);
         if (result.success) {
             setIsSuccess("Login successful!");
-/*            console.log('Login successful:', result);         */   
+            
             setTimeout(() => {
                 if (result?.data?.data?.user?.role==='admin'){
                     router.push('/admin/overview');
@@ -60,7 +61,7 @@ const Tab = () => {
             } else {
                 setIsError(error.message);
             } */
-            setIsError(error.message);
+            setIsError(result?.error);
            /*  setIsError(result.message);
             console.error('Login failed:', error.message); */
         }

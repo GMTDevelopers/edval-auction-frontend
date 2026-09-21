@@ -7,6 +7,10 @@ import { useAuth } from '@/app/context/authContext';
 import { useRouter } from 'next/navigation';
 import StepOne from './step1';
 import StepTwo from './step2';
+import { useEffect } from 'react';
+import { initializePayment } from '@/app/services/payment';
+import { useModal } from '@/app/(components)/ModalProvider/ModalProvider';
+import VerifyEmailComponent from '@/app/(components)/verifyEmail/page';
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -38,15 +42,31 @@ const CreateArtist = async (formData) => {
         };
     }
 };
+const GetSubscription = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/subscriptions/plans`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-// Placeholder for future subscription endpoint.
-const CreateSubscription = async (subscriptionData, accessToken) => {
-    console.log('Subscription Payload:', subscriptionData);
+        const data = await response.json();
 
-    // Backend developer will provide endpoint later.
-    return {
-        success: true,
-    };
+        if (!response.ok) {
+            throw data.error || { message: 'Get subscription failed.' };
+        }
+
+        return {
+            success: true,
+            data,
+        };
+    } catch (err) {
+        return {
+            success: false,
+            err,
+        };
+    }
 };
 
 const ArtistRegistration = () => {
@@ -55,8 +75,11 @@ const ArtistRegistration = () => {
 
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
-
+    const { openModal } = useModal();
     const [formData, setFormData] = useState({
+        callback_url: `${window.location.origin}/payment/artistCallback}`,
+        plan_id: 0,
+        plan_slug: "",
         account_number: '',
         address: '',
         artistic_style: '',
@@ -77,6 +100,7 @@ const ArtistRegistration = () => {
     const [subscription, setSubscription] = useState({
         billing_cycle: 'monthly',
     });
+    const [subPlans, setSubPlans] = useState({});
 
     const validateStepOne = () => {
         if (!formData.first_name.trim()) {
@@ -138,52 +162,71 @@ const ArtistRegistration = () => {
         setLoading(true);
 
         const artist = await CreateArtist(formData);
-
         if (!artist.success) {
             setLoading(false);
 
             toast.error(artist.err.message);
 
             if (artist.err.details) {
-                artist.err.details.password &&
-                    toast.error(artist.err.details.password);
-
-                artist.err.details.studio_name &&
-                    toast.error(artist.err.details.studio_name);
+                artist.err.details.password && toast.error(artist.err.details.password);
+                artist.err.details.studio_name && toast.error(artist.err.details.studio_name);
             }
 
             return;
         }
-
-        const accessToken = artist.data.data.access_token;
-
+        console.log('artist', artist)
+        console.log('sub id', artist?.data?.data?.subscription?.subscription_id)
+       
+        const accessToken = artist?.data?.data?.access_token;
         localStorage.setItem('access_token', accessToken);
         localStorage.setItem(
             'refresh_token',
-            artist.data.data.refresh_token
+            artist?.data?.data?.refresh_token
         );
-
         setIsAuthenticated(true);
+        if(artist?.data?.data?.subscription?.requires_payment){        
+            try {
+                const callbackUrl = `${window.location.origin}/payment/artistCallback`;
+                const initData = {
+                    callback_url: callbackUrl ,
+                    subscription_id: artist?.data?.data?.subscription?.subscription_id,
+                }
+                const data = await initializePayment(initData);
 
-        const subscriptionResult = await CreateSubscription(
-            subscription,
-            accessToken
-        );
-
-        if (!subscriptionResult.success) {
-            setLoading(false);
-            toast.error('Subscription setup failed.');
-            return;
+                // Most backends (and Paystack) return an authorization_url
+                if (data.data?.authorization_url) {
+                    window.location.href = data.data.authorization_url;
+                } else if (data.authorization_url) {
+                    window.location.href = data.data.authorization_url;
+                } else {
+                    console.log("Full response:", data);
+                    toast.error("Payment initialized but no redirect URL found");
+                }
+            } catch (err) {
+                console.error(err);
+                toast.error(err.message || "Payment failed");
+                return;
+            }   
         }
-
-        toast.success('Artist account created successfully.');
-
         setLoading(false);
-
-        setTimeout(() => {
-            router.push('/user/artist/myArtworks');
-        }, 2500);
+        openModal(<VerifyEmailComponent userEmail={artist?.data?.data?.user?.email}/>)
     };
+    useEffect(() => {
+        const fetchSubPlans = async () => {
+          try {
+            setLoading(true);
+            const data = await GetSubscription();
+            console.log('subscription plan:', data)
+            setSubPlans(data.data.data);
+          } catch (err) {
+            setError(err.message);
+            setLoading(false);
+          }finally{
+            setLoading(false);
+          }
+        }
+        fetchSubPlans();
+    }, []);
 
     return (
         <div>
@@ -229,8 +272,10 @@ const ArtistRegistration = () => {
                         <StepTwo
                             subscription={subscription}
                             setSubscription={setSubscription}
+                            setFormData={setFormData}
                             previousStep={previousStep}
                             handleSubmit={handleSubmit}
+                            plans={subPlans}
                             loading={loading}
                             formData={formData}
                         />

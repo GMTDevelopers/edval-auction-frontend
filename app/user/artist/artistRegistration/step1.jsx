@@ -9,7 +9,6 @@ import { useState } from 'react';
 const StepOne = ({ formData, setFormData, nextStep }) => {
 
     const [isVisible, setIsVisible] = useState(false);
-    const [isAgreed, setIsAgreed] = useState(false);
 
     return (
         <>
@@ -250,54 +249,10 @@ const StepOne = ({ formData, setFormData, nextStep }) => {
                         placeholder="Account Number"
                     />
 
-                </section>
-
-                <section className={styles.section}>
-
-                    <p>
-                        SECTION D:
-                    <span> SUBSCRIPTION </span>
-                    </p>
-
-                    <select
-                        value={formData.years_of_experience}
-                        onChange={(e)=>
-                            setFormData(prev=>({
-                                ...prev,
-                                years_of_experience:Number(e.target.value)
-                            }))
-                        }
-                    >
-                        <option value='sponsorship'>
-                            Sponsorship
-                        </option>
-
-                        <option value='subscription'>
-                            Subscription
-                        </option>
-                        
-
-                    </select>
-
-                </section>
-
-                <section className={styles.section}>
-
-                    <div className="checkboxPack">
-                        <input
-                            type="checkbox"
-                            checked={isAgreed}
-                            onChange={(e)=>setIsAgreed(e.target.checked)}
-                        />
-
-                        <p>I agree to the Terms and Conditions.</p>
-                    </div>
-
-                </section>
+                </section>                
 
                 <button
                     type="button"
-                    disabled={!isAgreed}
                     className="btn submit"
                     onClick={nextStep}
                 >

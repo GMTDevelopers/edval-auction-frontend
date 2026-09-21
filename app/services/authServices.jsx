@@ -8,13 +8,11 @@ export const loginUser = async (credentials) => {
         },
         body: JSON.stringify(credentials),
     });
-
     const data = await response.json();
-
     if (!response.ok) {
         throw {
             status: response.status,
-            message: data.message || "Login failed",
+            message: data.error.message || "Login failed",
         };
     }
 
