@@ -15,14 +15,14 @@ import VerifyEmailComponent from '@/app/(components)/verifyEmail/page';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const CreateArtist = async (formData) => {
+const CreateArtist = async (payload) => {
     try {
         const response = await fetch(`${BASE_URL}/auth/register/artist`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(payload),
         });
 
         const data = await response.json();
@@ -77,7 +77,6 @@ const ArtistRegistration = () => {
     const [loading, setLoading] = useState(false);
     const { openModal } = useModal();
     const [formData, setFormData] = useState({
-        callback_url: `${window.location.origin}/payment/artistCallback}`,
         plan_id: 0,
         plan_slug: "",
         account_number: '',
@@ -160,8 +159,11 @@ const ArtistRegistration = () => {
 
     const handleSubmit = async () => {
         setLoading(true);
-
-        const artist = await CreateArtist(formData);
+        const payload = {
+            ...formData,
+            callback_url: `${window.location.origin}/payment/artistCallback`,
+        };
+        const artist = await CreateArtist(payload);
         if (!artist.success) {
             setLoading(false);
 
