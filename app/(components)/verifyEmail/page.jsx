@@ -75,14 +75,13 @@ const VerifyEmailComponent = ({userEmail}) => {
     const {user} = useAuth();
     const router = useRouter();
     const { closeModal } = useModal();
-    const now = new Date();
     const [showResend, setShowResend] = useState(false);
     const [timerStart, setTimerStart] = useState(new Date());
     const [formData, setformData] = useState({
         email: user?.email || userEmail,
         otp: ''
     });
-    console.log('user email', userEmail);
+    console.log('user email', user);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -97,7 +96,13 @@ const VerifyEmailComponent = ({userEmail}) => {
             console.log('email verified successfully:', result);
             setTimeout(() => {
                 closeModal()
-                router.push('/user/artist/myArtworks');
+                if(user&&user.role==='registered_user'){
+                    router.push('/user/client/');
+                }
+                if(user&&user.role==='artist'){
+                    router.push('/user/artist/myArtworks');
+                }
+                
             }, 3000);
         }  
     };
@@ -118,13 +123,13 @@ const VerifyEmailComponent = ({userEmail}) => {
         return () => clearInterval(interval);
     }, [timerStart]);
     return ( 
-        <div >
+        <div className='container formDouble'>
             <div className={styles.overallContainer}>
                 <h2>Email Verification</h2> 
                 <p>An otp has been sent to {user?.email || userEmail}</p>
                 <br />
                 <form onSubmit={handleSubmit}>
-                    <div className="big">
+                    <div>
                         <div>
                             <label htmlFor="quantity">OTP</label>
                             <input value={formData.otp} onChange={(e)=>setformData(prev=>({...prev, otp:e.target.value}))} placeholder="* * * * * *" type="tel" name="otp" />

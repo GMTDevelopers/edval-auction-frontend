@@ -39,7 +39,8 @@ export default function PaymentArtistCallback() {
         console.log('callback data', data.data)
         if (data?.data?.status === "completed") {
           setMessage("Payment successful! 🎉");
-          openModal(<VerifyEmailComponent />)
+          router.push('/verifyEmail');
+          /* openModal(<VerifyEmailComponent />) */
         } else {
           setMessage("Payment not confirmed yet.");
         }

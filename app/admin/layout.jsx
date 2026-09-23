@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from './layout.module.css';
 import { usePathname } from 'next/navigation';
 import { useModal } from '../(components)/ModalProvider/ModalProvider';
-import ProtectedRoute from '../(components)/ProtectedRoute.jsx/page';
+import ProtectedRoute from '../(components)/ProtectedRoute/page';
 
 
 const AdminLayout = ({children}) => {

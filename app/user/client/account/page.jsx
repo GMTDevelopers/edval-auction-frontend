@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import ImageUploader from '@/app/(components)/imageUploader/ImageUploader';
 import { useAuth } from '@/app/context/authContext';
 import { toast } from 'sonner';
-import ProtectedRoute from '@/app/(components)/ProtectedRoute.jsx/page';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute/page';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 

@@ -26,10 +26,7 @@ const ProtectedRoute = ({children, allowedRoles = [], redirectTo = '/'}) => {
         }
 
         // Role is not allowed.
-        if (
-            allowedRoles.length > 0 &&
-            !allowedRoles.includes(user.role)
-        ) {
+        if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
             router.replace(redirectTo);
         }
 

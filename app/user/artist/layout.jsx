@@ -1,6 +1,6 @@
 'use client'
 
-import ProtectedRoute from '@/app/(components)/ProtectedRoute.jsx/page';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute/page';
 
 const ArtistLayout = ({children}) => {
     return ( 

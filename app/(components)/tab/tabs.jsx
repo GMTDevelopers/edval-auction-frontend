@@ -79,7 +79,9 @@ const Tab = () => {
             const result = await signup(signupData);
             console.log('signup result', result)
             if (result.success) {
-                openModal(<VerifyEmailComponent />)
+               /*  openModal(<VerifyEmailComponent />) */
+               closeModal();
+               router.push('/verifyEmail');
             }
             if (!result.success) {
                 const errors = Object.values(result.error).flat();
