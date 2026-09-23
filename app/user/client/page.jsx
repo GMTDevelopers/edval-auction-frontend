@@ -4,6 +4,7 @@ import styles from './client.module.css';
 import Table from "@/app/(components)/tables/client";
 import { useAuth } from '@/app/context/authContext';
 import { useEffect, useState } from 'react';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute.jsx/page';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getOrders = async () => {
@@ -43,16 +44,18 @@ const MyOrders = () => {
         trying()
     }, [user]);
     return ( 
-        <div className={styles.container}>
-            <div className="container">
-                <h2>My Orders ({order.length})</h2>
-                {
-                    loading? <div className='emptyCont'> <Loader /> </div>  :
-                    <Table data={order}/>
-                }
-                
+        <ProtectedRoute allowedRoles={['registered_user']}>
+            <div className={styles.container}>
+                <div className="container">
+                    <h2>My Orders ({order.length})</h2>
+                    {
+                        loading? <div className='emptyCont'> <Loader /> </div>  :
+                        <Table data={order}/>
+                    }
+                    
+                </div>
             </div>
-        </div>
+        </ProtectedRoute>
     );
 }
  

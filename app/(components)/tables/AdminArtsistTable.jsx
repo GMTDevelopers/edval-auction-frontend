@@ -15,6 +15,7 @@ const AdminArtistTable = ({data}) => {
                         <th>Date Added</th>
                         <th>Style</th>
                         <th>Experience</th>
+                        <th>Subscription</th>
                         <th>Artworks</th>
                         <th>Status</th>
                     </tr>
@@ -34,6 +35,7 @@ const AdminArtistTable = ({data}) => {
                         <td data-label="Date Added">{new Date(b?.created_at).toDateString() || "N/A"}</td>
                         <td data-label="Style">{b?.artist_profile?.artistic_style || "-"}</td>
                         <td data-label="Experience" className={styles.amount}>{b?.artist_profile?.years_of_experience || "-"} year(s)</td>
+                        <td data-label="Subscription" style={{color: b?.subscription?.status==='active' ? "#419e5a" : "#FB0000", fontWeight:500}} className={styles.amount}>{b?.subscription?.plan_name || "-"}</td>
                         <td data-label="Artworks" className={styles.amount}>{b?.stats?.total_artworks || "-"}</td>
                         <td data-label="Status"> 
                             <span className={`${styles.status} ${styles[b.is_active?.toString()]}`}>

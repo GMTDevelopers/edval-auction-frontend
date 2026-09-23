@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import ImageUploader from '@/app/(components)/imageUploader/ImageUploader';
 import { useAuth } from '@/app/context/authContext';
 import { toast } from 'sonner';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute.jsx/page';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -77,42 +78,44 @@ const Account = () => {
     }, [user]);
 
     return ( 
-        <div>
-            <div className="upcomingAuctions">
-                <div className={`container double`}>
-                    <div className="small">
-                        <div className={Styles.imgPack}>
-                            <ImageUploader
-                                className="mainImageContainer"
-                                value={formData.profile_image_url || "/images/comission/comission.webp" }
-                                placeholder={`Add Image`}
-                                onUpload={(url) => {
-                                    const media = url;                                   
-                                    setformData(prev => ({
-                                        ...prev,
-                                        profile_image_url: media
-                                    }));
-                                }}
-                            />
-                        </div>
-                    </div>
-                    <div className="big">
-                        <h2>Fill the form below to request your personalized portrait commission.</h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="double">
-                                <input value={user?.first_name} disabled placeholder="First name" type="text" name="firstName"/>
-                                <input value={user?.last_name} disabled placeholder="Last name" type="text" name="lastName"/>
+        <ProtectedRoute allowedRoles={['registered_user']}>
+            <div>
+                <div className="upcomingAuctions">
+                    <div className={`container double`}>
+                        <div className="small">
+                            <div className={Styles.imgPack}>
+                                <ImageUploader
+                                    className="mainImageContainer"
+                                    value={formData.profile_image_url || "/images/comission/comission.webp" }
+                                    placeholder={`Add Image`}
+                                    onUpload={(url) => {
+                                        const media = url;                                   
+                                        setformData(prev => ({
+                                            ...prev,
+                                            profile_image_url: media
+                                        }));
+                                    }}
+                                />
                             </div>
-                            
-                            <input value={user?.email} disabled placeholder="Email address" type="email" name="email"/>
-                            <input value={formData.phone} onChange={(e)=>setformData(prev=>({...prev, phone: e.target.value}))} placeholder="Phone number" type="tel" name="phoneNum"/>                            
-                            <button type='submit' className='submit btn'>Save changes</button>
-                        </form>
+                        </div>
+                        <div className="big">
+                            <h2>Fill the form below to request your personalized portrait commission.</h2>
+                            <form onSubmit={handleSubmit}>
+                                <div className="double">
+                                    <input value={user?.first_name} disabled placeholder="First name" type="text" name="firstName"/>
+                                    <input value={user?.last_name} disabled placeholder="Last name" type="text" name="lastName"/>
+                                </div>
+                                
+                                <input value={user?.email} disabled placeholder="Email address" type="email" name="email"/>
+                                <input value={formData.phone} onChange={(e)=>setformData(prev=>({...prev, phone: e.target.value}))} placeholder="Phone number" type="tel" name="phoneNum"/>                            
+                                <button type='submit' className='submit btn'>Save changes</button>
+                            </form>
+                        </div>
+                        
                     </div>
-                    
                 </div>
             </div>
-        </div>
+        </ProtectedRoute>
     );
 }
  

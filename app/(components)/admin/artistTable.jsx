@@ -95,7 +95,9 @@ const AdminArtistDetails = ({data}) => {
                 <div className={styles.artistPack}>
                     <h2>{data?.first_name} {data?.last_name}</h2>
                     <p>Date Joined:<span> {new Date(data?.created_at).toDateString() || "N/A"}</span></p>
-                    <p>Earnings:<span> ${data?.stats?.total_sales} </span></p> 
+                    <p>Earnings:<span> ₦{data?.stats?.total_sales} </span></p> 
+                    <p>Subscription Plan:<span> {data?.subscription?.plan_name} </span></p> 
+                    <p>Subscription exiry Date:<span style={{color: data?.subscription?.status==='active' ? "#2E7D32" : "#FB0000", cursor:'pointer'}}> {new Date(data?.subscription?.current_period_end).toDateString()}</span></p> 
                 </div>
                 <p style={{lineHeight:"24px"}}>
                     {data?.artist_profile?.bio}

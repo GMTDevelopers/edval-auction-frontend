@@ -3,14 +3,15 @@ import Link from 'next/link';
 import styles from './layout.module.css';
 import { usePathname } from 'next/navigation';
 import { useModal } from '../(components)/ModalProvider/ModalProvider';
-import ProtectedRoute from '../protectedRoute';
+import ProtectedRoute from '../(components)/ProtectedRoute.jsx/page';
+
 
 const AdminLayout = ({children}) => {
     const pathname = usePathname();
     const { openModal } = useModal();
 
     return ( 
-        
+        <ProtectedRoute allowedRoles={['super_admin', 'admin']}>
             <div className={styles.layoutContainer}>
                 <div className="container">
                     <ul className={styles.navBar}>
@@ -23,10 +24,9 @@ const AdminLayout = ({children}) => {
                         <li className={ pathname.startsWith('/admin/settings') ? `${styles.active}`: "" }><Link href="/admin/settings"> Settings</Link></li>
                     </ul>
                     {children}
-                </div>
-                
+                </div>                
             </div>
-
+        </ProtectedRoute>
     );
 }
 /*  <ProtectedRoute allowedRoles={['admin', 'super_admin']}>        </ProtectedRoute> */
