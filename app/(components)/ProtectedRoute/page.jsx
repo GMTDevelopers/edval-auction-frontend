@@ -20,8 +20,8 @@ const ProtectedRoute = ({children, allowedRoles = [], redirectTo = '/'}) => {
 
         // User is not logged in.
         if (!isAuthenticated || !user) {
-            openModal(<Tab />)
-            /* router.replace('/login'); */
+            /* openModal(<Tab />) */
+            router.replace('/login');
             return;
         }
 

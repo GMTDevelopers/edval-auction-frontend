@@ -6,8 +6,8 @@ import ArtistCommissionsTable from '@/app/(components)/tables/artistCommission';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/context/authContext';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute/page';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
 
 
 const GetSubmissions = async (id) => {
@@ -61,29 +61,31 @@ const MySubmissions = () => {
     }, [user]);
 
     return ( 
-        <div className={styles.container}>
-            {loading ? <div className='emptyCont'> <Loader /> </div> : <div className="container">
-                <div className="row3">
-                    <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
-                    <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
-                    <StatsCard title="Total Sales" data={user?.stats?.total_sales} icon={Banknote} />
-                </div>
-                
-                <div className={`double ${styles.pack}`}>
-                    <h2>Submissions</h2>
-                    <div onClick={()=>router.push('/user/artist/submissions/addSubmission')} className={`btn ${styles.btn}`}><Plus /> Submit new request</div>
-                </div>
-                
-                {sub?.data?.length > 0 ? <ArtistCommissionsTable sub={sub} />
-                : 
-                <div className='emptyCont'>
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
-                        <CircleOff />
-                        <p>Make a submission to see them here</p>
-                    </div>    
+        <ProtectedRoute allowedRoles={['artist']}>
+            <div className={styles.container}>
+                {loading ? <div className='emptyCont'> <Loader /> </div> : <div className="container">
+                    <div className="row3">
+                        <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
+                        <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
+                        <StatsCard title="Total Sales" data={user?.stats?.total_sales} icon={Banknote} />
+                    </div>
+                    
+                    <div className={`double ${styles.pack}`}>
+                        <h2>Submissions</h2>
+                        <div onClick={()=>router.push('/user/artist/submissions/addSubmission')} className={`btn ${styles.btn}`}><Plus /> Submit new request</div>
+                    </div>
+                    
+                    {sub?.data?.length > 0 ? <ArtistCommissionsTable sub={sub} />
+                    : 
+                    <div className='emptyCont'>
+                        <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
+                            <CircleOff />
+                            <p>Make a submission to see them here</p>
+                        </div>    
+                    </div>}
                 </div>}
-            </div>}
-        </div>
+            </div>
+        </ProtectedRoute>
     );
 }
  

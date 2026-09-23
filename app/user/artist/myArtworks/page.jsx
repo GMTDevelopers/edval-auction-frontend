@@ -6,6 +6,7 @@ import StatsCard from '@/app/(components)/statsCard/page';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/context/authContext';
 import { useEffect, useState } from 'react';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute/page';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const GetArtworks = async (id) => {
@@ -56,28 +57,31 @@ const MyArtworks = () => {
         trying()
     }, [user]);
     return ( 
-        <div className={styles.container}>
-            {loading? <div className='emptyCont'> <Loader /> </div>  : <div className="container">
-                <div className="row3">
-                    <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
-                    <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
-                    <StatsCard title="Total Sales" data={user?.stats?.total_sales} icon={Banknote} />
-                </div>
-                
-                <div className={`double ${styles.pack}`}>
-                    <h2>My Artworks ({artworks?.data?.length || 0})</h2>
-                    <div onClick={()=>router.push('/user/artist/myArtworks/addNewArt')} className={`btn ${styles.btn}`}><Plus /> Add new artwork</div>
-                </div>
-                {artworks?.data?.length > 0 ? <ArtistArtworksTable data={artworks.data} /> 
-                : 
-                <div className='emptyCont'>
-                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
-                        <CircleOff />
-                        <p>Add an Artwork to see them here</p>
-                    </div>    
+        <ProtectedRoute allowedRoles={['artist']}>
+            <div className={styles.container}>
+                {loading? <div className='emptyCont'> <Loader /> </div>  : <div className="container">
+                    <div className="row3">
+                        <StatsCard title="Total Artworks" data={user?.stats?.total_artworks} icon={Palette} />
+                        <StatsCard title="Pending Approval" data={user?.stats?.pending_approval} icon={Loader} />
+                        <StatsCard title="Total Sales" data={user?.stats?.total_sales} icon={Banknote} />
+                    </div>
+                    
+                    <div className={`double ${styles.pack}`}>
+                        <h2>My Artworks ({artworks?.data?.length || 0})</h2>
+                        <div onClick={()=>router.push('/user/artist/myArtworks/addNewArt')} className={`btn ${styles.btn}`}><Plus /> Add new artwork</div>
+                    </div>
+                    {artworks?.data?.length > 0 ? <ArtistArtworksTable data={artworks.data} /> 
+                    : 
+                    <div className='emptyCont'>
+                        <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
+                            <CircleOff />
+                            <p>Add an Artwork to see them here</p>
+                        </div>    
+                    </div>}
                 </div>}
-            </div>}
-        </div>
+            </div>
+        </ProtectedRoute>
+        
     );
 }
  

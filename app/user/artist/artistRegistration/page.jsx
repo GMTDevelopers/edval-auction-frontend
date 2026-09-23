@@ -211,7 +211,7 @@ const ArtistRegistration = () => {
             }   
         }
         setLoading(false);
-        openModal(<VerifyEmailComponent userEmail={artist?.data?.data?.user?.email}/>)
+        /* openModal(<VerifyEmailComponent userEmail={artist?.data?.data?.user?.email}/>) */
     };
     useEffect(() => {
         const fetchSubPlans = async () => {

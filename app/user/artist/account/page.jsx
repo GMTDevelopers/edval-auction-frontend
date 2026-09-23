@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import Select from 'react-select';
 import ArtStyle from '@/app/data/artStyle.json';
 import ImageUploader from '@/app/(components)/imageUploader/ImageUploader';
+import ProtectedRoute from '@/app/(components)/ProtectedRoute/page';
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const EditProfileFunction = async (formData) => {
@@ -145,114 +146,116 @@ const Account =  () => {
     };
 
     return ( 
-        <div>
-            <div className="upcomingAuctions">
-                <form onSubmit={handleSubmit}>
-                    <div style={{ alignItems:"start" }} className={`container double formDouble`}>
-                        <div className="small">
-                            <div className={Styles.imgPack}>
-                                <ImageUploader
-                                    className="mainImageContainer"
-                                    value={formData?.profile_image_url || "/images/comission/comission.webp" }
-                                    placeholder={`Add Image`}
-                                    onUpload={(url) => {
-                                        const media = url;
-                                        setformData(prev => ({
-                                            ...prev,
-                                            profile_image_url: media
-                                        }));
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className="big">                        
-                            <div className="double">
-                                <div>
-                                    <label htmlFor="firstName">First name</label>
-                                    <input placeholder="First name" onChange={(e)=>setformData(prev=>({...prev, first_name: e.target.value}))} value={formData?.first_name} type="text" id="firstName" />
-                                </div>
-                                <div>
-                                    <label htmlFor="lastName">Last name</label>
-                                    <input placeholder="Last name" onChange={(e)=>setformData(prev=>({...prev, last_name: e.target.value}))} value={formData?.last_name} type="text" id="lastName" />
+        <ProtectedRoute allowedRoles={['artist']}>
+            <div>
+                <div className="upcomingAuctions">
+                    <form onSubmit={handleSubmit}>
+                        <div style={{ alignItems:"start" }} className={`container double formDouble`}>
+                            <div className="small">
+                                <div className={Styles.imgPack}>
+                                    <ImageUploader
+                                        className="mainImageContainer"
+                                        value={formData?.profile_image_url || "/images/comission/comission.webp" }
+                                        placeholder={`Add Image`}
+                                        onUpload={(url) => {
+                                            const media = url;
+                                            setformData(prev => ({
+                                                ...prev,
+                                                profile_image_url: media
+                                            }));
+                                        }}
+                                    />
                                 </div>
                             </div>
-                            <div>
-                                <label htmlFor="studioName">Studio name</label>
-                                <input placeholder="Studio name" onChange={(e)=>setformData(prev=>({...prev, studio_name: e.target.value}))} value={formData?.studio_name} type="text" id="studioName" />
+                            <div className="big">                        
+                                <div className="double">
+                                    <div>
+                                        <label htmlFor="firstName">First name</label>
+                                        <input placeholder="First name" onChange={(e)=>setformData(prev=>({...prev, first_name: e.target.value}))} value={formData?.first_name} type="text" id="firstName" />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="lastName">Last name</label>
+                                        <input placeholder="Last name" onChange={(e)=>setformData(prev=>({...prev, last_name: e.target.value}))} value={formData?.last_name} type="text" id="lastName" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label htmlFor="studioName">Studio name</label>
+                                    <input placeholder="Studio name" onChange={(e)=>setformData(prev=>({...prev, studio_name: e.target.value}))} value={formData?.studio_name} type="text" id="studioName" />
+                                </div>
+                                <div>
+                                    <label htmlFor="email">Email</label>
+                                    <input placeholder="Email address"  defaultValue={user?.email||''} type="email" id="email" disabled />
+                                </div>
+                                <div>
+                                    <label htmlFor="phoneNum">Phone number</label>
+                                    <input placeholder="Phone number" onChange={(e)=>setformData(prev=>({...prev, phone: e.target.value}))} value={formData?.phone} type="tel" id="phoneNum" />
+                                </div>
+                                <div>
+                                    <label htmlFor="address">Address</label>
+                                    <textarea id="address" placeholder="address" onChange={(e)=>setformData(prev=>({...prev, address: e.target.value}))} style={{ height: "83px" }} value={formData?.address}></textarea>
+                                </div>
+                                <div>
+                                    <label htmlFor="country">Country</label>
+                                    <select value={formData?.country} onChange={(e)=>setformData(prev=>({...prev, country: e.target.value}))} id="country">
+                                        <option value="Country">Country</option> 
+                                        {(countries).map((country, index) => (
+                                            <option key={index} value={country.name}>
+                                                {country.name}
+                                            </option>
+                                        ))}                                                                             
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor="state">State</label>
+                                    <input placeholder="State" onChange={(e)=>setformData(prev=>({...prev, state: e.target.value}))} value={formData?.state} type="text" id="state" />
+                                </div>
+                                <div>
+                                    <label htmlFor="city">Artistic Style</label>
+                                    <Select value={ArtStyle.filter(option => formData.artistic_style.includes(option.value))} instanceId="add-artwork-select" isMulti placeholder="Artistic Style" className={Styles.selectWrapper} classNamePrefix="select" options={ArtStyle}
+                                        onChange={(selectedOptions) =>
+                                            setformData(prev => ({
+                                                ...prev,
+                                                artistic_style: selectedOptions
+                                                    ? selectedOptions.map(option => option.value)
+                                                    : "",
+                                            }))
+                                        }
+                                    /> 
+                                </div>
+                                <div>
+                                    <label htmlFor="experience">Years of Experience</label>
+                                    <input placeholder="Years of Experience" onChange={(e)=>setformData(prev=>({...prev, years_of_experience: e.target.value}))} value={formData?.years_of_experience} type="text" id="experience" />
+                                </div>
+                                <div>
+                                    <label htmlFor="portfolio">Portfolio link</label>
+                                    <input placeholder="Portfolio link" onChange={(e)=>setformData(prev=>({...prev, portfolio_url: e.target.value}))} value={formData?.portfolio_url} type="url" id="portfolio" />
+                                </div>
+                                <div>
+                                    <label htmlFor="bio">Bio</label>
+                                    <textarea name="bio" placeholder="Bio" onChange={(e)=>setformData(prev=>({...prev, bio: e.target.value}))} value={formData?.bio} id="bio"></textarea>
+                                </div>
+                                <div>
+                                    <label htmlFor="accountNumber">Account number</label>
+                                    <input placeholder="Account Number" onChange={(e)=>setformData(prev=>({...prev, account_number: e.target.value}))} value={formData?.account_number} type="tel" id="accountNumber" />
+                                </div>
+                                <div>
+                                    <label htmlFor="bankName">Bank name</label>
+                                    <input placeholder="Bank name" onChange={(e)=>setformData(prev=>({...prev, bank_name: e.target.value}))} value={formData?.bank_name} type="text" id="bankName" />
+                                </div>
+                                {/* <div className={styles.passVisible}>
+                                    <input value={password}  onChange={(e) => setPassword(e.target.value)} type={isVisible ? "text" : "password"} placeholder='Password' />
+                                    <span type="button" onClick={toggleVisibility} className={styles.visibility} aria-label={isVisible ? "Hide password" : "Show password"} >
+                                        {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </span>
+                                </div> */}                                
+                                <button type='submit' className='submit btn'>Save changes</button>
                             </div>
-                            <div>
-                                <label htmlFor="email">Email</label>
-                                <input placeholder="Email address"  defaultValue={user?.email||''} type="email" id="email" disabled />
-                            </div>
-                            <div>
-                                <label htmlFor="phoneNum">Phone number</label>
-                                <input placeholder="Phone number" onChange={(e)=>setformData(prev=>({...prev, phone: e.target.value}))} value={formData?.phone} type="tel" id="phoneNum" />
-                            </div>
-                            <div>
-                                <label htmlFor="address">Address</label>
-                                <textarea id="address" placeholder="address" onChange={(e)=>setformData(prev=>({...prev, address: e.target.value}))} style={{ height: "83px" }} value={formData?.address}></textarea>
-                            </div>
-                            <div>
-                                <label htmlFor="country">Country</label>
-                                <select value={formData?.country} onChange={(e)=>setformData(prev=>({...prev, country: e.target.value}))} id="country">
-                                    <option value="Country">Country</option> 
-                                    {(countries).map((country, index) => (
-                                        <option key={index} value={country.name}>
-                                            {country.name}
-                                        </option>
-                                    ))}                                                                             
-                                </select>
-                            </div>
-                            <div>
-                                <label htmlFor="state">State</label>
-                                <input placeholder="State" onChange={(e)=>setformData(prev=>({...prev, state: e.target.value}))} value={formData?.state} type="text" id="state" />
-                            </div>
-                            <div>
-                                <label htmlFor="city">Artistic Style</label>
-                                <Select value={ArtStyle.filter(option => formData.artistic_style.includes(option.value))} instanceId="add-artwork-select" isMulti placeholder="Artistic Style" className={Styles.selectWrapper} classNamePrefix="select" options={ArtStyle}
-                                    onChange={(selectedOptions) =>
-                                        setformData(prev => ({
-                                            ...prev,
-                                            artistic_style: selectedOptions
-                                                ? selectedOptions.map(option => option.value)
-                                                : "",
-                                        }))
-                                    }
-                                /> 
-                            </div>
-                            <div>
-                                <label htmlFor="experience">Years of Experience</label>
-                                <input placeholder="Years of Experience" onChange={(e)=>setformData(prev=>({...prev, years_of_experience: e.target.value}))} value={formData?.years_of_experience} type="text" id="experience" />
-                            </div>
-                            <div>
-                                <label htmlFor="portfolio">Portfolio link</label>
-                                <input placeholder="Portfolio link" onChange={(e)=>setformData(prev=>({...prev, portfolio_url: e.target.value}))} value={formData?.portfolio_url} type="url" id="portfolio" />
-                            </div>
-                            <div>
-                                <label htmlFor="bio">Bio</label>
-                                <textarea name="bio" placeholder="Bio" onChange={(e)=>setformData(prev=>({...prev, bio: e.target.value}))} value={formData?.bio} id="bio"></textarea>
-                            </div>
-                            <div>
-                                <label htmlFor="accountNumber">Account number</label>
-                                <input placeholder="Account Number" onChange={(e)=>setformData(prev=>({...prev, account_number: e.target.value}))} value={formData?.account_number} type="tel" id="accountNumber" />
-                            </div>
-                            <div>
-                                <label htmlFor="bankName">Bank name</label>
-                                <input placeholder="Bank name" onChange={(e)=>setformData(prev=>({...prev, bank_name: e.target.value}))} value={formData?.bank_name} type="text" id="bankName" />
-                            </div>
-                            {/* <div className={styles.passVisible}>
-                                <input value={password}  onChange={(e) => setPassword(e.target.value)} type={isVisible ? "text" : "password"} placeholder='Password' />
-                                <span type="button" onClick={toggleVisibility} className={styles.visibility} aria-label={isVisible ? "Hide password" : "Show password"} >
-                                    {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </span>
-                            </div> */}                                
-                            <button type='submit' className='submit btn'>Save changes</button>
+                            
                         </div>
-                        
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        </ProtectedRoute>
     );
 }
  

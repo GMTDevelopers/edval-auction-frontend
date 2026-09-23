@@ -531,7 +531,7 @@ const ProdDetPage = () => {
                             {
                                 auctionLotData?.map((lot)=>(
                                     <div key={lot.id}>    
-                                        <AdminLotSide lots={lot} id={lot.id} bidders={regBidders} activeLot={activeLotData} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot.artwork.artist_details.first_name} year={lot.artwork.year_created} bid={lot.artwork.price} status={lot.artwork.status} />
+                                        <AdminLotSide lots={lot} id={lot.id} bidders={regBidders} activeLot={activeLotData} name={lot.artwork.title} img={lot?.artwork?.images[1]?.url} artist={lot?.artwork?.artist_details?.first_name} year={lot?.artwork?.year_created} bid={lot?.artwork?.price} status={lot?.artwork?.status} />
                                     </div>
                                 ))
                             }
