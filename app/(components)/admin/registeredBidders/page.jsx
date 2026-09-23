@@ -13,10 +13,9 @@ const RegisteredBidders = ({ auctionID, bidders }) => {
         try {
             const response = await fetch(`${BASE_URL}/admin/auctions/${auctionID}/registrations/export`, { 
             method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `Bearer ${accessToken}`,
-                },
+              headers: {
+                "authorization": `Bearer ${accessToken}`,
+              },
             });
             const data = await response.json();
             if (!response.ok) {

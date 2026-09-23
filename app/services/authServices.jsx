@@ -34,7 +34,7 @@ export const signupUser = async (userData) => {
         console.log('service result', data)
         throw {
             status: response.status,
-            message: data.error.message || "Signup failed",
+            message: data.error.details || "Signup failed",
         };
     }
 

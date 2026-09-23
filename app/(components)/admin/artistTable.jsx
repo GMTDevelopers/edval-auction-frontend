@@ -98,12 +98,12 @@ const AdminArtistDetails = ({data}) => {
                     <p>Earnings:<span> ${data?.stats?.total_sales} </span></p> 
                 </div>
                 <p style={{lineHeight:"24px"}}>
-                    {data?.artist_profile.bio}
+                    {data?.artist_profile?.bio}
                 </p>
                 <div className={styles.otherDetailsPack}>
                     <li>
                         <p>Studio name</p>
-                        <p>{data?.artist_profile.studio_name}</p>
+                        <p>{data?.artist_profile?.studio_name}</p>
                     </li>
                     <li>
                         <p>Email</p>
@@ -115,31 +115,31 @@ const AdminArtistDetails = ({data}) => {
                     </li>
                     <li>
                         <p>Address</p>                        
-                        <p>{data?.artist_profile.address}</p>
+                        <p>{data?.artist_profile?.address}</p>
                     </li>
                     <li>
                         <p>City, Country</p>
-                        <p>{data?.artist_profile.state}, {data?.artist_profile.country}</p>
+                        <p>{data?.artist_profile?.state}, {data?.artist_profile?.country}</p>
                     </li>
                     <li>
                         <p>Artistic style</p>
-                        <p>{data?.artist_profile.artistic_style}</p>
+                        <p>{data?.artist_profile?.artistic_style}</p>
                     </li>
                     <li>
                         <p>Years of experience</p>
-                        <p>{data?.artist_profile.years_of_experience} years</p>
+                        <p>{data?.artist_profile?.years_of_experience} years</p>
                     </li>
                     <li>
                         <p>Account number</p>
-                        <p>{data?.artist_profile.account_number}</p>
+                        <p>{data?.artist_profile?.account_number}</p>
                     </li>
                     <li>
                         <p>Bank name</p>
-                        <p>{data?.artist_profile.bank_name}</p>
+                        <p>{data?.artist_profile?.bank_name}</p>
                     </li>
                     <li>
                         <p>Artworks</p>
-                        <p>{data?.stats.total_artworks}</p>
+                        <p>{data?.stats?.total_artworks}</p>
                     </li>
                 </div>
                 <br />

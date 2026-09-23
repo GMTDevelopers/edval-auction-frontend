@@ -218,6 +218,41 @@ const TermsCondition = () => {
                             </div>
                         </div>
                     </section>
+                    <section className={styles.section}>
+                        <p>
+                            SECTION E:
+                            <span> Initial Deposit, Bidding Qualification, and Payment Default Policy </span>
+                        </p>
+                        <div className={styles.ruleItemPack}>
+                            <div className={styles.ruleItem}>                           
+                                <p><span>1. Registration & Initial Deposit Requirement</span> </p>
+                                <li> To qualify for bidding on any lot offered by EdvalArt Auction (the "Auctioneer"), all prospective bidders ("Bidders") must complete the registration process and submit a mandatory Initial Deposit in the amount specified for the respective auction or lot category. The Initial Deposit shall be held by the Auctioneer in an escrow or segregated client ledger account as a commitment guarantee and a condition precedent for bidding authorization.</li>
+                            </div>
+                            <div className={styles.ruleItem}>
+                                <p><span>2. Application of Deposit & Refund Mechanics</span></p>
+                                <li>Successful Bidders: Upon the fall of the hammer or digital confirmation of sale to the highest accepted Bidder (the "Buyer"), the Initial Deposit shall be credited directly toward the Total Purchase Price (comprising the hammer price, buyer's premium, applicable taxes, and logistics or handling fees).</li>
+                                <li>Unsuccessful Bidders: If a registered Bidder places no winning bids during the auction event, the Initial Deposit shall be refunded in full or released from card pre-authorization within five (5) to seven (7) business days following the formal conclusion of the auction, subject to standard banking processing timelines.</li>
+                            </div>
+                            <div className={styles.ruleItem}>                            
+                                <p><span>3. Payment Obligations & Settlement Window</span></p>
+                                <li>Upon the close of the auction, the Buyer shall be issued an official invoice detailing the remaining balance due. The Buyer agrees to pay the outstanding balance of the Total Purchase Price in full within seventy-two (72) hours (the "Settlement Window") from the issuance of the invoice. Payment must be cleared via an approved payment method (bank wire transfer, certified bank draft, or verified electronic transfer) prior to the release or delivery of any lot.</li>
+                            </div>
+                            <div className={styles.ruleItem}>
+                                <p><span>4. Payment Default & Forfeiture of Initial Deposit</span></p>
+                                <p>In the event the Buyer fails to remit the full balance within the specified Settlement Window:</p>
+                                <li>The Buyer shall be deemed in material breach and full default of the purchase agreement without requiring further notice from the Auctioneer.</li>
+                                <li>The Initial Deposit shall be automatically and irrevocably forfeited to the Auctioneer.</li>
+                                <li>The forfeited Initial Deposit shall be retained by the Auctioneer to liquidate administrative overhead, platform fees, cataloging expenses, lost buyer commissions, and seller disruption compensation.</li>
+                            </div>
+                            <div className={styles.ruleItem}>
+                                <p><span>5. Right of Resale and Deficiency Recovery</span></p>
+                                <p>Forfeiture of the Initial Deposit shall not extinguish the Buyer's remaining liabilities or bar the Auctioneer from seeking further remedies. Upon default, the Auctioneer reserves the unqualified right to:</p>
+                                <li>Cancel the sale and re-offer the subject lot to the immediate underbidder or re-consign the lot for re-sale at a future public or private sale</li>
+                                <li> Hold the defaulting Buyer liable for any financial deficiency between the original Total Purchase Price and the lower price realized upon re-sale</li>
+                                <li>Recover from the defaulting Buyer all secondary costs, including but not limited to warehousing/storage fees, legal expenses, re-cataloging costs, and interest accrued at the maximum legal rate.</li>
+                            </div>
+                        </div>
+                    </section>
                     
                 </div>
             </div>

@@ -6,12 +6,14 @@ import { useAuth } from '../../context/authContext';
 import ButtonLoader from '../loader/buttonloader';
 import { useModal } from '../ModalProvider/ModalProvider';
 import { useRouter } from 'next/navigation';
+import VerifyEmailComponent from '../verifyEmail/page';
 const Tab = () => {
     const {login, signup, error, loading, user} = useAuth();
-    const { closeModal } = useModal();
+    const { closeModal, openModal } = useModal();
     const router = useRouter();
     const [activeTab, setActiveTab] = useState('signIn');
     const [isError, setIsError] = useState(null);
+    const [isSignUpError, setIsSignUpError] = useState([]);
     const [isSuccess, setIsSuccess] = useState(null);
     const tabs = [
         { key: 'signIn', label: 'Sign in to account' },
@@ -75,19 +77,16 @@ const Tab = () => {
         }
         try {
             const result = await signup(signupData);
+            console.log('signup result', result)
             if (result.success) {
-                setIsSuccess("User created successfully!");
-                console.log('Signup successful', result);
-                setTimeout(() => {
-                    closeModal();
-                }, 1000);
+                openModal(<VerifyEmailComponent />)
             }
             if (!result.success) {
-               setIsError(result.error);
+                const errors = Object.values(result.error).flat();
+                setIsSignUpError(errors);
             }
         } catch (error) {
             setIsError(error);
-/*             console.log('Signup failed:'); */
         }
         
     };
@@ -139,7 +138,9 @@ const Tab = () => {
                                     {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </span>
                             </div>
-                            { isError && <div className="error"><CircleX color="#D32F2F" />{isError}</div> }
+                            { isSignUpError && isSignUpError?.map((err,index)=>(
+                                <div key={index} className="error"><CircleX color="#D32F2F" />{err}</div> 
+                            ))}
                             
                             <button className="btn submit" disabled={loading}>
                                 {loading ? <ButtonLoader /> : "Create account"}
